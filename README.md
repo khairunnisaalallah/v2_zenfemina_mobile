@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # zenfemina_v2
 
 A new Flutter project.
@@ -15,6 +14,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
-=======
+
 # v2_zenfemina_mobile
->>>>>>> 4c3d96612a1d7c99ae4fad6b0521e495a976c45c
+
