@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zenfemina_v2/pages/login.dart';
 import 'package:zenfemina_v2/pages/pages.dart';
+import 'package:zenfemina_v2/pages/question1.dart';
 // import 'pages/intro_page.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: question1Page(),
     );
   }
 }
