@@ -62,7 +62,7 @@ class WelcomePage extends StatelessWidget {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                        primary: primaryColor,
+                        backgroundColor: primaryColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))))),
             SizedBox(
@@ -82,7 +82,7 @@ class WelcomePage extends StatelessWidget {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                        primary: whiteColor,
+                        backgroundColor: whiteColor,
                         shape: RoundedRectangleBorder(
                             side: BorderSide(color: primaryColor, width: 1),
                             borderRadius: BorderRadius.circular(10))))),
