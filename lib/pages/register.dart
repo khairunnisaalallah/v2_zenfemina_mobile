@@ -66,147 +66,136 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             SizedBox(height: 25),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
                 ),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-              child: Form(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Username",
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(
-                          Icons.person,
-                          color: Colors.grey,
-                        ),
-                        labelStyle: GoogleFonts.outfit(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.grey,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 2.0, color: Colors.grey),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 18,
-                          horizontal: 20,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(
-                          Icons.mail,
-                          color: Colors.grey,
-                        ),
-                        labelStyle: GoogleFonts.outfit(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.grey,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 2.0, color: Colors.grey),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 18,
-                          horizontal: 20,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      obscureText: !_isPasswordVisible,
-                      decoration: InputDecoration(
-                        labelText: "Kata Sandi",
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Colors.grey,
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordVisible = !_isPasswordVisible;
-                            });
-                          },
-                          icon: Icon(
-                            _isPasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                child: Form(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: "Username",
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(
+                            Icons.person,
                             color: Colors.grey,
                           ),
-                        ),
-                        labelStyle: GoogleFonts.outfit(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.grey,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 2.0, color: Colors.grey),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 18,
-                          horizontal: 20,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        "Lupa Kata Sandi?",
-                        style: GoogleFonts.outfit(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 120,
-                    ),
-                    Container(
-                      height: 42,
-                      width: MediaQuery.of(context).size.width -
-                          2 * 20, // Sesuaikan dengan padding yang diinginkan
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Daftar',
-                          style: GoogleFonts.outfit(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
+                          labelStyle: GoogleFonts.outfit(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.grey,
                           ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFDA4256),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2.0, color: Colors.grey),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 18,
+                            horizontal: 20,
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 20),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(
+                            Icons.mail,
+                            color: Colors.grey,
+                          ),
+                          labelStyle: GoogleFonts.outfit(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.grey,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2.0, color: Colors.grey),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 18,
+                            horizontal: 20,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      TextFormField(
+                        obscureText: !_isPasswordVisible,
+                        decoration: InputDecoration(
+                          labelText: "Kata Sandi",
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.grey,
+                          ),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          labelStyle: GoogleFonts.outfit(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.grey,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2.0, color: Colors.grey),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 18,
+                            horizontal: 20,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 70,
+                      ),
+                      Container(
+                        height: 42,
+                        width: MediaQuery.of(context).size.width -
+                            2 * 20, // Sesuaikan dengan padding yang diinginkan
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Daftar',
+                            style: GoogleFonts.outfit(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFDA4256),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
