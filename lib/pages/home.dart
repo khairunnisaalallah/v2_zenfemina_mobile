@@ -36,22 +36,34 @@ class _homeState extends State<home> {
         destinations: const <Widget>[
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
+            selectedIcon: Icon(
+              Icons.home_rounded,
+              color: Color(0xFFDA4256)
+            ),
             label: 'Home',
           ),
           NavigationDestination(
             icon: Icon(Icons.article_outlined),
-            selectedIcon: Icon(Icons.article),
+            selectedIcon: Icon(
+              Icons.article,
+              color: Color(0xFFDA4256)
+            ),
             label: 'Article',
           ),
           NavigationDestination(
             icon: Icon(Icons.mosque_outlined),
-            selectedIcon: Icon(Icons.mosque),
+            selectedIcon: Icon(
+              Icons.mosque,
+              color: Color(0xFFDA4256)
+            ),
             label: 'Pray',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline_rounded),
-            selectedIcon: Icon(Icons.person_rounded),
+            selectedIcon: Icon(
+              Icons.person_rounded,
+              color: Color(0xFFDA4256)
+            ),
             label: 'Profile',
           ),
         ],
