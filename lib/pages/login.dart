@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:zenfemina_v2/pages/question1.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -20,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -168,7 +170,9 @@ class _LoginPageState extends State<LoginPage> {
                           width: MediaQuery.of(context).size.width -
                               2 * 20, // Sesuaikan dengan padding yang diinginkan
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.to(question1Page());
+                            },
                             child: Text(
                               'Masuk',
                               style: GoogleFonts.outfit(

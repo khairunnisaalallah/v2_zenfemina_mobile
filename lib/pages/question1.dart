@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zenfemina_v2/pages/question2.dart';
 import 'package:zenfemina_v2/shared/shared.dart';
@@ -94,10 +95,7 @@ class _question1PageState extends State<question1Page> {
                   2 * 20, // Sesuaikan dengan padding yang diinginkan
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => question2Page()),
-                  );
+                  Get.to(question2Page());
                 },
                 child: Text(
                   'Selanjutnya',

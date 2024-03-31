@@ -52,7 +52,9 @@ class WelcomePage extends StatelessWidget {
                 height: 42,
                 width: MediaQuery.of(context).size.width - 2 * defaultMargin,
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(LoginPage());
+                    },
                     child: Text(
                       'Masuk',
                       style: GoogleFonts.outfit(
@@ -72,7 +74,9 @@ class WelcomePage extends StatelessWidget {
                 height: 42,
                 width: MediaQuery.of(context).size.width - 2 * defaultMargin,
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(RegisterPage());
+                    },
                     child: Text(
                       'Daftar',
                       style: GoogleFonts.outfit(

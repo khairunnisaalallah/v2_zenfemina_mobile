@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:zenfemina_v2/navigation/dashboard.dart';
 import 'package:zenfemina_v2/pages/login.dart';
 import 'package:zenfemina_v2/pages/home.dart';
@@ -18,9 +19,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: home(),
+      home: WelcomePage(),
     );
   }
 }

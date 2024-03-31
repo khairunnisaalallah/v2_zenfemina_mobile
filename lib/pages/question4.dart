@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:zenfemina_v2/pages/home.dart';
 import 'package:zenfemina_v2/shared/shared.dart';
 
 class question4Page extends StatefulWidget {
@@ -68,7 +70,9 @@ class _question4PageState extends State<question4Page> {
               width: MediaQuery.of(context).size.width -
                   2 * 20, // Sesuaikan dengan padding yang diinginkan
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(home());
+                },
                 child: Text(
                   'Selanjutnya',
                   style: GoogleFonts.outfit(
