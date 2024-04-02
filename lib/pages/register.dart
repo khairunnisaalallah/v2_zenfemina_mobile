@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:zenfemina_v2/pages/login.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key});
@@ -183,7 +185,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: MediaQuery.of(context).size.width -
                             2 * 20, // Sesuaikan dengan padding yang diinginkan
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(LoginPage());
+                          },
                           child: Text(
                             'Daftar',
                             style: GoogleFonts.outfit(
