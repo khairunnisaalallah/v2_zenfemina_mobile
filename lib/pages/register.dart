@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:zenfemina_v2/pages/login.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key});
@@ -46,7 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Text(
                     'Daftar Akun Baru',
                     style: GoogleFonts.outfit(
-                      fontSize: 40,
+                      fontSize: 32,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                     ),
@@ -56,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Text(
                       'Daftar mulai sekarang!',
                       style: GoogleFonts.outfit(
-                        fontSize: 15,
+                        fontSize: 14,
                         color: Colors.white,
                         fontWeight: FontWeight.w300,
                       ),
@@ -84,22 +86,25 @@ class _RegisterPageState extends State<RegisterPage> {
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: "Username",
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)
+                          ),
                           prefixIcon: Icon(
                             Icons.person,
                             color: Colors.grey,
                           ),
                           labelStyle: GoogleFonts.outfit(
-                            fontSize: 15,
+                            fontSize: 14,
                             fontWeight: FontWeight.w300,
                             color: Colors.grey,
                           ),
                           focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
                             borderSide:
                                 BorderSide(width: 2.0, color: Colors.grey),
                           ),
                           contentPadding: EdgeInsets.symmetric(
-                            vertical: 18,
+                            vertical: 15,
                             horizontal: 20,
                           ),
                         ),
@@ -108,22 +113,25 @@ class _RegisterPageState extends State<RegisterPage> {
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: "Email",
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)
+                          ),
                           prefixIcon: Icon(
                             Icons.mail,
                             color: Colors.grey,
                           ),
                           labelStyle: GoogleFonts.outfit(
-                            fontSize: 15,
+                            fontSize: 14,
                             fontWeight: FontWeight.w300,
                             color: Colors.grey,
                           ),
                           focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
                             borderSide:
                                 BorderSide(width: 2.0, color: Colors.grey),
                           ),
                           contentPadding: EdgeInsets.symmetric(
-                            vertical: 18,
+                            vertical: 15,
                             horizontal: 20,
                           ),
                         ),
@@ -133,7 +141,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         obscureText: !_isPasswordVisible,
                         decoration: InputDecoration(
                           labelText: "Kata Sandi",
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)
+                          ),
                           prefixIcon: Icon(
                             Icons.lock,
                             color: Colors.grey,
@@ -152,16 +162,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           labelStyle: GoogleFonts.outfit(
-                            fontSize: 15,
+                            fontSize: 12,
                             fontWeight: FontWeight.w300,
                             color: Colors.grey,
                           ),
                           focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
                             borderSide:
                                 BorderSide(width: 2.0, color: Colors.grey),
                           ),
                           contentPadding: EdgeInsets.symmetric(
-                            vertical: 18,
+                            vertical: 15,
                             horizontal: 20,
                           ),
                         ),
@@ -174,11 +185,13 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: MediaQuery.of(context).size.width -
                             2 * 20, // Sesuaikan dengan padding yang diinginkan
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(LoginPage());
+                          },
                           child: Text(
                             'Daftar',
                             style: GoogleFonts.outfit(
-                              fontSize: 20,
+                              fontSize: 18,
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
                             ),

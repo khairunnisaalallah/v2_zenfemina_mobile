@@ -57,7 +57,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
             Positioned(
-              top: 50,
+              top: 45,
               left: 30,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +116,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             Positioned(
               top: 50,
-              right: 30,
+              right: 25,
               child: Row(
                 children: [
                   SizedBox(width: 210),
@@ -137,7 +137,9 @@ class _DashboardPageState extends State<DashboardPage> {
               left: 0,
               right: 0,
               child: Center(
-                child: CardWidget(),
+                child: CardWidget(
+                  
+                ),
               ),
             ),
             Positioned(

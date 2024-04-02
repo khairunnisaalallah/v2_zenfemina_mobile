@@ -53,16 +53,16 @@ class _question2PageState extends State<question2Page> {
               'Kapan terakhir anda haid?',
               textAlign: TextAlign.left,
               style: GoogleFonts.outfit(
-                  fontSize: 28, color: greyColor, fontWeight: FontWeight.w500),
+                  fontSize: 28, color: Colors.grey[800], fontWeight: FontWeight.w500),
             ),
             SizedBox(height: 0),
             Text(
               'Silahkan isi tanggal, bulan, dan tahun terakhir anda mengalami haid',
               textAlign: TextAlign.left,
               style: GoogleFonts.outfit(
-                  fontSize: 15,
+                  fontSize: 14,
                   color: Colors.grey,
-                  fontWeight: FontWeight.w300),
+                  fontWeight: FontWeight.w400),
             ),
             SizedBox(height: 30),
             TextFormField(
@@ -70,9 +70,9 @@ class _question2PageState extends State<question2Page> {
                 decoration: InputDecoration(
                     labelText: "Tanggal haid terakhir",
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0)),
+                        borderRadius: BorderRadius.circular(12.0)),
                     labelStyle: GoogleFonts.outfit(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.w200,
                         color: Colors.grey),
                     prefixIcon: IconButton(
@@ -85,7 +85,7 @@ class _question2PageState extends State<question2Page> {
                         borderSide: BorderSide(width: 2.0, color: Colors.grey),
                         borderRadius: BorderRadius.circular(15.0)),
                     contentPadding: EdgeInsets.symmetric(
-                      vertical: 18,
+                      vertical: 15,
                       horizontal: 20,
                     ))),
             SizedBox(height: 30),
@@ -100,7 +100,7 @@ class _question2PageState extends State<question2Page> {
                 child: Text(
                   'Selanjutnya',
                   style: GoogleFonts.outfit(
-                    fontSize: 20,
+                    fontSize: 18,
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
