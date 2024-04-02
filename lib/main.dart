@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zenfemina_v2/navigation/dashboard.dart';
+import 'package:zenfemina_v2/pages/calender.dart';
 import 'package:zenfemina_v2/pages/cobadisini.dart';
 import 'package:zenfemina_v2/pages/login.dart';
 import 'package:zenfemina_v2/pages/home.dart';
@@ -22,9 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: WelcomePage(),
+      home: calenderPage(),
     );
   }
 }
-
-//PAKAI NAVBOTTON3. SISANYA CUMAN KODINGAN COBA2
