@@ -36,33 +36,33 @@ class _question3PageState extends State<question3Page> {
               'Berapa lama siklus haid anda?',
               textAlign: TextAlign.left,
               style: GoogleFonts.outfit(
-                  fontSize: 25, color: greyColor, fontWeight: FontWeight.w500),
+                  fontSize: 25, color: Colors.grey[800], fontWeight: FontWeight.w500),
             ),
             SizedBox(height: 0),
             Text(
               'Misalkan, siklus haid saya biasanya berlangsung selama 28-30 hari.',
               textAlign: TextAlign.left,
               style: GoogleFonts.outfit(
-                  fontSize: 15,
+                  fontSize: 14,
                   color: Colors.grey,
-                  fontWeight: FontWeight.w300),
+                  fontWeight: FontWeight.w400),
             ),
             SizedBox(height: 30),
             TextFormField(
                 decoration: InputDecoration(
                     labelText: "Lama siklus",
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0)),
+                        borderRadius: BorderRadius.circular(12.0)),
                     labelStyle: GoogleFonts.outfit(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.w200,
                         color: Colors.grey),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 2.0, color: Colors.grey),
-                        borderRadius: BorderRadius.circular(15.0)),
+                        borderRadius: BorderRadius.circular(12.0)),
                     contentPadding: EdgeInsets.symmetric(
-                      vertical: 18,
-                      horizontal: 20,
+                      vertical: 15,
+                      horizontal: 18,
                     ))),
             SizedBox(height: 30),
             Container(
@@ -76,7 +76,7 @@ class _question3PageState extends State<question3Page> {
                 child: Text(
                   'Selanjutnya',
                   style: GoogleFonts.outfit(
-                    fontSize: 20,
+                    fontSize: 18,
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),

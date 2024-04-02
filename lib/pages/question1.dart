@@ -53,16 +53,16 @@ class _question1PageState extends State<question1Page> {
               'Kapan Kamu Lahir ?',
               textAlign: TextAlign.left,
               style: GoogleFonts.outfit(
-                  fontSize: 30, color: greyColor, fontWeight: FontWeight.w500),
+                  fontSize: 28, color: Colors.grey[800], fontWeight: FontWeight.w500),
             ),
             SizedBox(height: 0),
             Text(
               'Silahkan isi tanggal, bulan, dan tahun kelahiran anda',
               textAlign: TextAlign.left,
               style: GoogleFonts.outfit(
-                  fontSize: 15,
+                  fontSize: 14,
                   color: Colors.grey,
-                  fontWeight: FontWeight.w300),
+                  fontWeight: FontWeight.w400),
             ),
             SizedBox(height: 30),
             TextFormField(
@@ -70,9 +70,9 @@ class _question1PageState extends State<question1Page> {
                 decoration: InputDecoration(
                     labelText: "Tanggal lahir anda",
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0)),
+                        borderRadius: BorderRadius.circular(12.0)),
                     labelStyle: GoogleFonts.outfit(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.w200,
                         color: Colors.grey),
                     prefixIcon: IconButton(
@@ -85,7 +85,7 @@ class _question1PageState extends State<question1Page> {
                         borderSide: BorderSide(width: 2.0, color: Colors.grey),
                         borderRadius: BorderRadius.circular(15.0)),
                     contentPadding: EdgeInsets.symmetric(
-                      vertical: 18,
+                      vertical: 15,
                       horizontal: 20,
                     ))),
             SizedBox(height: 30),
@@ -100,7 +100,7 @@ class _question1PageState extends State<question1Page> {
                 child: Text(
                   'Selanjutnya',
                   style: GoogleFonts.outfit(
-                    fontSize: 20,
+                    fontSize: 18,
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
