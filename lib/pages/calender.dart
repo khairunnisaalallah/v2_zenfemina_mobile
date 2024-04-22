@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:zenfemina_v2/pages/range_date.dart';
 import 'package:zenfemina_v2/widgets/circle_button.dart';
 
 class calenderPage extends StatelessWidget {
@@ -11,7 +12,7 @@ class calenderPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(150), // Sesuaikan tinggi sesuai kebutuhan
+            Size.fromHeight(120), // Sesuaikan tinggi sesuai kebutuhan
         child: Stack(
           children: [
             Positioned(
@@ -19,7 +20,7 @@ class calenderPage extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                height: 150,
+                height: 120,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -73,6 +74,11 @@ class calenderPage extends StatelessWidget {
           ],
         ),
       ),
+      body: Transform.translate(
+        offset: Offset(0, -80), // Geser widget ke atas sebanyak 20px
+        child: TableRangeExample(),
+      ),
+      // Tambahkan widget TableRangeExample di sini
     );
   }
 }

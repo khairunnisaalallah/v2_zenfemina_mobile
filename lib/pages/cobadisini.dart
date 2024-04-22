@@ -1,132 +1,70 @@
-import 'package:flutter/material.dart';
+// // Copyright 2019 Aleksander Woźniak
+// // SPDX-License-Identifier: Apache-2.0
+// import 'package:flutter/material.dart';
+// import 'package:table_calendar/table_calendar.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+// import '../utils.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+// class TableRangeExample extends StatefulWidget {
+//   @override
+//   _TableRangeExampleState createState() => _TableRangeExampleState();
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: HomePage(),
-      ),
-    );
-  }
-}
+// class _TableRangeExampleState extends State<TableRangeExample> {
+//   CalendarFormat _calendarFormat = CalendarFormat.month;
+//   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
+//       .toggledOn; // Can be toggled on/off by longpressing a date
+//   DateTime _focusedDay = DateTime.now();
+//   DateTime? _selectedDay;
+//   DateTime? _rangeStart;
+//   DateTime? _rangeEnd;
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController controller;
-  double percent = 0.0;
-
-  // ** Addition in @mmcdon20 code - Start
-
-  changePercent() {
-    // 20 frame is enough to beat eye, that's why I used
-    // 50 refresh/second to keep animation smooth
-    Future.delayed(
-      const Duration(milliseconds: 20), // Adjust accordingly.
-      () {
-        setState(() {
-          percent += 0.005; // Adjust accordingly.
-        });
-        print('........................');
-        if (percent < 1) {
-          changePercent();
-        }
-      },
-    );
-  }
-  // ** Addition in @mmcdon20 code - End
-
-  @override
-  void initState() {
-    super.initState();
-    controller = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    )
-      ..animateTo(1)
-      ..repeat();
-
-    // ** Addition in @mmcdon20 code - Start
-    changePercent();
-    // ** Addition in @mmcdon20 code - End
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CustomProgressIndicator(
-            value: percent,
-            color: Colors.orange,
-            controller: controller,
-            width: 200,
-            height: 200,
-            strokeWidth: 8,
-          )
-          // ** Eliminationated from @mmcdon20 code - End
-        ],
-      ),
-    );
-  }
-}
-
-class CustomProgressIndicator extends StatelessWidget {
-  const CustomProgressIndicator({
-    Key? key,
-    required this.color,
-    required this.value,
-    required this.controller,
-    required this.width,
-    required this.height,
-    required this.strokeWidth,
-    this.curve = Curves.linear,
-  }) : super(key: key);
-  final Color color;
-  final double value;
-  final AnimationController controller;
-  final double width;
-  final double height;
-  final double strokeWidth;
-  final Curve curve;
-
-  @override
-  Widget build(BuildContext context) {
-    return RotationTransition(
-      turns: CurvedAnimation(
-        parent: controller,
-        curve: curve,
-      ),
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: CircularProgressIndicator(
-          strokeWidth: strokeWidth,
-          color: color,
-          backgroundColor: color.withOpacity(.2),
-          value: value,
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('TableCalendar - Range'),
+//       ),
+//       body: TableCalendar(
+//         firstDay: kFirstDay,
+//         lastDay: kLastDay,
+//         focusedDay: _focusedDay,
+//         selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+//         rangeStartDay: _rangeStart,
+//         rangeEndDay: _rangeEnd,
+//         calendarFormat: _calendarFormat,
+//         rangeSelectionMode: _rangeSelectionMode,
+//         onDaySelected: (selectedDay, focusedDay) {
+//           if (!isSameDay(_selectedDay, selectedDay)) {
+//             setState(() {
+//               _selectedDay = selectedDay;
+//               _focusedDay = focusedDay;
+//               _rangeStart = null; // Important to clean those
+//               _rangeEnd = null;
+//               _rangeSelectionMode = RangeSelectionMode.toggledOff;
+//             });
+//           }
+//         },
+//         onRangeSelected: (start, end, focusedDay) {
+//           setState(() {
+//             _selectedDay = null;
+//             _focusedDay = focusedDay;
+//             _rangeStart = start;
+//             _rangeEnd = end;
+//             _rangeSelectionMode = RangeSelectionMode.toggledOn;
+//           });
+//         },
+//         onFormatChanged: (format) {
+//           if (_calendarFormat != format) {
+//             setState(() {
+//               _calendarFormat = format;
+//             });
+//           }
+//         },
+//         onPageChanged: (focusedDay) {
+//           _focusedDay = focusedDay;
+//         },
+//       ),
+//     );
+//   }
+// }
