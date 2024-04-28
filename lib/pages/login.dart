@@ -91,8 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             labelText: "Email",
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)
-                            ),
+                                borderRadius: BorderRadius.circular(12)),
                             prefixIcon: Icon(
                               Icons.mail,
                               color: Colors.grey,
@@ -119,8 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             labelText: "Kata Sandi",
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)
-                            ),
+                                borderRadius: BorderRadius.circular(12)),
                             prefixIcon: Icon(
                               Icons.lock,
                               color: Colors.grey,

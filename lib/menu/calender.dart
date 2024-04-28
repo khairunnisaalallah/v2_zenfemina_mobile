@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zenfemina_v2/pages/range_date.dart';
 import 'package:zenfemina_v2/widgets/circle_button.dart';
+import 'package:zenfemina_v2/menu/calender.dart';
 
 class calenderPage extends StatelessWidget {
   const calenderPage({Key? key});
@@ -45,16 +47,22 @@ class calenderPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // Ikon akan berada di sisi kiri sudut atas
-                          Icon(
-                            Icons.arrow_back,
-                            size: 30,
-                            color: Colors.white,
+                          IconButton(
+                            onPressed: () {
+                              Get.back(); // Fungsi untuk kembali ke halaman sebelumnya
+                            },
+                            icon: Icon(
+                              Icons.arrow_back,
+                              size: 30,
+                              color: Colors.white,
+                            ),
                           ),
+
                           Center(
                             child: Text(
                               'Kalender',
                               style: GoogleFonts.outfit(
-                                fontSize: 25,
+                                fontSize: 22,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
