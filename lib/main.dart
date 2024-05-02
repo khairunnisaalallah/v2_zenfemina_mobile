@@ -13,8 +13,8 @@ import 'package:zenfemina_v2/pages/question1.dart';
 import 'package:zenfemina_v2/pages/register.dart';
 import 'package:zenfemina_v2/pages/splash_screen.dart';
 import 'package:zenfemina_v2/pages/range_date.dart';
-import 'package:zenfemina_v2/pages/profile_pic.dart';
 import 'package:zenfemina_v2/pages/profile_menu.dart';
+import 'package:zenfemina_v2/menu/editprofile.dart';
 
 
 // import 'pages/intro_page.dart';

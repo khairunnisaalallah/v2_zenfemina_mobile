@@ -1,13 +1,31 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zenfemina_v2/menu/calender.dart';
+import 'package:zenfemina_v2/menu/editprofile.dart';
 import 'package:zenfemina_v2/pages/profile_menu.dart';
-import 'package:zenfemina_v2/pages/profile_pic.dart';
 import 'package:flutter/services.dart' show AssetImage;
+import 'package:image_picker/image_picker.dart';
+import 'package:zenfemina_v2/widgets/color_extension.dart';
+import 'package:zenfemina_v2/widgets/round_button.dart';
+import 'package:zenfemina_v2/widgets/round_textfield.dart';
 
-class profilePage extends StatelessWidget {
-  const profilePage({Key? key}) : super(key: key);
+// class profilePage extends StatelessWidget {
+//   const profilePage({Key? key}) : super(key: key);
 
+class profilePage extends StatefulWidget {
+  const profilePage({super.key});
+
+  @override
+  State<profilePage> createState() => _profilePageState();
+}
+
+class _profilePageState extends State<profilePage> {
+  final ImagePicker picker = ImagePicker();
+  XFile? image;
   @override
   Widget build(BuildContext context) {
     print('Building profilePage');
@@ -56,6 +74,8 @@ class profilePage extends StatelessWidget {
                       ],
                     ),
                     // SizedBox(height: 20),
+
+                    //dari ini itu foto profile
                     SizedBox(height: 20),
                     SizedBox(
                       height: 115,
@@ -65,9 +85,30 @@ class profilePage extends StatelessWidget {
                         clipBehavior: Clip
                             .none, //ini biar widgetnya ga kepangkas atau kepotong
                         children: [
-                          CircleAvatar(
-                            backgroundImage:
-                                AssetImage("assets/images/tennis.png"),
+                          const SizedBox(height: 10),
+                          Container(
+                            width: 115,
+                            height: 115,
+                            decoration: BoxDecoration(
+                              color: TColor.placeholder,
+                              borderRadius: BorderRadius.circular(60),
+                            ),
+                            alignment: Alignment.center,
+                            child: image != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(60),
+                                    child: Image.file(
+                                      File(image!.path),
+                                      width: 115,
+                                      height: 115,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : Icon(
+                                    Icons.person,
+                                    size: 65,
+                                    color: TColor.secondaryText,
+                                  ),
                           ),
                           Positioned(
                             right: -16,
@@ -76,23 +117,28 @@ class profilePage extends StatelessWidget {
                               height: 46,
                               width: 46,
                               child: TextButton(
+                                onPressed: () async {
+                                  image = await picker.pickImage(
+                                      source: ImageSource.gallery);
+                                  setState(() {});
+                                },
                                 style: TextButton.styleFrom(
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: const Color(0xFFF5F6F9),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50),
                                     side: const BorderSide(color: Colors.white),
                                   ),
-                                  backgroundColor: const Color(0xFFF5F6F9),
                                 ),
-                                onPressed: () {},
                                 child: SvgPicture.asset(
-                                    "assets/images/cameraicon.svg"),
+                                  "assets/images/cameraicon.svg",
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    ), //sampe sini edit profilenya
                   ],
                 ),
               ),
@@ -118,12 +164,9 @@ class profilePage extends StatelessWidget {
               ProfileMenu(
                 text: "Ubah Profile",
                 icon: "assets/images/editprofile.svg",
-                press: () {},
-              ),
-              ProfileMenu(
-                text: "Ubah Password",
-                icon: "assets/images/editpw.svg",
-                press: () {},
+                press: () {
+                  Get.to(ProfileView());
+                },
               ),
             ],
           ),

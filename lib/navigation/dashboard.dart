@@ -146,7 +146,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 left: 0,
                 right: 0,
                 child: Center(
-                  child: CardWidget(),
+                  child: ContainerWidget(),
                 ),
               ),
               Positioned(
@@ -180,17 +180,21 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget CardWidget() {
-    return SizedBox(
+  Container ContainerWidget() {
+    return Container(
       width: 340,
       height: 90,
-      child: Card(
+      decoration: BoxDecoration(
         color: Colors.white,
-        elevation: 5,
-        shadowColor: Colors.black.withOpacity(1),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-        ),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 3,
+            offset: Offset(0, 3), // perubahan posisi bayangan jika diperlukan
+          ),
+        ],
       ),
     );
   }
