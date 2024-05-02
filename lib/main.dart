@@ -16,6 +16,7 @@ import 'package:zenfemina_v2/pages/range_date.dart';
 import 'package:zenfemina_v2/pages/profile_pic.dart';
 import 'package:zenfemina_v2/pages/profile_menu.dart';
 
+
 // import 'pages/intro_page.dart';
 
 void main() {
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       // debugShowMaterialGrid: true, // Tambahkan ini
-      home: home(),
+      home: OTPPage(),
     );
   }
 }

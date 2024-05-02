@@ -14,6 +14,7 @@ class _OTPPageState extends State<OTPPage> {
   TextEditingController txt2 = TextEditingController();
   TextEditingController txt3 = TextEditingController();
   TextEditingController txt4 = TextEditingController();
+  TextEditingController txt5 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -57,21 +58,24 @@ class _OTPPageState extends State<OTPPage> {
                   ),
                 ),
               ),
+
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              
                 children: [
                   myInputBox(context, txt1),
                   myInputBox(context, txt2),
                   myInputBox(context, txt3),
                   myInputBox(context, txt4),
+                  myInputBox(context, txt5),
                 ],
               ),
               SizedBox(height: 40),
               SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15, left: 0 ),
+                  padding: const EdgeInsets.only(top: 15, left: 0, right:30 ),
                 child: ElevatedButton(
                   onPressed: () {},
                   child: Text(
@@ -101,6 +105,8 @@ class _OTPPageState extends State<OTPPage> {
   Widget myInputBox(BuildContext context, TextEditingController controller) {
     return Container(
       width: 50,
+      padding: EdgeInsets.symmetric(vertical: 5), // Menambah padding vertikal
+     margin: EdgeInsets.only(right: 20), // Menambah margin kanan agar rata dengan tulisan "Kode Verifikasi"
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.number,
