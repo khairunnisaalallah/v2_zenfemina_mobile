@@ -15,6 +15,7 @@ import 'package:zenfemina_v2/pages/splash_screen.dart';
 import 'package:zenfemina_v2/pages/range_date.dart';
 import 'package:zenfemina_v2/pages/profile_menu.dart';
 import 'package:zenfemina_v2/menu/editprofile.dart';
+import 'package:zenfemina_v2/pages/verifikasiEmail.dart';
 
 
 // import 'pages/intro_page.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       // debugShowMaterialGrid: true, // Tambahkan ini
-      home: OTPPage(),
+      home: verifikasiEmail(),
     );
   }
 }

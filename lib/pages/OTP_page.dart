@@ -75,7 +75,7 @@ class _OTPPageState extends State<OTPPage> {
               SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15, left: 0, right:30 ),
+                  padding: const EdgeInsets.only(top: 15, left: 0, right:20),
                 child: ElevatedButton(
                   onPressed: () {},
                   child: Text(
