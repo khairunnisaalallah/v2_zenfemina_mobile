@@ -5,6 +5,7 @@ import 'package:zenfemina_v2/navigation/dashboard.dart';
 import 'package:zenfemina_v2/navigation/profile.dart';
 import 'package:zenfemina_v2/menu/calender.dart';
 import 'package:zenfemina_v2/pages/OTP_page.dart';
+import 'package:zenfemina_v2/pages/Ubah_kataSandi.dart';
 import 'package:zenfemina_v2/pages/cobadisini.dart';
 import 'package:zenfemina_v2/pages/login.dart';
 import 'package:zenfemina_v2/pages/home.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       // debugShowMaterialGrid: true, // Tambahkan ini
-      home: verifikasiEmail(),
+      home: UbahKataSandi(),
     );
   }
 }
