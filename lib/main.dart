@@ -33,7 +33,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       // debugShowMaterialGrid: true, // Tambahkan ini
+<<<<<<< HEAD
       home: UbahKataSandi(),
+=======
+      home: verifikasiEmail(),
+>>>>>>> e1cd0ad836528322cbaf5b68da36350e0fb685f5
     );
   }
 }
