@@ -18,7 +18,6 @@ import 'package:zenfemina_v2/pages/profile_menu.dart';
 import 'package:zenfemina_v2/menu/editprofile.dart';
 import 'package:zenfemina_v2/pages/verifikasiEmail.dart';
 
-
 // import 'pages/intro_page.dart';
 
 void main() {
@@ -33,11 +32,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       // debugShowMaterialGrid: true, // Tambahkan ini
-<<<<<<< HEAD
       home: UbahKataSandi(),
-=======
-      home: verifikasiEmail(),
->>>>>>> e1cd0ad836528322cbaf5b68da36350e0fb685f5
     );
   }
 }
