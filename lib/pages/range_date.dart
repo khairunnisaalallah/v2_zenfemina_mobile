@@ -28,6 +28,16 @@ class _TableRangeExampleState extends State<TableRangeExample> {
           // title: Text('TableCalendar - Range'),
           ),
       body: TableCalendar(
+        headerStyle: HeaderStyle(
+          headerPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+          titleCentered: true,
+          formatButtonVisible: false,
+          titleTextStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+          headerMargin: EdgeInsets.only(bottom: 10),
+        ),
         firstDay: kFirstDay,
         lastDay: kLastDay,
         focusedDay: _focusedDay,
@@ -50,37 +60,38 @@ class _TableRangeExampleState extends State<TableRangeExample> {
               TextStyle(color: Color(0xFFDA4256)), //ini tulisan sun sama sat
         ),
         calendarFormat: _calendarFormat,
-        rangeSelectionMode: _rangeSelectionMode,
-        onDaySelected: (selectedDay, focusedDay) {
-          {
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay;
-              _rangeStart = null; // Penting untuk membersihkan yang sebelumnya
-              _rangeEnd = null;
-              _rangeSelectionMode = RangeSelectionMode.toggledOff;
-            });
-          }
-        },
-        onRangeSelected: (start, end, focusedDay) {
-          setState(() {
-            _selectedDay = null;
-            _focusedDay = focusedDay;
-            _rangeStart = start;
-            _rangeEnd = end;
-            _rangeSelectionMode = RangeSelectionMode.toggledOn;
-          });
-        },
-        onFormatChanged: (format) {
-          if (_calendarFormat != format) {
-            setState(() {
-              _calendarFormat = format;
-            });
-          }
-        },
-        onPageChanged: (focusedDay) {
-          _focusedDay = focusedDay;
-        },
+        rangeSelectionMode:  _rangeSelectionMode = RangeSelectionMode.disabled,
+        // rangeSelectionMode: _rangeSelectionMode,
+        // onDaySelected: (selectedDay, focusedDay) {
+        //   {
+        //     setState(() {
+        //       _selectedDay = selectedDay;
+        //       _focusedDay = focusedDay;
+        //       _rangeStart = null; // Penting untuk membersihkan yang sebelumnya
+        //       _rangeEnd = null;
+        //       _rangeSelectionMode = RangeSelectionMode.toggledOff;
+        //     });
+        //   }
+        // },
+        // onRangeSelected: (start, end, focusedDay) {
+        //   setState(() {
+        //     _selectedDay = null;
+        //     _focusedDay = focusedDay;
+        //     _rangeStart = start;
+        //     _rangeEnd = end;
+        //     _rangeSelectionMode = RangeSelectionMode.toggledOn;
+        //   });
+        // },
+        // onFormatChanged: (format) {
+        //   if (_calendarFormat != format) {
+        //     setState(() {
+        //       _calendarFormat = format;
+        //     });
+        //   }
+        // },
+        // onPageChanged: (focusedDay) {
+        //   _focusedDay = focusedDay;
+        // },
       ),
     );
   }

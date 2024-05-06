@@ -22,7 +22,7 @@ class calenderPage extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                height: 120,
+                height: 105,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -83,7 +83,7 @@ class calenderPage extends StatelessWidget {
         ),
       ),
       body: Transform.translate(
-        offset: Offset(0, -80), // Geser widget ke atas sebanyak 20px
+        offset: Offset(0, -60), // Geser widget ke atas sebanyak 20px
         child: TableRangeExample(),
       ),
       // Tambahkan widget TableRangeExample di sini

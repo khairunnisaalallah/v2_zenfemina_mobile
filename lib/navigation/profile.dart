@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zenfemina_v2/menu/calender.dart';
 import 'package:zenfemina_v2/menu/editprofile.dart';
+import 'package:zenfemina_v2/pages/prayer_type.dart';
 import 'package:zenfemina_v2/pages/profile_menu.dart';
 import 'package:flutter/services.dart' show AssetImage;
 import 'package:image_picker/image_picker.dart';
@@ -41,7 +42,7 @@ class _profilePageState extends State<profilePage> {
               left: 0,
               right: 0,
               child: Container(
-                height: 250,
+                height: 230,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -78,8 +79,8 @@ class _profilePageState extends State<profilePage> {
                     //dari ini itu foto profile
                     SizedBox(height: 20),
                     SizedBox(
-                      height: 115,
-                      width: 115,
+                      height: 100,
+                      width: 100,
                       child: Stack(
                         fit: StackFit.expand,
                         clipBehavior: Clip
@@ -106,16 +107,16 @@ class _profilePageState extends State<profilePage> {
                                   )
                                 : Icon(
                                     Icons.person,
-                                    size: 65,
+                                    size: 55,
                                     color: TColor.secondaryText,
                                   ),
                           ),
                           Positioned(
-                            right: -16,
+                            right: -10,
                             bottom: 0,
                             child: SizedBox(
-                              height: 46,
-                              width: 46,
+                              height: 36,
+                              width: 36,
                               child: TextButton(
                                 onPressed: () async {
                                   image = await picker.pickImage(
@@ -148,25 +149,81 @@ class _profilePageState extends State<profilePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.only(right: 20, left: 20, top: 5),
           child: Column(
             children: [
-              ProfileMenu(
-                text: "Lama Periode",
-                icon: "assets/images/period.svg",
-                press: () {},
+              Container(
+                padding: EdgeInsets.only(bottom: 10,), // Atur padding untuk menjaga teks di pojok kiri bawah
+                alignment: Alignment.centerLeft, // Atur alignment ke bawah dan kiri
+                child: Text(
+                  'Informasi Terkait',
+                  style: GoogleFonts.outfit(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ),
-              ProfileMenu(
-                text: "Lama Siklus",
-                icon: "assets/images/cycle.svg",
-                press: () {},
+              PrayerType(
+                text: "Lama Periode", 
+                icon: 0xf0404, 
+                hour: "15 hari"
+              ),
+              PrayerType(
+                text: "Lama Siklus", 
+                icon: 0xf6d5, 
+                hour: "27 hari"
+              ),
+
+              SizedBox(height: 10),
+              Container(
+                padding: EdgeInsets.only(bottom: 10,), // Atur padding untuk menjaga teks di pojok kiri bawah
+                alignment: Alignment.centerLeft, // Atur alignment ke bawah dan kiri
+                child: Text(
+                  'Menu',
+                  style: GoogleFonts.outfit(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ),
               ProfileMenu(
                 text: "Ubah Profile",
-                icon: "assets/images/editprofile.svg",
+                icon: 0xf05f0,
                 press: () {
                   Get.to(ProfileView());
                 },
+              ),
+              ProfileMenu(
+                text: "Ubah Password", 
+                icon: 0xf293,
+                press: (){},
+              ),
+              SizedBox(height: 15),
+              Container(
+                height: 42,
+                width: MediaQuery.of(context).size.width -
+                  2 * 20, // Sesuaikan dengan padding yang diinginkan
+                child: ElevatedButton(
+                onPressed: () {
+                  //
+                },
+                child: Text(
+                  'Keluar',
+                    style: GoogleFonts.outfit(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFDA4256),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                ),
               ),
             ],
           ),
