@@ -14,36 +14,40 @@ class ProfileMenu extends StatelessWidget {
     this.press,
   }) : super(key: key);
 
-  final String text, icon;
+  final String text;
+  final int icon;
   final VoidCallback? press;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       child: TextButton(
         style: TextButton.styleFrom(
           foregroundColor: Color(0xFFDA4256),
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.only(right: 15, left: 15, top: 20, bottom: 20),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           backgroundColor: const Color(0xFFF5F6F9),
         ),
         onPressed: press,
         child: Row(
           children: [
-            SvgPicture.asset(
-              icon,
-              color: Color(0xFFDA4256),
-              width: 23,
-            ),
-            const SizedBox(width: 23),
+            Icon(
+                IconData(icon, fontFamily: 'MaterialIcons'),
+                size: 24,
+                color: Color(0xFFDA4256),
+              ),
+            const SizedBox(width: 15),
             Expanded(
                 child: Text(
               text,
               style: GoogleFonts.poppins(),
             )),
-            const Icon(Icons.arrow_forward_ios),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 20,
+            ),
           ],
         ),
       ),
