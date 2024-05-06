@@ -19,12 +19,20 @@ class Tabsholatpuasa extends StatelessWidget {
             tabs: [
               Tab(
                 child: Text(
-                  'Sholat', // Ganti dengan label untuk tab pertama
+                  'Sholat',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                  ), // Ganti dengan label untuk tab pertama
                 ),
               ),
               Tab(
                 child: Text(
-                  'Puasa', // Ganti dengan label untuk tab kedua
+                  'Puasa',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                  ), // Ganti dengan label untuk tab kedua
                 ),
               ),
             ],
