@@ -22,7 +22,7 @@ class calenderPage extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                height: 120,
+                height: 105,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -52,8 +52,8 @@ class calenderPage extends StatelessWidget {
                               Get.back(); // Fungsi untuk kembali ke halaman sebelumnya
                             },
                             icon: Icon(
-                              Icons.arrow_back,
-                              size: 30,
+                              Icons.arrow_back_ios,
+                              size: 23,
                               color: Colors.white,
                             ),
                           ),
@@ -82,8 +82,9 @@ class calenderPage extends StatelessWidget {
           ],
         ),
       ),
-      body: Transform.translate(
-        offset: Offset(0, -80), // Geser widget ke atas sebanyak 20px
+      body: 
+      Transform.translate(
+        offset: Offset(0, -60), // Geser widget ke atas sebanyak 20px
         child: TableRangeExample(),
       ),
       // Tambahkan widget TableRangeExample di sini
