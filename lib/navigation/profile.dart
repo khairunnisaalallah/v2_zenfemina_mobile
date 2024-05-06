@@ -14,11 +14,8 @@ import 'package:zenfemina_v2/widgets/color_extension.dart';
 import 'package:zenfemina_v2/widgets/round_button.dart';
 import 'package:zenfemina_v2/widgets/round_textfield.dart';
 
-// class profilePage extends StatelessWidget {
-//   const profilePage({Key? key}) : super(key: key);
-
 class profilePage extends StatefulWidget {
-  const profilePage({super.key});
+  const profilePage({Key? key}) : super(key: key);
 
   @override
   State<profilePage> createState() => _profilePageState();
@@ -27,6 +24,7 @@ class profilePage extends StatefulWidget {
 class _profilePageState extends State<profilePage> {
   final ImagePicker picker = ImagePicker();
   XFile? image;
+
   @override
   Widget build(BuildContext context) {
     print('Building profilePage');
@@ -34,7 +32,7 @@ class _profilePageState extends State<profilePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(250),
+        preferredSize: Size.fromHeight(220),
         child: Stack(
           children: [
             Positioned(
@@ -83,8 +81,7 @@ class _profilePageState extends State<profilePage> {
                       width: 100,
                       child: Stack(
                         fit: StackFit.expand,
-                        clipBehavior: Clip
-                            .none, //ini biar widgetnya ga kepangkas atau kepotong
+                        clipBehavior: Clip.none,
                         children: [
                           const SizedBox(height: 10),
                           Container(
@@ -111,32 +108,6 @@ class _profilePageState extends State<profilePage> {
                                     color: TColor.secondaryText,
                                   ),
                           ),
-                          Positioned(
-                            right: -10,
-                            bottom: 0,
-                            child: SizedBox(
-                              height: 36,
-                              width: 36,
-                              child: TextButton(
-                                onPressed: () async {
-                                  image = await picker.pickImage(
-                                      source: ImageSource.gallery);
-                                  setState(() {});
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: const Color(0xFFF5F6F9),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                    side: const BorderSide(color: Colors.white),
-                                  ),
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/images/cameraicon.svg",
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ), //sampe sini edit profilenya
@@ -149,12 +120,14 @@ class _profilePageState extends State<profilePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(right: 20, left: 20, top: 5),
+          padding: const EdgeInsets.only(right: 20, left: 20, top: 0),
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(bottom: 10,), // Atur padding untuk menjaga teks di pojok kiri bawah
-                alignment: Alignment.centerLeft, // Atur alignment ke bawah dan kiri
+                padding: EdgeInsets.only(
+                  bottom: 10,
+                ),
+                alignment: Alignment.centerLeft,
                 child: Text(
                   'Informasi Terkait',
                   style: GoogleFonts.outfit(
@@ -165,20 +138,21 @@ class _profilePageState extends State<profilePage> {
                 ),
               ),
               PrayerType(
-                text: "Lama Periode", 
-                icon: 0xf0404, 
-                hour: "15 hari"
+                text: "Lama Periode",
+                icon: 0xf0404,
+                hour: "15 hari",
               ),
               PrayerType(
-                text: "Lama Siklus", 
-                icon: 0xf6d5, 
-                hour: "27 hari"
+                text: "Lama Siklus",
+                icon: 0xf6d5,
+                hour: "27 hari",
               ),
-
-              SizedBox(height: 10),
+              SizedBox(height: 0),
               Container(
-                padding: EdgeInsets.only(bottom: 10,), // Atur padding untuk menjaga teks di pojok kiri bawah
-                alignment: Alignment.centerLeft, // Atur alignment ke bawah dan kiri
+                padding: EdgeInsets.only(
+                  bottom: 10,
+                ),
+                alignment: Alignment.centerLeft,
                 child: Text(
                   'Menu',
                   style: GoogleFonts.outfit(
@@ -196,33 +170,32 @@ class _profilePageState extends State<profilePage> {
                 },
               ),
               ProfileMenu(
-                text: "Ubah Password", 
+                text: "Ubah Password",
                 icon: 0xf293,
-                press: (){},
+                press: () {},
               ),
               SizedBox(height: 15),
               Container(
                 height: 42,
-                width: MediaQuery.of(context).size.width -
-                  2 * 20, // Sesuaikan dengan padding yang diinginkan
+                width: MediaQuery.of(context).size.width - 2 * 20,
                 child: ElevatedButton(
-                onPressed: () {
-                  //
-                },
-                child: Text(
-                  'Keluar',
+                  onPressed: () {
+                    //
+                  },
+                  child: Text(
+                    'Keluar',
                     style: GoogleFonts.outfit(
                       fontSize: 18,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                     ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFDA4256),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
                   ),
-                ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFDA4256),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
               ),
             ],
