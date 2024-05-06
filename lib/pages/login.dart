@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
             Get.back();
           },
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 23,
             color: Colors.white,
           ),

@@ -53,7 +53,7 @@ class calenderPage extends StatelessWidget {
                             },
                             icon: Icon(
                               Icons.arrow_back,
-                              size: 30,
+                              size: 25,
                               color: Colors.white,
                             ),
                           ),
@@ -62,9 +62,9 @@ class calenderPage extends StatelessWidget {
                             child: Text(
                               'Kalender',
                               style: GoogleFonts.outfit(
-                                fontSize: 22,
+                                fontSize: 20,
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),

@@ -25,7 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Navigator.pop(context);
           },
           icon: Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: 23,
             color: Colors.white,
           ),
@@ -87,8 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         decoration: InputDecoration(
                           labelText: "Username",
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)
-                          ),
+                              borderRadius: BorderRadius.circular(12)),
                           prefixIcon: Icon(
                             Icons.person,
                             color: Colors.grey,
@@ -114,8 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         decoration: InputDecoration(
                           labelText: "Email",
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)
-                          ),
+                              borderRadius: BorderRadius.circular(12)),
                           prefixIcon: Icon(
                             Icons.mail,
                             color: Colors.grey,
@@ -142,8 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         decoration: InputDecoration(
                           labelText: "Kata Sandi",
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)
-                          ),
+                              borderRadius: BorderRadius.circular(12)),
                           prefixIcon: Icon(
                             Icons.lock,
                             color: Colors.grey,

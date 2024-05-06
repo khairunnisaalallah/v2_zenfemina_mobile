@@ -20,6 +20,9 @@ import 'package:zenfemina_v2/pages/splash_screen.dart';
 import 'package:zenfemina_v2/pages/range_date.dart';
 import 'package:zenfemina_v2/pages/profile_menu.dart';
 import 'package:zenfemina_v2/menu/editprofile.dart';
+import 'package:zenfemina_v2/pages/verifikasiEmail.dart';
+import 'package:zenfemina_v2/menu/tab_sholatpuasa.dart';
+import 'package:zenfemina_v2/routes.dart';
 
 class Routes {
   static final List<GetPage> pages = [
@@ -36,9 +39,10 @@ class Routes {
     GetPage(name: '/question1', page: () => question1Page()),
     GetPage(name: '/question2', page: () => question2Page()),
     GetPage(name: '/question3', page: () => question3Page()),
-    GetPage(name: '/question3', page: () => question4Page()),
+    GetPage(name: '/question4', page: () => question4Page()),
     GetPage(name: '/otp', page: () => OTPPage()),
     GetPage(name: '/editprofile', page: () => ProfileView()),
+    GetPage(name: '/sholatpuasa', page: () => Tabsholatpuasa()),
 
     // Definisikan halaman lain sesuai kebutuhan aplikasi Anda
   ];

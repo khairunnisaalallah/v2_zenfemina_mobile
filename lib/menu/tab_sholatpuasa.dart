@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart'; // tambahkan ini untuk menggunakan GetX
 
 class Tabsholatpuasa extends StatelessWidget {
   const Tabsholatpuasa({Key? key}) : super(key: key);
@@ -10,20 +11,41 @@ class Tabsholatpuasa extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          centerTitle: true,
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  // Tambahkan fungsi untuk kembali di sini
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.arrow_back),
+                iconSize: 25, // Icon kembali
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Hutang shalat dan puasa', // Tambahkan judul "Catatan" di sini
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
           bottom: TabBar(
             indicatorColor: Color(0xFFDA4256),
-            labelColor: Colors.black, // Warna teks untuk tab terpilih
-            // unselectedLabelColor:
-            //     Colors.black, // Warna teks untuk tab yang tidak dipilih
+            labelColor: Colors.black,
             tabs: [
               Tab(
                 child: Text(
-                  'Sholat',
+                  'Sholat', // Tambahkan teks "Hutang Sholat" di sini
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w300,
-                  ), // Ganti dengan label untuk tab pertama
+                  ),
                 ),
               ),
               Tab(
@@ -32,7 +54,7 @@ class Tabsholatpuasa extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w300,
-                  ), // Ganti dengan label untuk tab kedua
+                  ),
                 ),
               ),
             ],
@@ -41,16 +63,15 @@ class Tabsholatpuasa extends StatelessWidget {
         body: TabBarView(
           children: [
             // Konten untuk tab pertama
-            DefaultTabController(
-              length: 2,
-              child: Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(10),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      child: Container(
+            Padding(
+              padding:
+                  const EdgeInsets.only(top: 26), // Tambahkan padding di sini
+              child: DefaultTabController(
+                length: 2,
+                child: Scaffold(
+                  body: Column(
+                    children: [
+                      Container(
                         height: 40,
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(
@@ -69,38 +90,41 @@ class Tabsholatpuasa extends StatelessWidget {
                           unselectedLabelColor: Colors.black54,
                           tabs: [
                             Tab(
-                                text:
-                                    'Belum Lunas'), // Ganti dengan Tab bawaan Flutter
+                              text: 'Belum Lunas',
+                            ),
                             Tab(
-                                text:
-                                    'Lunas'), // Ganti dengan Tab bawaan Flutter
+                              text: 'Lunas',
+                            ),
                           ],
                         ),
                       ),
-                    ),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            // Konten untuk sub-tab "Sub Tiga"
+                            Center(child: Text('Belum Lunas Page 1')),
+                            // Konten untuk sub-tab "Sub Empat"
+                            Center(child: Text('Lunas Page 1')),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                body: const TabBarView(
-                  children: [
-                    Center(child: Text('Belum Lunas Page 1')),
-                    Center(child: Text('Lunas Page 1')),
-                  ],
                 ),
               ),
             ),
+
             // Konten untuk tab kedua
-            DefaultTabController(
-              length: 2,
-              child: Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(10),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      child: Container(
+            Padding(
+              padding:
+                  const EdgeInsets.only(top: 26), // Tambahkan padding di sini
+              child: DefaultTabController(
+                length: 2,
+                child: Scaffold(
+                  body: Column(
+                    children: [
+                      Container(
                         height: 40,
-                        // width: 230,
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         decoration: BoxDecoration(
                           borderRadius:
@@ -118,24 +142,26 @@ class Tabsholatpuasa extends StatelessWidget {
                           unselectedLabelColor: Colors.black54,
                           tabs: [
                             Tab(
-                                text:
-                                    'Belum Lunas'), // Ganti dengan label untuk sub-tab ketiga
+                              text: 'Belum Lunas',
+                            ),
                             Tab(
-                                text:
-                                    'Lunas'), // Ganti dengan label untuk sub-tab keempat
+                              text: 'Lunas',
+                            ),
                           ],
                         ),
                       ),
-                    ),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            // Konten untuk sub-tab "Sub Tiga"
+                            Center(child: Text('Belum Lunas Page 2')),
+                            // Konten untuk sub-tab "Sub Empat"
+                            Center(child: Text('Lunas Page 2')),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                body: TabBarView(
-                  children: [
-                    // Konten untuk sub-tab "Sub Tiga"
-                    Center(child: Text('Belum Lunas Page 2')),
-                    // Konten untuk sub-tab "Sub Empat"
-                    Center(child: Text('Lunas Page 2')),
-                  ],
                 ),
               ),
             ),

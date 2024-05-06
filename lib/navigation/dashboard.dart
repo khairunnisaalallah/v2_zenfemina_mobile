@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zenfemina_v2/menu/calender.dart';
 import 'package:zenfemina_v2/widgets/circle_button.dart';
+import 'package:zenfemina_v2/routes.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -197,7 +198,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             // Tambahkan logika yang ingin dijalankan saat tombol ditekan
                           },
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: Color(0xFFDA4256),
+                            foregroundColor: Color(0xFFDAD3D3),
                             backgroundColor: Colors.white,
                             elevation: 5, // Tambahkan efek shadow
                             shape: RoundedRectangleBorder(
@@ -208,7 +209,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             minimumSize: Size(132, 35), // Ukuran tombol
                           ),
                           child: Text(
-                            'Awali Menstruasi',
+                            'Mulai Siklus',
                             style: GoogleFonts.poppins(
                               fontSize: 10,
                               color: Color(0xFFDA4256),
@@ -246,62 +247,76 @@ class _DashboardPageState extends State<DashboardPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: 160,
-                          height: 92,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                spreadRadius: 2,
-                                blurRadius: 3,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 45), // Penurunan posisi
-                              child: Text(
-                                'Hutang Sholat',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black,
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(
+                                '/sholatpuasa'); // Tambahkan logika ketika container Hutang Sholat ditekan
+                          },
+                          child: Container(
+                            width: 160,
+                            height: 92,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 3,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 45, // Penurunan posisi
+                                ),
+                                child: Text(
+                                  'Hutang Sholat',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                         SizedBox(width: 20), // Spasi antara kedua container
-                        Container(
-                          width: 160,
-                          height: 92,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                spreadRadius: 2,
-                                blurRadius: 3,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 45), // Penurunan posisi
-                              child: Text(
-                                'Hutang Puasa',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black,
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(
+                                '/sholatpuasa'); // Tambahkan logika ketika container Hutang Puasa ditekan
+                          },
+                          child: Container(
+                            width: 160,
+                            height: 92,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 3,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 45, // Penurunan posisi
+                                ),
+                                child: Text(
+                                  'Hutang Puasa',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
