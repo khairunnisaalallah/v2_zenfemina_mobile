@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:zenfemina_v2/shared/shared.dart';
 import 'package:zenfemina_v2/widgets/color_extension.dart';
 import 'package:zenfemina_v2/widgets/round_button.dart';
@@ -21,56 +22,57 @@ class _ProfileViewState extends State<ProfileView> {
   final ImagePicker picker = ImagePicker();
   XFile? image;
 
-  TextEditingController txtName = TextEditingController();
-  TextEditingController txtEmail = TextEditingController();
-  TextEditingController txtMobile = TextEditingController();
-  TextEditingController txtAddress = TextEditingController();
-  TextEditingController txtPassword = TextEditingController();
-  TextEditingController txtConfirmPassword = TextEditingController();
+  // TextEditingController _controller = TextEditingController();
+  TextEditingController txt_name = TextEditingController(text: 'Azza Wafiqurrohmah');
+  TextEditingController txt_email = TextEditingController(text: 'wafiqurrohmahazza@gmail.com');
+  TextEditingController txt_birthDate = TextEditingController(text: '03/03/2003');
+
+  DateTime selectedDate = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1970, 1),
+        lastDate: selectedDate,
+        helpText: 'Pilih tanggal lahir mu!');
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        txt_birthDate.text = DateFormat('dd/MM/yyyy').format(picked);
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 23,
+            color: Colors.black,
+          ),
+        ),
+        centerTitle: true,
+        title: Text(
+          'Edit Profile',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Get.back(); // Fungsi untuk kembali ke halaman sebelumnya
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: 30,
-                      color: Colors.black,
-                    ),
-                    padding:
-                        EdgeInsets.only(left: 10), // Tambahkan padding ke kanan
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 95),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Edit Profile",
-                          style: TextStyle(
-                            color: blackColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(height: 10), //dari sini edit profilenya
               SizedBox(
                 height: 115,
@@ -137,78 +139,136 @@ class _ProfileViewState extends State<ProfileView> {
 
               const SizedBox(height: 30),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: RoundTitleTextfield(
-                  title: "Nama Pengguna",
-                  hintText: "Masukkan Nama Pengguna",
-                  controller: txtName,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: RoundTitleTextfield(
-                  title: "Email",
-                  hintText: "Masukkan Email",
-                  keyboardType: TextInputType.emailAddress,
-                  controller: txtEmail,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: RoundTitleTextfield(
-                  title: "Tanggal Lahir",
-                  hintText: "Masukkan Tanggal Lahir",
-                  controller: txtAddress,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: RoundTitleTextfield(
-                  title: "Kata Sandi",
-                  hintText: "* * * * * *",
-                  obscureText: true,
-                  controller: txtPassword,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-                child: RoundTitleTextfield(
-                  title: "Konfirmasi Kata Sandi",
-                  hintText: "* * * * * *",
-                  obscureText: true,
-                  controller: txtConfirmPassword,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  height: 42,
-                  width: MediaQuery.of(context).size.width - 2 * defaultMargin,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Save',
-                      style: GoogleFonts.outfit(
-                        fontSize: 18,
-                        color: whiteColor,
-                        fontWeight: FontWeight.w700,
-                      ),
+              padding: EdgeInsets.only(top: 0, left: 30, right: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Form(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 25),
+                        TextFormField(
+                          controller: txt_name,
+                              decoration: InputDecoration(
+                                labelText: "Nama Pengguna",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide(width: 2.0, color: Colors.grey)
+                                    ),
+                                      prefixIcon: Icon(
+                                      Icons.person_rounded, // Mengubah ikon email menjadi ikon kunci
+                                      color: Colors.grey,
+                                ),
+                                  labelStyle: GoogleFonts.outfit(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.grey,
+                                  ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide:
+                                      BorderSide(width: 2.0, color: Colors.grey),
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 15,
+                                  horizontal: 20,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            TextFormField(
+                              controller: txt_email,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                              labelText: "Email",
+                              border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(width: 2.0, color: Colors.grey)
+                            ),
+                            prefixIcon: 
+                            Icon(
+                              Icons.markunread_rounded, // Mengubah ikon email menjadi ikon kunci
+                              color: Colors.grey,
+                            ),
+                            labelStyle: GoogleFonts.outfit(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.grey,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                              BorderSide(width: 2.0, color: Colors.grey),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 15,
+                              horizontal: 20,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                            TextFormField(
+                              controller: txt_birthDate,
+                              keyboardType: TextInputType.datetime,
+                              decoration: InputDecoration(
+                              labelText: "Tanggal Lahir",
+                              border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(width: 2.0, color: Colors.grey)
+                            ),
+                            prefixIcon: IconButton(
+                              icon: Icon(Icons.calendar_month),
+                              onPressed: () {
+                                _selectDate(context);
+                              },
+                            ),
+                            labelStyle: GoogleFonts.outfit(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.grey,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                              BorderSide(width: 2.0, color: Colors.grey),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 15,
+                              horizontal: 20,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          height: 42,
+                          width: MediaQuery.of(context).size.width - 2 * 20,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              //
+                            },
+                            child: Text(
+                              'Ubah',
+                              style: GoogleFonts.outfit(
+                                fontSize: 18,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFDA4256),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                ),
+                  )
+                ],
               ),
+            ),
               const SizedBox(height: 20),
             ],
           ),

@@ -63,7 +63,6 @@ class _UbahKataSandiState extends State<UbahKataSandi> {
                     ),
                   ),
                   padding:
-                      //const EdgeInsets.symmetric(vertical: 0, horizontal: 5, ),
                         const EdgeInsets.only(top: 5, left: 0, right:20),
                   child: Form(
                     child: Column(
@@ -96,40 +95,37 @@ class _UbahKataSandiState extends State<UbahKataSandi> {
                           ),
                         ),
                         SizedBox(height: 40),
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 0, left: 0, right:0),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Ubah',
-                    style: GoogleFonts.outfit(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFDA4256),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 0, left: 0, right:0),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Ubah',
+                              style: GoogleFonts.outfit(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFDA4256),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
+                        ),
+                      ],            
                     ),
                   ),
                 ),
-              ),
-              ),
-                      ],
-                      
+              ],
+            ),
           ),
-        ),
-      ),
-            ],
-              ),
-                          ),
-                        ),
-                    
-    );
-          
-}
+        )          
+    );          
+  }
 }
