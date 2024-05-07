@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zenfemina_v2/menu/editpw.dart';
 import 'package:zenfemina_v2/menu/tab_sholatpuasa.dart';
 import 'package:zenfemina_v2/navigation/article.dart';
 import 'package:zenfemina_v2/navigation/dashboard.dart';

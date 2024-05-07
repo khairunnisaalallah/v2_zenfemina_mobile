@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zenfemina_v2/menu/calender.dart';
 import 'package:zenfemina_v2/menu/editprofile.dart';
+import 'package:zenfemina_v2/menu/editpw.dart';
 import 'package:zenfemina_v2/pages/prayer_type.dart';
 import 'package:zenfemina_v2/pages/profile_menu.dart';
 import 'package:flutter/services.dart' show AssetImage;
@@ -40,7 +41,7 @@ class _profilePageState extends State<profilePage> {
               left: 0,
               right: 0,
               child: Container(
-                height: 230,
+                height: 220,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -120,7 +121,7 @@ class _profilePageState extends State<profilePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(right: 20, left: 20, top: 0),
+          padding: const EdgeInsets.only(right: 20, left: 20, top: 15),
           child: Column(
             children: [
               Container(
@@ -172,7 +173,9 @@ class _profilePageState extends State<profilePage> {
               ProfileMenu(
                 text: "Ubah Password",
                 icon: 0xf293,
-                press: () {},
+                press: () {
+                  Get.to(EditPw());
+                },
               ),
               SizedBox(height: 15),
               Container(
