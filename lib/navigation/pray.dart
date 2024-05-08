@@ -25,7 +25,7 @@ class prayPage extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 210,
+                  height: 200,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20),
@@ -45,8 +45,9 @@ class prayPage extends StatelessWidget {
               ),
               // yg merah2 itu
               Positioned(
-                top: 50,
+                top: 40,
                 left: 25,
+                right: 25,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 0, left: 0),
                   child: Column(
@@ -77,7 +78,7 @@ class prayPage extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: 50,
+                top: 40,
                 right: 25,
                 child: Row(
                   children: [
@@ -90,7 +91,7 @@ class prayPage extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: 160,
+                top: 140,
                 left: 20,
                 right: 20,
                 child: Container(
@@ -112,13 +113,13 @@ class prayPage extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: 160,
+                top: 140,
                 left: 25,
                 right: 25,
                 child: prayerDate(),
               ),
               Positioned(
-                top: 320,
+                top: 300,
                 left: 22,
                 right: 22,
                 child: Column(
