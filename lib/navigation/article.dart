@@ -111,7 +111,7 @@ class _articlePageState extends State<articlePage> {
               ),
             ),
             Positioned(
-              top: 50,
+              top: 35,
               right: 25,
               child: Row(
               children: [
