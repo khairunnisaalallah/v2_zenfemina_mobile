@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,15 +14,21 @@ class articlePage extends StatefulWidget {
   @override
   State<articlePage> createState() => _articlePageState();
 }
+// final List<String> categories = <String>['Haid', 'Puasa', 'Istihadhah', 'Kesehatan', 'Sholat'];
 
 class _articlePageState extends State<articlePage> {
   late CarouselController controller = CarouselController();
   int currentIndex = 0;
+  int indexCategory = 0;
+  final List<String> categories = <String>['Haid', 'Puasa', 'Istihadhah', 'Kesehatan', 'sholat', 'wanita', 'kebersihan'];
+  final List<String> article = <String>['Apa itu Haid', 'Apa itu puasa', 'Apa itu sholat', 'kewajiban sholat'];
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(220),
+        preferredSize: Size.fromHeight(200),
         child: Stack(
           children: [
             Positioned(
@@ -28,7 +36,7 @@ class _articlePageState extends State<articlePage> {
               left: 0,
               right: 0,
               child: Container(
-                height: 220,
+                height: 200,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -47,7 +55,7 @@ class _articlePageState extends State<articlePage> {
               ),
             ),
             Positioned(
-              top: 50,
+              top: 30,
               left: 25,
               right: 25,
               child: Padding(
@@ -119,9 +127,10 @@ class _articlePageState extends State<articlePage> {
         ),
       ),
 
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         children: [
-          SizedBox(height: 25),
+          SizedBox(height: 20),
           Container(
             alignment: Alignment.topLeft, 
             padding: EdgeInsets.only(left: 20),
@@ -176,77 +185,136 @@ class _articlePageState extends State<articlePage> {
               dotHeight: 10,
               dotWidth: 10
             )    
+          ),
+          SizedBox(height: 20),
+          Container(
+            alignment: Alignment.topLeft, 
+            padding: EdgeInsets.only(left: 20),
+            child: Text(
+              'Direkomendasikan',
+              textAlign: TextAlign.left, 
+              style: GoogleFonts.outfit(
+                color: Colors.grey[900],
+                fontSize: 18,
+                fontWeight: FontWeight.w500
+              ),
+            ),
+          ),
+          SizedBox(height: 7),
+          Padding(
+            padding: EdgeInsets.only(left: 20, right: 20), // Sesuaikan dengan ukuran margin yang Anda inginkan
+            child: SizedBox(
+            height: 30,
+            child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: categories.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index){
+              return GestureDetector(
+                onTap: (){
+                  setState(() {
+                    indexCategory = index; // Perbarui indexCategory ketika item dipilih
+                  });
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 8),
+                  padding: const EdgeInsets.only(bottom: 5, top: 5, left: 15, right: 15),
+                  decoration: BoxDecoration(
+                    color: indexCategory == index ? Color(0xFFDA4256) : Colors.white,
+                    border: Border.all(
+                      color: indexCategory == index ? Color(0xFFDA4256): Color(0xFFE0E0E0),
+                    ),
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: Center(child: Text(
+                    categories[index],
+                    style: GoogleFonts.outfit(
+                      color : indexCategory == index ? Colors.white: Colors.black
+                    ),
+                    )),
+                ),
+              );
+            },
           )
+          ,
+          )),
+         SizedBox(height: 7),
+         //artikel yg dibawah
+          Padding(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: ListView.builder(
+              padding: EdgeInsets.zero, 
+              shrinkWrap: true,
+              itemCount: article.length,
+              itemBuilder: (BuildContext context, int index){
+                return GestureDetector(
+                  onTap: (){
+                    // do something here
+                  },
+                  child: Container(
+                    height: 110,
+                    margin: EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.only(bottom: 0, top: 0, left: 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Color(0xFFE0E0E0),
+                      ),
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12), 
+                            bottomLeft: Radius.circular(12)
+                          ),
+                          child: Image.asset(
+                          "assets/images/Gambar-Kartun-Muslimah-Hijab-Imut-1.jpg",
+                          width: 148,
+                          height: 110,
+                          fit: BoxFit.fill
+                        ),
+                        ),
+                        SizedBox(width:10),
+                        Column(
+                          children: [
+                            SizedBox(height: 10),
+                            Container(
+                              width: 180,
+                              child: Text(
+                                'Apa itu Haid?',
+                                style: GoogleFonts.outfit(
+                                  fontSize: 16,
+                                  color: Colors.black
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Container(
+                              width: 180,
+                              child: Text(
+                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula....',
+                                style: GoogleFonts.outfit(
+                                  fontSize: 12,
+                                  color : Colors.grey
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: 20)
         ],
       )
-
-      // Center(
-      //   child: Container(
-      //     constraints: const BoxConstraints(maxWidth: 400),
-      //     child: ListView.builder(
-      //       itemCount: _articles.length,
-      //       itemBuilder: (BuildContext context, int index) {
-      //         final item = _articles[index];
-      //         return Container(
-      //           height: 136,
-      //           margin:
-      //               const EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
-      //           decoration: BoxDecoration(
-      //               border: Border.all(color: const Color(0xFFE0E0E0)),
-      //               borderRadius: BorderRadius.circular(8.0)),
-      //           padding: const EdgeInsets.all(8),
-      //           child: Row(
-      //             children: [
-      //               Expanded(
-      //                   child: Column(
-      //                 mainAxisAlignment: MainAxisAlignment.center,
-      //                 crossAxisAlignment: CrossAxisAlignment.start,
-      //                 children: [
-      //                   Text(
-      //                     item.title,
-      //                     style: const TextStyle(fontWeight: FontWeight.bold),
-      //                     maxLines: 2,
-      //                     overflow: TextOverflow.ellipsis,
-      //                   ),
-      //                   const SizedBox(height: 8),
-      //                   Text("${item.author} · ${item.postedOn}",
-      //                       style: Theme.of(context).textTheme.caption),
-      //                   const SizedBox(height: 8),
-      //                   Row(
-      //                     mainAxisSize: MainAxisSize.min,
-      //                     children: [
-      //                       Icons.bookmark_border_rounded,
-      //                       Icons.share,
-      //                       Icons.more_vert
-      //                     ].map((e) {
-      //                       return InkWell(
-      //                         onTap: () {},
-      //                         child: Padding(
-      //                           padding: const EdgeInsets.only(right: 8.0),
-      //                           child: Icon(e, size: 16),
-      //                         ),
-      //                       );
-      //                     }).toList(),
-      //                   )
-      //                 ],
-      //               )),
-      //               Container(
-      //                   width: 100,
-      //                   height: 100,
-      //                   decoration: BoxDecoration(
-      //                       color: Colors.grey,
-      //                       borderRadius: BorderRadius.circular(8.0),
-      //                       image: DecorationImage(
-      //                         fit: BoxFit.cover,
-      //                         image: NetworkImage(item.imageUrl),
-      //                       ))),
-      //             ],
-      //           ),
-      //         );
-      //       },
-      //     ),
-      //   ),
-      // ),
+,
+      ) 
     );
   }
 
