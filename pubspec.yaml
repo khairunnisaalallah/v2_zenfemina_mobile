@@ -28,6 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  carousel_slider: ^4.2.1
+  checkbox_list: ^0.0.17
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
@@ -38,9 +40,8 @@ dependencies:
   image_picker: ^1.1.0
   intl: ^0.19.0
   line_icons: ^2.0.3
-  table_calendar: ^3.1.1
-  carousel_slider: ^4.2.1
   smooth_page_indicator: ^1.1.0
+  table_calendar: ^3.1.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0

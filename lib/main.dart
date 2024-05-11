@@ -20,6 +20,7 @@ import 'package:zenfemina_v2/pages/profile_menu.dart';
 import 'package:zenfemina_v2/menu/editprofile.dart';
 import 'package:zenfemina_v2/pages/verifikasiEmail.dart';
 import 'package:zenfemina_v2/routes.dart';
+import 'package:zenfemina_v2/widgets/sholatcheck.dart';
 
 // import 'pages/intro_page.dart';
 

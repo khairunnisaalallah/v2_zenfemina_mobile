@@ -15,28 +15,13 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   String? _selectedCity; // variabel untuk menyimpan kota yang dipilih
 
-  // final List<String> cities = [
-  //   'Jember',
-  //   'Ambulu',
-  //   'Kaliwates',
-  //   'Sumberbaru',
-  //   'Sukorambi',
-  //   'Wuluhan',
-  //   'Puger',
-  //   'Arjasa',
-  //   'Panti',
-  //   'Ajung'
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context)
-              .size
-              .height, // Sesuaikan tinggi dengan tinggi layar
+          height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
               Positioned(
@@ -62,47 +47,15 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
               ),
-              // yg merah2 itu
               Positioned(
                 top: 45,
                 left: 30,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // DropdownButton<String>(
-                    //   icon: Icon(Icons.arrow_drop_down,
-                    //       color: Colors.white), // Icon berwarna putih
-                    //   hint: Text(
-                    //     'Pilih Kota',
-                    //     style: TextStyle(
-                    //         color: Colors.white), // Set teks warna putih
-                    //   ), // Hints untuk menampilkan pesan sebelum pilihan dibuat
-                    //   value: _selectedCity, // Nilai awal dropdown
-                    //   onChanged: (String? newValue) {
-                    //     setState(() {
-                    //       _selectedCity =
-                    //           newValue; // Memperbarui nilai kota yang dipilih
-                    //     });
-                    //   },
-                    //   items:
-                    //       cities.map<DropdownMenuItem<String>>((String value) {
-                    //     return DropdownMenuItem<String>(
-                    //       value: value,
-                    //       child: Text(
-                    //         value,
-                    //         style: TextStyle(
-                    //             color: _selectedCity == value
-                    //                 ? Colors
-                    //                     .white // Warna teks putih jika dipilih
-                    //                 : Colors
-                    //                     .black), // Ubah warna teks menjadi hitam
-                    //       ),
-                    //     );
-                    //   }).toList(),
-                    // ),
-                    SizedBox(height: 30), // Spasi antara dropdown dan teks
+                    SizedBox(height: 30),
                     Text(
-                      'Hello',
+                      'Hello Nisa',
                       textAlign: TextAlign.left,
                       style: GoogleFonts.outfit(
                         fontSize: 28,
@@ -142,15 +95,14 @@ class _DashboardPageState extends State<DashboardPage> {
                   ],
                 ),
               ),
-              //ini buat containernya
               Positioned(
                 top: 180,
                 left: 0,
                 right: 0,
                 child: Center(
                   child: Container(
-                    width: 325,
-                    height: 200, // Menyesuaikan dengan penambahan tombol
+                    width: 345,
+                    height: 200,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
@@ -174,7 +126,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        SizedBox(height: 5), // Spacer
+                        SizedBox(height: 5),
                         Text(
                           '9 Hari Lagi',
                           style: GoogleFonts.poppins(
@@ -183,30 +135,30 @@ class _DashboardPageState extends State<DashboardPage> {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(height: 5), // Spacer
+                        SizedBox(height: 5),
                         Text(
-                          'Menuju siklus selanjutnya',
+                          'Menuju siklus haid selanjutnya',
                           style: GoogleFonts.poppins(
-                            fontSize: 16,
+                            fontSize: 15,
                             color: Color(0xFFDA4256),
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        SizedBox(height: 20), // Spacer
+                        SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () {
-                            // Tambahkan logika yang ingin dijalankan saat tombol ditekan
-                          },
+                          onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Color(0xFFDAD3D3),
                             backgroundColor: Colors.white,
-                            elevation: 5, // Tambahkan efek shadow
+                            elevation: 5,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                               side: BorderSide(
-                                  color: Color(0xFFDA4256), width: 2),
+                                color: Color(0xFFDA4256),
+                                width: 2,
+                              ),
                             ),
-                            minimumSize: Size(132, 35), // Ukuran tombol
+                            minimumSize: Size(132, 35),
                           ),
                           child: Text(
                             'Mulai Siklus',
@@ -222,9 +174,8 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
               ),
-
               Positioned(
-                top: 400,
+                top: 395,
                 left: 0,
                 right: 0,
                 child: Column(
@@ -232,7 +183,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(width: 30), // Jarak dari tepi layar
+                        SizedBox(width: 30),
                         Text(
                           'Menu Lainnya',
                           style: GoogleFonts.outfit(
@@ -243,14 +194,13 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20), // Spasi antara teks dan container
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         InkWell(
                           onTap: () {
-                            Get.toNamed(
-                                '/sholatpuasa'); // Tambahkan logika ketika container Hutang Sholat ditekan
+                            Get.toNamed('/sholatpuasa');
                           },
                           child: Container(
                             width: 160,
@@ -270,7 +220,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             child: Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                  top: 45, // Penurunan posisi
+                                  top: 45,
                                 ),
                                 child: Text(
                                   'Hutang Sholat',
@@ -284,11 +234,10 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 20), // Spasi antara kedua container
+                        SizedBox(width: 20),
                         InkWell(
                           onTap: () {
-                            Get.toNamed(
-                                '/sholatpuasa'); // Tambahkan logika ketika container Hutang Puasa ditekan
+                            Get.toNamed('/sholatpuasa');
                           },
                           child: Container(
                             width: 160,
@@ -308,7 +257,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             child: Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                  top: 45, // Penurunan posisi
+                                  top: 45,
                                 ),
                                 child: Text(
                                   'Hutang Puasa',
@@ -327,19 +276,35 @@ class _DashboardPageState extends State<DashboardPage> {
                   ],
                 ),
               ),
-
               Positioned(
-                  top: 570,
-                  right: 190,
-                  left: 0,
-                  child: Center(
-                      child: Text(
+                top: 545,
+                right: 190,
+                left: 0,
+                child: Center(
+                  child: Text(
                     'Informasi Terkait',
                     style: GoogleFonts.outfit(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400),
-                  ))),
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 585,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: [
+                    Center(
+                      child: informasiterkait(),
+                    ),
+                    SizedBox(height: 15), // Berikan jarak antara kedua widget
+                    informasiterkait2(), // Tampilkan informasi kedua
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -347,19 +312,74 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Container ContainerWidget() {
+  Container informasiterkait() {
     return Container(
       width: 340,
-      height: 90,
+      height: 42,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 3,
-            offset: Offset(0, 3), // perubahan posisi bayangan jika diperlukan
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.error_outline,
+            ),
+          ),
+          Text(
+            'Anda memiliki hutang sholat',
+            style: GoogleFonts.outfit(
+              fontSize: 13,
+              color: Colors.black,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container informasiterkait2() {
+    return Container(
+      width: 340,
+      height: 42,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.error_outline,
+            ),
+          ),
+          Text(
+            'Anda tidak memiliki hutang puasa',
+            style: GoogleFonts.outfit(
+              fontSize: 13,
+              color: Colors.black,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ],
       ),
