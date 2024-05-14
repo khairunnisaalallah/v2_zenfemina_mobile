@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zenfemina_v2/pages/question1.dart';
+import 'package:zenfemina_v2/api_repository.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -12,6 +13,16 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isPasswordVisible = false;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  late final ApiRepository _apiRepository;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _apiRepository = ApiRepository();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +37,16 @@ class _LoginPageState extends State<LoginPage> {
           },
           icon: Icon(
             Icons.arrow_back,
-            size: 23,
+            size: 25,
             color: Colors.white,
           ),
         ),
       ),
-      // Tambahkan baris ini
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height -
-              MediaQuery.of(context).padding.top - // Tambahkan ini
-              AppBar().preferredSize.height, // Sesuaikan tinggi
+              MediaQuery.of(context).padding.top -
+              AppBar().preferredSize.height,
           width: double.infinity,
           decoration: BoxDecoration(
             color: Color(0xFFDA4256),
@@ -51,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Text(
                       'Masuk',
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.poppins(
                         fontSize: 32,
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -61,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.only(top: 0, left: 0),
                       child: Text(
                         'Masuk ke akunmu, dan mulai atur jadwal \nsiklusmu dari sekarang!',
-                        style: GoogleFonts.outfit(
+                        style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: Colors.white,
                           fontWeight: FontWeight.w300,
@@ -88,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextFormField(
+                          controller: emailController,
                           decoration: InputDecoration(
                             labelText: "Email",
                             border: OutlineInputBorder(
@@ -96,8 +107,8 @@ class _LoginPageState extends State<LoginPage> {
                               Icons.mail,
                               color: Colors.grey,
                             ),
-                            labelStyle: GoogleFonts.outfit(
-                              fontSize: 14,
+                            labelStyle: GoogleFonts.poppins(
+                              fontSize: 13,
                               fontWeight: FontWeight.w300,
                               color: Colors.grey,
                             ),
@@ -114,6 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(height: 20),
                         TextFormField(
+                          controller: passwordController,
                           obscureText: !_isPasswordVisible,
                           decoration: InputDecoration(
                             labelText: "Kata Sandi",
@@ -136,8 +148,8 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.grey,
                               ),
                             ),
-                            labelStyle: GoogleFonts.outfit(
-                              fontSize: 14,
+                            labelStyle: GoogleFonts.poppins(
+                              fontSize: 13,
                               fontWeight: FontWeight.w300,
                               color: Colors.grey,
                             ),
@@ -159,32 +171,79 @@ class _LoginPageState extends State<LoginPage> {
                           alignment: Alignment.centerRight,
                           child: Text(
                             "Lupa Kata Sandi?",
-                            style: GoogleFonts.outfit(
-                              fontSize: 15,
+                            style: GoogleFonts.poppins(
+                              fontSize: 13,
                               fontWeight: FontWeight.w400,
                               color: Colors.grey,
                             ),
                           ),
                         ),
                         SizedBox(
-                          height: 90,
+                          height: 80,
                         ),
                         Container(
                           height: 42,
-                          width: MediaQuery.of(context).size.width -
-                              2 * 20, // Sesuaikan dengan padding yang diinginkan
+                          width: MediaQuery.of(context).size.width - 2 * 20,
                           child: ElevatedButton(
-                            onPressed: () {
-                              Get.to(question1Page());
-                            },
-                            child: Text(
-                              'Masuk',
-                              style: GoogleFonts.outfit(
-                                fontSize: 18,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
+                            onPressed: _isLoading
+                                ? null
+                                : () async {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    try {
+                                      final result =
+                                          await _apiRepository.loginUser(
+                                        emailController.text,
+                                        passwordController.text,
+                                      );
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                      if (result['meta']['code'] == 200) {
+                                        Get.snackbar(
+                                          'Sukses',
+                                          'Berhasil masuk!',
+                                          backgroundColor: Colors.green,
+                                          colorText: Colors.white,
+                                        );
+                                        Get.to(question1Page());
+                                      } else {
+                                        final errorMessage =
+                                            result['errors'][0];
+                                        Get.snackbar(
+                                          'Error',
+                                          errorMessage,
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                        );
+                                      }
+                                    } catch (e) {
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                      print('Error: $e');
+                                      Get.snackbar(
+                                        'Error',
+                                        'Email atau Kata Sandi salah.',
+                                        backgroundColor: Colors.red,
+                                        colorText: Colors.white,
+                                      );
+                                    }
+                                  },
+                            child: _isLoading
+                                ? CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  )
+                                : Text(
+                                    'Masuk',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFDA4256),
                               shape: RoundedRectangleBorder(

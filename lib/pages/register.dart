@@ -2,20 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:zenfemina_v2/pages/login.dart';
+import 'package:zenfemina_v2/api_repository.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key});
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final ApiRepository _apiRepository = ApiRepository();
+
   bool _isPasswordVisible = false;
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  bool isEmailValid(String email) {
+    return email.endsWith('@gmail.com');
+  }
+
+  bool isPasswordValid(String password) {
+    return password.length >= 8 &&
+        password.contains(RegExp(r'[A-Za-z]')) &&
+        password.contains(RegExp(r'\d'));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Color(0xFFDA4256),
       appBar: AppBar(
         elevation: 0,
@@ -26,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
           },
           icon: Icon(
             Icons.arrow_back,
-            size: 23,
+            size: 25,
             color: Colors.white,
           ),
         ),
@@ -47,17 +73,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   Text(
                     'Daftar Akun Baru',
-                    style: GoogleFonts.outfit(
-                      fontSize: 32,
+                    style: GoogleFonts.poppins(
+                      fontSize: 30,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 0, left: 0),
+                    padding: const EdgeInsets.only(top: 0, left: 2),
                     child: Text(
                       'Daftar mulai sekarang!',
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.poppins(
                         fontSize: 14,
                         color: Colors.white,
                         fontWeight: FontWeight.w300,
@@ -77,135 +103,226 @@ class _RegisterPageState extends State<RegisterPage> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                child: Form(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "Username",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.grey,
-                          ),
-                          labelStyle: GoogleFonts.outfit(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.grey,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide:
-                                BorderSide(width: 2.0, color: Colors.grey),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 15,
-                            horizontal: 20,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "Email",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          prefixIcon: Icon(
-                            Icons.mail,
-                            color: Colors.grey,
-                          ),
-                          labelStyle: GoogleFonts.outfit(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.grey,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide:
-                                BorderSide(width: 2.0, color: Colors.grey),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 15,
-                            horizontal: 20,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        obscureText: !_isPasswordVisible,
-                        decoration: InputDecoration(
-                          labelText: "Kata Sandi",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          prefixIcon: Icon(
-                            Icons.lock,
-                            color: Colors.grey,
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
-                              });
-                            },
-                            icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.grey,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 40, horizontal: 20),
+                    child: Form(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            controller: usernameController,
+                            decoration: InputDecoration(
+                              labelText: "Username",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              prefixIcon: Icon(
+                                Icons.person,
+                                color: Colors.grey,
+                              ),
+                              labelStyle: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    BorderSide(width: 2.0, color: Colors.grey),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 15,
+                                horizontal: 20,
+                              ),
                             ),
                           ),
-                          labelStyle: GoogleFonts.outfit(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.grey,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide:
-                                BorderSide(width: 2.0, color: Colors.grey),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 15,
-                            horizontal: 20,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 70,
-                      ),
-                      Container(
-                        height: 42,
-                        width: MediaQuery.of(context).size.width -
-                            2 * 20, // Sesuaikan dengan padding yang diinginkan
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Get.to(LoginPage());
-                          },
-                          child: Text(
-                            'Daftar',
-                            style: GoogleFonts.outfit(
-                              fontSize: 18,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                          SizedBox(height: 20),
+                          TextFormField(
+                            controller: emailController,
+                            decoration: InputDecoration(
+                              labelText: "Email",
+                              hintText: "Gunakan @gmail.com",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              prefixIcon: Icon(
+                                Icons.mail,
+                                color: Colors.grey,
+                              ),
+                              labelStyle: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey,
+                              ),
+                              hintStyle: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    BorderSide(width: 2.0, color: Colors.grey),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 15,
+                                horizontal: 20,
+                              ),
                             ),
                           ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFDA4256),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                          SizedBox(height: 20),
+                          TextFormField(
+                            controller: passwordController,
+                            obscureText: !_isPasswordVisible,
+                            decoration: InputDecoration(
+                              labelText: "Kata Sandi",
+                              hintText: "Minimal 8 huruf dengan kombinasi",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Colors.grey,
+                              ),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isPasswordVisible = !_isPasswordVisible;
+                                  });
+                                },
+                                icon: Icon(
+                                  _isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              labelStyle: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey,
+                              ),
+                              hintStyle: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    BorderSide(width: 2.0, color: Colors.grey),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 15,
+                                horizontal: 20,
+                              ),
                             ),
                           ),
-                        ),
+                          SizedBox(height: 40),
+                          Container(
+                            height: 42,
+                            width: MediaQuery.of(context).size.width - 2 * 20,
+                            child: ElevatedButton(
+                              onPressed: _isLoading
+                                  ? null
+                                  : () async {
+                                      if (!isEmailValid(emailController.text)) {
+                                        Get.snackbar(
+                                          'Error',
+                                          'Email harus menggunakan @gmail.com',
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                        );
+                                        return;
+                                      }
+
+                                      if (!isPasswordValid(
+                                          passwordController.text)) {
+                                        Get.snackbar(
+                                          'Error',
+                                          'Kata sandi harus minimal 8 huruf dan kombinasi angka serta huruf',
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                        );
+                                        return;
+                                      }
+
+                                      setState(() {
+                                        _isLoading = true;
+                                      });
+
+                                      try {
+                                        final response =
+                                            await _apiRepository.registerUser(
+                                          usernameController.text,
+                                          emailController.text,
+                                          passwordController.text,
+                                        );
+
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+
+                                        if (response['meta']['status'] == 1) {
+                                          Get.snackbar(
+                                            'Sukses',
+                                            'Pendaftaran berhasil!',
+                                            backgroundColor: Colors.green,
+                                            colorText: Colors.white,
+                                          );
+                                          Get.to(LoginPage());
+                                        } else {
+                                          Get.snackbar(
+                                            'Error',
+                                            response['errors']['username']
+                                                    ?[0] ??
+                                                response['errors']['email']
+                                                    ?[0] ??
+                                                response['errors']['password']
+                                                    [0],
+                                            backgroundColor: Colors.red,
+                                            colorText: Colors.white,
+                                          );
+                                        }
+                                      } catch (e) {
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                        Get.snackbar(
+                                          'Error',
+                                          'Gagal melakukan registrasi, silakan cek kembali.',
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                        );
+                                      }
+                                    },
+                              child: _isLoading
+                                  ? CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    )
+                                  : Text(
+                                      'Daftar',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFFDA4256),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

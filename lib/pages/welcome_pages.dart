@@ -15,9 +15,10 @@ class WelcomePage extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(
-                  top: 90), // Gunakan margin untuk mengatur ruang di sekitar gambar
+                  top:
+                      90), // Gunakan margin untuk mengatur ruang di sekitar gambar
               child: Image.asset(
-                'assets/images/welcome.png',
+                'assets/images/welcome1.png',
                 height: 263,
                 fit: BoxFit.fill,
               ),
@@ -26,8 +27,8 @@ class WelcomePage extends StatelessWidget {
             Text(
               "Selamat Datang",
               textAlign: TextAlign.center, // Atur textAlign menjadi center
-              style: GoogleFonts.outfit(
-                fontSize: 35,
+              style: GoogleFonts.poppins(
+                fontSize: 33,
                 color: Color(0xFF252525),
                 fontWeight: FontWeight.w700,
               ),
@@ -38,14 +39,14 @@ class WelcomePage extends StatelessWidget {
             Text(
               "Atur siklus haid dan jadwal shalatmu sekarang",
               textAlign: TextAlign.center, // Atur textAlign menjadi center
-              style: GoogleFonts.outfit(
-                fontSize: 16,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
                 color: greyColor,
                 fontWeight: FontWeight.w300,
               ),
             ),
             SizedBox(
-              height: 130,
+              height: 80,
             ),
             Container(
                 height: 42,
@@ -56,7 +57,7 @@ class WelcomePage extends StatelessWidget {
                     },
                     child: Text(
                       'Masuk',
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.poppins(
                         fontSize: 18,
                         color: whiteColor,
                         fontWeight: FontWeight.w700,
@@ -78,7 +79,7 @@ class WelcomePage extends StatelessWidget {
                     },
                     child: Text(
                       'Daftar',
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.poppins(
                         fontSize: 18,
                         color: primaryColor,
                         fontWeight: FontWeight.w700,
