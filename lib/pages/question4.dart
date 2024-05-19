@@ -1,17 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Import ini diperlukan untuk inputFormatters
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zenfemina_v2/api_repository.dart';
 import 'package:zenfemina_v2/pages/home.dart';
 import 'package:zenfemina_v2/shared/shared.dart';
 
-class question4Page extends StatefulWidget {
-  const question4Page({Key? key}); //constructor
+class Question4Page extends StatefulWidget {
+  const Question4Page({Key? key}); //constructor
 
   @override
-  _question4PageState createState() => _question4PageState();
+  _Question4PageState createState() => _Question4PageState();
 }
 
-class _question4PageState extends State<question4Page> {
+class _Question4PageState extends State<Question4Page> {
+  TextEditingController _cycleController = TextEditingController();
+
+  Future<void> _submitData() async {
+    // Ambil data dari shared preferences
+    final prefs = await SharedPreferences.getInstance();
+    final birthDate = prefs.getString('birthDate') ?? '';
+    final lastDate = prefs.getString('lastDate') ?? '';
+    final period = prefs.getString('period') ?? '';
+
+    // Ambil data dari TextEditingController
+    final cycle = _cycleController.text;
+    if (cycle.isEmpty) {
+      print('Cycle is empty');
+      return;
+    }
+
+    // Panggil API untuk mengirim data
+    try {
+      final api = ApiRepository();
+      await api.postQuestions(birthDate, lastDate, period, cycle);
+      print('Data berhasil dikirim ke API');
+    } catch (e) {
+      print('Gagal mengirim data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,47 +64,83 @@ class _question4PageState extends State<question4Page> {
             Text(
               'Berapa lama biasanya waktu haid anda berlangsung?',
               textAlign: TextAlign.left,
-              style: GoogleFonts.outfit(
-                  fontSize: 25, color: greyColor, fontWeight: FontWeight.w500),
+              style: GoogleFonts.poppins(
+                fontSize: 23,
+                color: greyColor,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             SizedBox(height: 0),
             Text(
-              'Biasanya berlangsung selama 5-6 hari atau lebih.',
+              'Biasanya berlangsung selama 5-8 hari atau lebih.',
               textAlign: TextAlign.left,
-              style: GoogleFonts.outfit(
-                  fontSize: 14,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w400),
+              style: GoogleFonts.poppins(
+                fontSize: 13,
+                color: Colors.grey,
+                fontWeight: FontWeight.w400,
+              ),
             ),
             SizedBox(height: 30),
             TextFormField(
-                decoration: InputDecoration(
-                    labelText: "Lama Haid",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0)),
-                    labelStyle: GoogleFonts.outfit(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w200,
-                        color: Colors.grey),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 2.0, color: Colors.grey),
-                        borderRadius: BorderRadius.circular(12.0)),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 20,
-                    ))),
+              controller: _cycleController,
+              decoration: InputDecoration(
+                labelText: "Lama Haid",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                labelStyle: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.grey,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 2.0, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 20,
+                ),
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(2),
+              ],
+            ),
             SizedBox(height: 30),
             Container(
               height: 42,
               width: MediaQuery.of(context).size.width -
                   2 * 20, // Sesuaikan dengan padding yang diinginkan
               child: ElevatedButton(
-                onPressed: () {
-                  Get.to(home());
+                onPressed: () async {
+                  // Simpan data ke SharedPreferences sebelum mengirim ke API
+                  final cycle = _cycleController.text;
+                  if (cycle.isEmpty) {
+                    print('Cycle is empty');
+                    return;
+                  }
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setString('cycle', cycle);
+
+                  // Kirim data ke API
+                  await _submitData();
+
+                  // Tampilkan SnackBar hijau
+                  Get.snackbar(
+                    'Sukses',
+                    'Data berhasil di input',
+                    backgroundColor: Colors.green,
+                    colorText: Colors.white,
+                  );
+
+                  // Pindah ke halaman berikutnya
+                  Get.to(() => home());
                 },
                 child: Text(
-                  'Selanjutnya',
-                  style: GoogleFonts.outfit(
+                  'Submit',
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
@@ -88,7 +153,7 @@ class _question4PageState extends State<question4Page> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

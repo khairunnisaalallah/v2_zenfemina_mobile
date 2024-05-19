@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zenfemina_v2/pages/home.dart';
 import 'package:zenfemina_v2/pages/question1.dart';
 import 'package:zenfemina_v2/api_repository.dart';
 
@@ -181,6 +183,9 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: 80,
                         ),
+                        //jadi eror nya gini
+                        //Raw API Response: {"meta":{"code":200,"status":1,"message":"Berhasil Login"},"data":{"id":19,"username":"abee23","email":"abee@gmail.com","token":"a7af76e1-fd62-4279-ab9d-be9fe5c0b445"}}
+                        //Kita bisa lihat bahwa token berada di dalam objek data. Jadi, ketika Anda mengakses result['token'], nilainya adalah null, karena token tidak berada di level atas respons, melainkan di dalam data.
                         Container(
                           height: 42,
                           width: MediaQuery.of(context).size.width - 2 * 20,
@@ -197,17 +202,33 @@ class _LoginPageState extends State<LoginPage> {
                                         emailController.text,
                                         passwordController.text,
                                       );
+
+                                      // Tambahkan log untuk melihat isi dari result
+                                      print('API Response: $result');
+
                                       setState(() {
                                         _isLoading = false;
                                       });
+
                                       if (result['meta']['code'] == 200) {
-                                        Get.snackbar(
-                                          'Sukses',
-                                          'Berhasil masuk!',
-                                          backgroundColor: Colors.green,
-                                          colorText: Colors.white,
-                                        );
-                                        Get.to(question1Page());
+                                        // Simpan token ke SharedPreferences
+                                        final prefs = await SharedPreferences
+                                            .getInstance();
+                                        final token = result['data']
+                                            ['token']; // Ambil token dari data
+                                        if (token != null) {
+                                          await prefs.setString('token', token);
+
+                                          Get.snackbar(
+                                            'Sukses',
+                                            'Berhasil masuk!',
+                                            backgroundColor: Colors.green,
+                                            colorText: Colors.white,
+                                          );
+                                          Get.to(Question1Page());
+                                        } else {
+                                          throw Exception('Token is null');
+                                        }
                                       } else {
                                         final errorMessage =
                                             result['errors'][0];
@@ -264,3 +285,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+//ini asli1

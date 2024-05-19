@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Import ini diperlukan untuk inputFormatters
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenfemina_v2/pages/question4.dart';
 import 'package:zenfemina_v2/shared/shared.dart';
 
-class question3Page extends StatefulWidget {
-  const question3Page({Key? key}); //constructor
+class Question3Page extends StatefulWidget {
+  const Question3Page({Key? key}); //constructor
 
   @override
-  _question3PageState createState() => _question3PageState();
+  _Question3PageState createState() => _Question3PageState();
 }
 
-class _question3PageState extends State<question3Page> {
+class _Question3PageState extends State<Question3Page> {
+  TextEditingController _periodController = TextEditingController();
+  bool _isPeriodEntered = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,47 +40,75 @@ class _question3PageState extends State<question3Page> {
             Text(
               'Berapa lama siklus haid anda?',
               textAlign: TextAlign.left,
-              style: GoogleFonts.outfit(
-                  fontSize: 25, color: Colors.grey[800], fontWeight: FontWeight.w500),
+              style: GoogleFonts.poppins(
+                  fontSize: 23,
+                  color: Colors.grey[800],
+                  fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 0),
             Text(
               'Misalkan, siklus haid saya biasanya berlangsung selama 28-30 hari.',
               textAlign: TextAlign.left,
-              style: GoogleFonts.outfit(
-                  fontSize: 14,
+              style: GoogleFonts.poppins(
+                  fontSize: 13,
                   color: Colors.grey,
                   fontWeight: FontWeight.w400),
             ),
             SizedBox(height: 30),
             TextFormField(
-                decoration: InputDecoration(
-                    labelText: "Lama siklus",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0)),
-                    labelStyle: GoogleFonts.outfit(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w200,
-                        color: Colors.grey),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 2.0, color: Colors.grey),
-                        borderRadius: BorderRadius.circular(12.0)),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 18,
-                    ))),
+              controller: _periodController,
+              decoration: InputDecoration(
+                labelText: "Lama siklus",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                labelStyle: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.grey,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 2.0, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 18,
+                ),
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(2),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _isPeriodEntered = value
+                      .isNotEmpty; // Tandai bahwa lama siklus sudah dimasukkan jika nilai tidak kosong
+                });
+              },
+            ),
             SizedBox(height: 30),
             Container(
               height: 42,
               width: MediaQuery.of(context).size.width -
                   2 * 20, // Sesuaikan dengan padding yang diinginkan
               child: ElevatedButton(
-                onPressed: () {
-                  Get.to(question4Page());
-                },
+                onPressed: _isPeriodEntered
+                    ? () async {
+                        final period = _periodController.text;
+                        if (period.isEmpty) {
+                          print('Period is empty');
+                          return;
+                        }
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setString('period', period);
+                        Get.to(Question4Page());
+                      }
+                    : null,
                 child: Text(
                   'Selanjutnya',
-                  style: GoogleFonts.outfit(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
@@ -88,7 +121,7 @@ class _question3PageState extends State<question3Page> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
