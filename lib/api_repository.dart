@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -137,6 +138,131 @@ class ApiRepository {
       }
     } else {
       throw Exception('Token tidak ditemukan');
+    }
+  }
+
+  Future<Map<String, dynamic>> getUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null) {
+      final response = await http.get(
+        Uri.parse('http://v2.zenfemina.com/api/user/current'),
+        headers: {
+          'Authorization': token,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to get user info: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null');
+    }
+  }
+
+  Future<Map<String, dynamic>> getCycleData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null && token.isNotEmpty) {
+      // Periksa apakah token tidak null dan tidak kosong
+      final response = await http.get(
+        Uri.parse('http://v2.zenfemina.com/api/home/getCycle?type=hist'),
+        headers: {
+          'Authorization':
+              token, // Ubah sesuai format yang diterima oleh server
+        },
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to get cycle data: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null or empty');
+    }
+  }
+
+  final String baseUrl = 'http://v2.zenfemina.com/api/cycle';
+
+  Future<void> beginCycle() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null && token.isNotEmpty) {
+      final response = await http.post(
+        Uri.parse('$baseUrl/beginCycle'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+      );
+      print('Request URL: ${response.request?.url}');
+      print('Request Headers: ${response.request?.headers}');
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      if (response.statusCode == 200) {
+        print('Begin cycle successful');
+      } else {
+        throw Exception('Failed to begin cycle: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null or empty');
+    }
+  }
+
+  Future<void> continueCycle() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null && token.isNotEmpty) {
+      final response = await http.post(
+        Uri.parse('$baseUrl/continueCycle'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+      );
+      print('Request URL: ${response.request?.url}');
+      print('Request Headers: ${response.request?.headers}');
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      if (response.statusCode == 200) {
+        print('Continue cycle successful');
+      } else {
+        throw Exception('Failed to continue cycle: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null or empty');
+    }
+  }
+
+  Future<void> endCycle() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null && token.isNotEmpty) {
+      final response = await http.post(
+        Uri.parse('$baseUrl/endCycle'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+      );
+      print('Request URL: ${response.request?.url}');
+      print('Request Headers: ${response.request?.headers}');
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      if (response.statusCode == 200) {
+        print('End cycle successful');
+      } else {
+        throw Exception('Failed to end cycle: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null or empty');
     }
   }
 }
