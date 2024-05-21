@@ -6,7 +6,7 @@ import 'package:zenfemina_v2/widgets/circle_button.dart';
 import 'package:zenfemina_v2/menu/calender.dart';
 
 class calenderPage extends StatelessWidget {
-  const calenderPage({Key? key});
+  const calenderPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,16 +58,15 @@ class calenderPage extends StatelessWidget {
                             ),
                           ),
 
-                          Center(
-                            child: Text(
-                              'Kalender',
-                              style: GoogleFonts.outfit(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          Text(
+                            'Kalender',
+                            style: GoogleFonts.outfit(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
+
                           CircleButton(
                             icon: Icons.notifications,
                             onPressed: () {},
@@ -86,7 +85,6 @@ class calenderPage extends StatelessWidget {
         offset: Offset(0, -60), // Geser widget ke atas sebanyak 20px
         child: TableRangeExample(),
       ),
-      // Tambahkan widget TableRangeExample di sini
     );
   }
 }

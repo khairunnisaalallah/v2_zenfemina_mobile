@@ -24,74 +24,78 @@ class _TableRangeExampleState extends State<TableRangeExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          // title: Text('TableCalendar - Range'),
+      body: Column(
+        children: [
+          SizedBox(height: 40),
+          TableCalendar(
+            headerStyle: HeaderStyle(
+              headerPadding:
+                  EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+              titleCentered: true,
+              formatButtonVisible: false,
+              titleTextStyle: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+              headerMargin: EdgeInsets.only(bottom: 10),
+            ),
+            firstDay: kFirstDay,
+            lastDay: kLastDay,
+            focusedDay: _focusedDay,
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            rangeStartDay: _rangeStart,
+            rangeEndDay: _rangeEnd,
+            calendarStyle: CalendarStyle(
+              rangeHighlightColor:
+                  Color(0xFFDA4256).withOpacity(0.25), //ini warna range date
+              todayDecoration: BoxDecoration(
+                color: Color(0xFFDA4256), // ini warna tgl hari ini
+                shape: BoxShape.circle,
+              ),
+              selectedDecoration: BoxDecoration(
+                color: Color(0xFFDA4256), // ini ga bisa diubah warnnaya
+              ),
+            ),
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekendStyle: TextStyle(
+                  color: Color(0xFFDA4256)), //ini tulisan sun sama sat
+            ),
+            calendarFormat: _calendarFormat,
+            rangeSelectionMode: _rangeSelectionMode =
+                RangeSelectionMode.disabled,
+            // rangeSelectionMode: _rangeSelectionMode,
+            // onDaySelected: (selectedDay, focusedDay) {
+            //   {
+            //     setState(() {
+            //       _selectedDay = selectedDay;
+            //       _focusedDay = focusedDay;
+            //       _rangeStart = null; // Penting untuk membersihkan yang sebelumnya
+            //       _rangeEnd = null;
+            //       _rangeSelectionMode = RangeSelectionMode.toggledOff;
+            //     });
+            //   }
+            // },
+            // onRangeSelected: (start, end, focusedDay) {
+            //   setState(() {
+            //     _selectedDay = null;
+            //     _focusedDay = focusedDay;
+            //     _rangeStart = start;
+            //     _rangeEnd = end;
+            //     _rangeSelectionMode = RangeSelectionMode.toggledOn;
+            //   });
+            // },
+            // onFormatChanged: (format) {
+            //   if (_calendarFormat != format) {
+            //     setState(() {
+            //       _calendarFormat = format;
+            //     });
+            //   }
+            // },
+            // onPageChanged: (focusedDay) {
+            //   _focusedDay = focusedDay;
+            // },
           ),
-      body: TableCalendar(
-        headerStyle: HeaderStyle(
-          headerPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-          titleCentered: true,
-          formatButtonVisible: false,
-          titleTextStyle: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-          headerMargin: EdgeInsets.only(bottom: 10),
-        ),
-        firstDay: kFirstDay,
-        lastDay: kLastDay,
-        focusedDay: _focusedDay,
-        selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-        rangeStartDay: _rangeStart,
-        rangeEndDay: _rangeEnd,
-        calendarStyle: CalendarStyle(
-          rangeHighlightColor:
-              Color(0xFFDA4256).withOpacity(0.25), //ini warna range date
-          todayDecoration: BoxDecoration(
-            color: Color(0xFFDA4256), // ini warna tgl hari ini
-            shape: BoxShape.circle,
-          ),
-          selectedDecoration: BoxDecoration(
-            color: Color(0xFFDA4256), // ini ga bisa diubah warnnaya
-          ),
-        ),
-        daysOfWeekStyle: DaysOfWeekStyle(
-          weekendStyle:
-              TextStyle(color: Color(0xFFDA4256)), //ini tulisan sun sama sat
-        ),
-        calendarFormat: _calendarFormat,
-        rangeSelectionMode:  _rangeSelectionMode = RangeSelectionMode.disabled,
-        // rangeSelectionMode: _rangeSelectionMode,
-        // onDaySelected: (selectedDay, focusedDay) {
-        //   {
-        //     setState(() {
-        //       _selectedDay = selectedDay;
-        //       _focusedDay = focusedDay;
-        //       _rangeStart = null; // Penting untuk membersihkan yang sebelumnya
-        //       _rangeEnd = null;
-        //       _rangeSelectionMode = RangeSelectionMode.toggledOff;
-        //     });
-        //   }
-        // },
-        // onRangeSelected: (start, end, focusedDay) {
-        //   setState(() {
-        //     _selectedDay = null;
-        //     _focusedDay = focusedDay;
-        //     _rangeStart = start;
-        //     _rangeEnd = end;
-        //     _rangeSelectionMode = RangeSelectionMode.toggledOn;
-        //   });
-        // },
-        // onFormatChanged: (format) {
-        //   if (_calendarFormat != format) {
-        //     setState(() {
-        //       _calendarFormat = format;
-        //     });
-        //   }
-        // },
-        // onPageChanged: (focusedDay) {
-        //   _focusedDay = focusedDay;
-        // },
+        ],
       ),
     );
   }
