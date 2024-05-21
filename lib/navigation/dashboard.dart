@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:zenfemina_v2/menu/calender.dart';
 import 'package:zenfemina_v2/widgets/circle_button.dart';
 import 'package:zenfemina_v2/routes.dart';
+import 'package:zenfemina_v2/api_repository.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -13,7 +15,110 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  String? _selectedCity; // variabel untuk menyimpan kota yang dipilih
+  final ApiRepository _apiRepository = ApiRepository();
+  String? _username = '';
+  String? _startDate = '';
+  int? _cycleLength = 0;
+  int? _periodLength = 0;
+  // Variable to track cycle status
+  String _cycleStatus = 'beginCycle';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+    _loadCycleData();
+  }
+
+  Future<void> _loadUserInfo() async {
+    try {
+      final userInfo = await _apiRepository.getUserInfo();
+      final username =
+          userInfo['data']['username']; // Mengambil nilai username dari respons
+
+      setState(() {
+        _username = username; // Menyimpan nilai username ke dalam _userName
+      });
+    } catch (e) {
+      print('Failed to load user info: $e');
+    }
+  }
+
+  Future<void> _loadCycleData() async {
+    try {
+      final cycleInfo = await _apiRepository.getCycleData();
+      final startDate = cycleInfo['data']['start_date'];
+      final cycleLength = cycleInfo['data']['cycle_length'];
+      final periodLength = cycleInfo['data']['period_length'];
+
+      setState(() {
+        _startDate = startDate;
+        _cycleLength = cycleLength;
+        _periodLength = periodLength;
+      });
+    } catch (e) {
+      print('Failed to load cycle data: $e');
+    }
+  }
+
+  String _calculateCycleDay() {
+    if (_startDate != null && _cycleLength != null && _periodLength != null) {
+      try {
+        final DateTime startDate = DateTime.parse(_startDate!);
+        final DateTime currentDate = DateTime.now();
+        final int daysPassed = currentDate.difference(startDate).inDays;
+
+        if (daysPassed < _periodLength!) {
+          return 'Hari ke-${daysPassed + 1} Haid';
+        } else {
+          final int daysUntilNextCycle =
+              _cycleLength! - daysPassed % _cycleLength!;
+          return '$daysUntilNextCycle Hari Lagi';
+        }
+      } catch (e) {
+        print('Error parsing date: $e');
+        return ''; // Jika terjadi kesalahan, kembalikan string kosong
+      }
+    } else {
+      return 'Data siklus tidak lengkap';
+    }
+  }
+
+  Future<void> _updateCycleStatus() async {
+    try {
+      if (_cycleStatus == 'beginCycle') {
+        await _apiRepository.beginCycle();
+        setState(() {
+          _cycleStatus = 'continueCycle';
+        });
+      } else if (_cycleStatus == 'continueCycle') {
+        await _apiRepository.continueCycle();
+        setState(() {
+          _cycleStatus = 'endCycle';
+        });
+      } else if (_cycleStatus == 'endCycle') {
+        await _apiRepository.endCycle();
+        setState(() {
+          _cycleStatus = 'beginCycle';
+        });
+      }
+    } catch (e) {
+      print('Failed to update cycle status: $e');
+    }
+  }
+
+  String _getCycleButtonText() {
+    switch (_cycleStatus) {
+      case 'beginCycle':
+        return 'Mulai Siklus';
+      case 'continueCycle':
+        return 'Lanjutkan Siklus';
+      case 'endCycle':
+        return 'Siklus Berakhir';
+      default:
+        return 'Mulai Siklus';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +158,9 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 30),
+                    SizedBox(height: 42),
                     Text(
-                      'Hello Nisa',
+                      'Hallo $_username',
                       textAlign: TextAlign.left,
                       style: GoogleFonts.outfit(
                         fontSize: 28,
@@ -96,7 +201,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               Positioned(
-                top: 180,
+                top: 170,
                 left: 0,
                 right: 0,
                 child: Center(
@@ -119,7 +224,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '14 September 2024',
+                          DateFormat('dd MMMM yyyy').format(DateTime.now()),
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                             color: Color(0XFFDA4256),
@@ -128,7 +233,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          '9 Hari Lagi',
+                          _calculateCycleDay(),
                           style: GoogleFonts.poppins(
                             fontSize: 32,
                             color: Color(0xFFDA4256),
@@ -146,7 +251,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                         SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: _updateCycleStatus,
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Color(0xFFDAD3D3),
                             backgroundColor: Colors.white,
@@ -161,7 +266,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             minimumSize: Size(132, 35),
                           ),
                           child: Text(
-                            'Mulai Siklus',
+                            _getCycleButtonText(),
                             style: GoogleFonts.poppins(
                               fontSize: 10,
                               color: Color(0xFFDA4256),
@@ -175,7 +280,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               Positioned(
-                top: 395,
+                top: 390,
                 left: 0,
                 right: 0,
                 child: Column(
