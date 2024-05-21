@@ -210,24 +210,42 @@ class _LoginPageState extends State<LoginPage> {
                                         _isLoading = false;
                                       });
 
+                                      ///ubah kondisi dari sini
                                       if (result['meta']['code'] == 200) {
-                                        // Simpan token ke SharedPreferences
-                                        final prefs = await SharedPreferences
-                                            .getInstance();
-                                        final token = result['data']
-                                            ['token']; // Ambil token dari data
-                                        if (token != null) {
-                                          await prefs.setString('token', token);
+                                        final userData = result['data'];
 
+                                        // Cek apakah birthDate kosong
+                                        if (userData['birthDate'] == null ||
+                                            userData['birthDate'].isEmpty) {
+                                          // Pengguna baru, arahkan ke Question1Page
                                           Get.snackbar(
-                                            'Sukses',
-                                            'Berhasil masuk!',
+                                            'Informasi',
+                                            'Selamat datang, pengguna baru! Silakan isi pertanyaan pertama.',
                                             backgroundColor: Colors.green,
                                             colorText: Colors.white,
                                           );
                                           Get.to(Question1Page());
                                         } else {
-                                          throw Exception('Token is null');
+                                          // Pengguna lama, arahkan ke HomePage
+                                          final prefs = await SharedPreferences
+                                              .getInstance();
+                                          final token = userData['token'];
+
+                                          if (token != null) {
+                                            await prefs.setString(
+                                                'token', token);
+
+                                            Get.snackbar(
+                                              'Sukses',
+                                              'Berhasil masuk!',
+                                              backgroundColor: Colors.green,
+                                              colorText: Colors.white,
+                                            );
+                                            Get.offAll(
+                                                home()); // Gunakan Get.offAll untuk menghapus stack navigasi sebelumnya
+                                          } else {
+                                            throw Exception('Token is null');
+                                          }
                                         }
                                       } else {
                                         final errorMessage =

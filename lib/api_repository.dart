@@ -50,6 +50,7 @@ class ApiRepository {
         final prefs = await SharedPreferences.getInstance();
         final success = await prefs.setString(
             'token', token); // Simpan token ke SharedPreferences
+
         if (success) {
           print('Token berhasil disimpan di SharedPreferences.');
         } else {
@@ -113,4 +114,30 @@ class ApiRepository {
       throw Exception('Failed to post questions: ${response.body}');
     }
   }
+
+  Future<void> logoutUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null) {
+      final response = await http.post(
+        Uri.parse('http://v2.zenfemina.com/api/user/logOut'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': token,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Hapus token dari SharedPreferences
+        await prefs.remove('token');
+        print('Logout berhasil');
+      } else {
+        throw Exception('Gagal melakukan logout: ${response.body}');
+      }
+    } else {
+      throw Exception('Token tidak ditemukan');
+    }
+  }
 }
+//ini asli rill

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zenfemina_v2/api_repository.dart';
 import 'package:zenfemina_v2/menu/calender.dart';
 import 'package:zenfemina_v2/menu/editprofile.dart';
 import 'package:zenfemina_v2/menu/editpw.dart';
+import 'package:zenfemina_v2/pages/pages.dart';
 import 'package:zenfemina_v2/pages/prayer_type.dart';
 import 'package:zenfemina_v2/pages/profile_menu.dart';
 import 'package:flutter/services.dart' show AssetImage;
@@ -182,11 +184,25 @@ class _profilePageState extends State<profilePage> {
                 height: 42,
                 width: MediaQuery.of(context).size.width - 2 * 20,
                 child: ElevatedButton(
-                  onPressed: () {
-                    //
+                  onPressed: () async {
+                    try {
+                      // Panggil metode logoutUser
+                      await ApiRepository().logoutUser();
+                      // Redirect ke halaman login setelah logout berhasil
+                      Get.offAll(WelcomePage());
+                    } catch (e) {
+                      print('Error saat logout: $e');
+                      // Tampilkan pesan kesalahan jika logout gagal
+                      Get.snackbar(
+                        'Error',
+                        'Gagal melakukan logout. Silakan coba lagi.',
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                    }
                   },
                   child: Text(
-                    'Keluar',
+                    'Log Out',
                     style: GoogleFonts.outfit(
                       fontSize: 18,
                       color: Colors.white,
