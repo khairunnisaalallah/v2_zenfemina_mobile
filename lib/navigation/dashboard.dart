@@ -51,8 +51,18 @@ class _DashboardPageState extends State<DashboardPage> {
       final cycleLength = cycleInfo['data']['cycle_length'];
       final periodLength = cycleInfo['data']['period_length'];
 
+      // Menggunakan DateFormat untuk memastikan tanggal dalam format yang benar
+      final DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+      DateTime parsedStartDate;
+      try {
+        parsedStartDate = dateFormat.parse(startDate);
+      } catch (e) {
+        print('Error parsing start date: $e');
+        return;
+      }
+
       setState(() {
-        _startDate = startDate;
+        _startDate = parsedStartDate.toIso8601String();
         _cycleLength = cycleLength;
         _periodLength = periodLength;
       });
@@ -72,7 +82,7 @@ class _DashboardPageState extends State<DashboardPage> {
           return 'Hari ke-${daysPassed + 1} Haid';
         } else {
           final int daysUntilNextCycle =
-              _cycleLength! - daysPassed % _cycleLength!;
+              _cycleLength! - (daysPassed % _cycleLength!);
           return '$daysUntilNextCycle Hari Lagi';
         }
       } catch (e) {

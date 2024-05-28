@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -27,6 +28,29 @@ class profilePage extends StatefulWidget {
 class _profilePageState extends State<profilePage> {
   final ImagePicker picker = ImagePicker();
   XFile? image;
+  int? periodLength;
+  int? cycleLength;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchLengthData();
+  }
+
+  Future<void> fetchLengthData() async {
+    try {
+      final data = await ApiRepository().getCycleData();
+      setState(() {
+        if (data['data'] != null && data['data'] is Map<String, dynamic>) {
+          final cycleData = data['data'];
+          periodLength = cycleData['period_length'];
+          cycleLength = cycleData['cycle_length'];
+        }
+      });
+    } catch (e) {
+      print('Error fetching cycle data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +85,7 @@ class _profilePageState extends State<profilePage> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(height: 40), // Spacer untuk jarak
+                    SizedBox(height: 40),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -75,9 +99,6 @@ class _profilePageState extends State<profilePage> {
                         ),
                       ],
                     ),
-                    // SizedBox(height: 20),
-
-                    //dari ini itu foto profile
                     SizedBox(height: 20),
                     SizedBox(
                       height: 100,
@@ -113,7 +134,7 @@ class _profilePageState extends State<profilePage> {
                           ),
                         ],
                       ),
-                    ), //sampe sini edit profilenya
+                    ),
                   ],
                 ),
               ),
@@ -127,9 +148,7 @@ class _profilePageState extends State<profilePage> {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(
-                  bottom: 10,
-                ),
+                padding: EdgeInsets.only(bottom: 10),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Informasi Terkait',
@@ -143,18 +162,16 @@ class _profilePageState extends State<profilePage> {
               PrayerType(
                 text: "Lama Periode",
                 icon: 0xf0404,
-                hour: "15 hari",
+                hour: periodLength != null ? "$periodLength hari" : "N/A",
               ),
               PrayerType(
                 text: "Lama Siklus",
                 icon: 0xf6d5,
-                hour: "27 hari",
+                hour: cycleLength != null ? "$cycleLength hari" : "N/A",
               ),
               SizedBox(height: 0),
               Container(
-                padding: EdgeInsets.only(
-                  bottom: 10,
-                ),
+                padding: EdgeInsets.only(bottom: 10),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Menu',
@@ -186,13 +203,10 @@ class _profilePageState extends State<profilePage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     try {
-                      // Panggil metode logoutUser
                       await ApiRepository().logoutUser();
-                      // Redirect ke halaman login setelah logout berhasil
                       Get.offAll(WelcomePage());
                     } catch (e) {
                       print('Error saat logout: $e');
-                      // Tampilkan pesan kesalahan jika logout gagal
                       Get.snackbar(
                         'Error',
                         'Gagal melakukan logout. Silakan coba lagi.',

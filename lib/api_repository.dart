@@ -168,16 +168,20 @@ class ApiRepository {
     final token = prefs.getString('token');
 
     if (token != null && token.isNotEmpty) {
-      // Periksa apakah token tidak null dan tidak kosong
       final response = await http.get(
         Uri.parse('http://v2.zenfemina.com/api/home/getCycle?type=hist'),
         headers: {
-          'Authorization':
-              token, // Ubah sesuai format yang diterima oleh server
+          'Authorization': token,
         },
       );
+
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data.containsKey('data') && data['data'] is Map<String, dynamic>) {
+          return data;
+        } else {
+          throw Exception('Unexpected response structure: ${response.body}');
+        }
       } else {
         throw Exception('Failed to get cycle data: ${response.body}');
       }
@@ -260,6 +264,40 @@ class ApiRepository {
         print('End cycle successful');
       } else {
         throw Exception('Failed to end cycle: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null or empty');
+    }
+  }
+
+  Future<Map<String, dynamic>> updateUser({
+    required String username,
+    required String email,
+    required String profileImg,
+    required String birthDate,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null && token.isNotEmpty) {
+      final response = await http.post(
+        Uri.parse('http://v2.zenfemina.com/api/user/update'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: jsonEncode({
+          'username': username,
+          'email': email,
+          'profile_img': profileImg,
+          'birthDate': birthDate,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Failed to update user: ${response.body}');
       }
     } else {
       throw Exception('Token is null or empty');
