@@ -303,5 +303,149 @@ class ApiRepository {
       throw Exception('Token is null or empty');
     }
   }
+
+  // Fungsi untuk mengambil semua artikel
+  Future<List<dynamic>> getArticles() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null) {
+      final response = await http.get(
+        Uri.parse('http://v2.zenfemina.com/api/education/all'),
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic> articles = responseData['data'];
+        return articles;
+      } else {
+        throw Exception('Failed to load articles: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null');
+    }
+  }
+
+  final String baseUrldebt = 'http://v2.zenfemina.com/api/debt/get';
+
+  Future<List<Map<String, dynamic>>> getPrayingDebts() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      if (token != null) {
+        final response = await http.get(
+          Uri.parse('$baseUrldebt?type=praying&is_done=0'),
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          final parsedResponse = jsonDecode(response.body);
+          final List<dynamic> data = parsedResponse['data'];
+
+          return List<Map<String, dynamic>>.from(data);
+        } else {
+          throw Exception('Failed to load praying debts: ${response.body}');
+        }
+      } else {
+        throw Exception('Token is null');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getFastingDebts() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      if (token != null) {
+        final response = await http.get(
+          Uri.parse('$baseUrldebt/debt/get?type=fasting&is_done=0'),
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+        );
+
+        if (response.statusCode == 200) {
+          final parsedResponse = jsonDecode(response.body);
+          final List<dynamic> data = parsedResponse['data'];
+
+          return List<Map<String, dynamic>>.from(data);
+        } else {
+          throw Exception('Failed to load fasting debts: ${response.body}');
+        }
+      } else {
+        throw Exception('Token is null');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
+  Future<void> updatePrayingDebt(int debtId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      if (token != null) {
+        final response = await http.post(
+          Uri.parse("http://v2.zenfemina.com/api/debt/update"),
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({'id': debtId}),
+        );
+
+        if (response.statusCode != 200) {
+          throw Exception('Failed to update praying debt: ${response.body}');
+        }
+      } else {
+        throw Exception('Token is null');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
+  //   Future<List<Map<String, dynamic>>> getDebts(String type) async {
+  //   try {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     final token = prefs.getString('token');
+
+  //     if (token != null) {
+  //       final response = await http.get(
+  //         Uri.parse('$baseUrldebt?type=$type&is_done=0'),
+  //         headers: {
+  //           'Authorization': token,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       );
+
+  //       if (response.statusCode == 200) {
+  //         final parsedResponse = jsonDecode(response.body);
+  //         final List<dynamic> data = parsedResponse['data'];
+
+  //         return List<Map<String, dynamic>>.from(data);
+  //       } else {
+  //         throw Exception('Failed to load debts: ${response.body}');
+  //       }
+  //     } else {
+  //       throw Exception('Token is null');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Error: $e');
+  //   }
+  // }
 }
 //ini asli rill
