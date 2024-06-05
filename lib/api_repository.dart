@@ -123,7 +123,7 @@ class ApiRepository {
     final token = prefs.getString('token');
 
     if (token != null) {
-      final response = await http.post(
+      final response = await http.get(
         Uri.parse('http://v2.zenfemina.com/api/user/logOut'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

@@ -202,18 +202,30 @@ class _profilePageState extends State<profilePage> {
                 width: MediaQuery.of(context).size.width - 2 * 20,
                 child: ElevatedButton(
                   onPressed: () async {
-                    try {
-                      await ApiRepository().logoutUser();
-                      Get.offAll(WelcomePage());
-                    } catch (e) {
-                      print('Error saat logout: $e');
-                      Get.snackbar(
-                        'Error',
-                        'Gagal melakukan logout. Silakan coba lagi.',
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white,
-                      );
-                    }
+                    // Tampilkan dialog konfirmasi logout
+                    Get.defaultDialog(
+                      title: 'Konfirmasi',
+                      middleText: 'Anda yakin ingin Keluar?',
+                      textConfirm: 'Ya',
+                      textCancel: 'Batal',
+                      confirmTextColor: Colors.white,
+                      buttonColor: Colors.red,
+                      onConfirm: () async {
+                        // Jika pengguna menekan tombol Ya, lakukan logout
+                        try {
+                          await ApiRepository().logoutUser();
+                          Get.offAll(WelcomePage());
+                        } catch (e) {
+                          print('Error saat logout: $e');
+                          Get.snackbar(
+                            'Error',
+                            'Gagal melakukan logout. Silakan coba lagi.',
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
+                      },
+                    );
                   },
                   child: Text(
                     'Log Out',
