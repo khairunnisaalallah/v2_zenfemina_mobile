@@ -1,13 +1,18 @@
-// ignore_for_file: unnecessary_string_interpolations
+//ITU YANG GAMBAR DI REKOMENDASIKAN ARTICLE MASI AD YG EROR MAKANNYA KUJADIKAN COMMENT YANG
+//BAGIAN IMAGE NYA
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zenfemina_v2/api_repository.dart';
+import 'package:zenfemina_v2/pages/article_detail_page.dart';
 import 'package:zenfemina_v2/widgets/circle_button.dart';
 import 'package:zenfemina_v2/widgets/color_extension.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:io';
 
 class articlePage extends StatefulWidget {
   const articlePage({Key? key}) : super(key: key);
@@ -20,15 +25,19 @@ class articlePage extends StatefulWidget {
 class _articlePageState extends State<articlePage> {
   final ApiRepository _apiRepository = ApiRepository();
   String? _username = '';
-  @override
-  void initState() {
-    super.initState();
-    _loadUserInfo();
-  }
-
+  bool _isLoading = true;
   late CarouselController controller = CarouselController();
   int currentIndex = 0;
   int indexCategory = 0;
+
+  List<dynamic> _articles = [];
+  @override
+  void initState() {
+    super.initState();
+    _loadArticles();
+    _loadUserInfo();
+  }
+
   final List<String> categories = <String>[
     'Haid',
     'Puasa',
@@ -37,12 +46,6 @@ class _articlePageState extends State<articlePage> {
     'sholat',
     'wanita',
     'kebersihan'
-  ];
-  final List<String> article = <String>[
-    'Apa itu Haid',
-    'Apa itu puasa',
-    'Apa itu sholat',
-    'kewajiban sholat'
   ];
 
   Future<void> _loadUserInfo() async {
@@ -56,6 +59,46 @@ class _articlePageState extends State<articlePage> {
       });
     } catch (e) {
       print('Failed to load user info: $e');
+    }
+  }
+
+  Future<void> _loadArticles() async {
+    setState(() {
+      _isLoading = true; // Menampilkan indikator loading
+    });
+
+    try {
+      final articles = await _apiRepository.getArticles();
+      setState(() {
+        _articles = articles;
+        _isLoading =
+            false; // Menyembunyikan indikator loading setelah artikel dimuat
+      });
+    } catch (e) {
+      print('Failed to load articles: $e');
+      setState(() {
+        _isLoading = false; // Menyembunyikan indikator loading
+      });
+
+      // Menampilkan pesan kesalahan kepada pengguna
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to load articles. Please try again later.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Menutup dialog
+                  _loadArticles(); // Memuat ulang artikel
+                },
+                child: Text('Retry'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -160,236 +203,233 @@ class _articlePageState extends State<articlePage> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.only(left: 20),
-                child: Text(
-                  'Trending Artikel',
-                  textAlign: TextAlign.left,
-                  style: GoogleFonts.poppins(
-                      color: Colors.grey[900],
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500),
-                ),
-              ),
-              SizedBox(height: 7),
-              CarouselSlider(
-                carouselController: controller,
-                options: CarouselOptions(
-                    height: 150,
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    viewportFraction: 0.9,
-                    aspectRatio: 2.0,
-                    initialPage: currentIndex,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        currentIndex = index;
-                      });
-                    }),
-                items: [
-                  "assets/images/Gambar-Kartun-Muslimah-Hijab-Berkacamata-1.jpg", // Lokasi gambar di dalam proyek Flutter Anda
-                  "assets/images/Gambar-Kartun-Muslimah-Hijab-Imut-1.jpg",
-                  "assets/images/Niqab_Sastra-Arab-UI.jpg",
-                  "assets/images/Gambar-Kartun-Muslimah-Hijab-Berkacamata-1.jpg",
-                ]
-                    .map((item) => Container(
-                            child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.asset(
-                            item,
-                            fit: BoxFit.cover,
-                            width: 1000,
-                          ),
-                        )))
-                    .toList(),
-              ),
-              SizedBox(height: 10),
-              AnimatedSmoothIndicator(
-                  activeIndex: currentIndex,
-                  count: 4,
-                  effect: ExpandingDotsEffect(
-                      activeDotColor: Color(0xFFDA4256),
-                      dotHeight: 10,
-                      dotWidth: 10)),
-              SizedBox(height: 20),
-              Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.only(left: 20),
-                child: Text(
-                  'Direkomendasikan',
-                  textAlign: TextAlign.left,
-                  style: GoogleFonts.poppins(
-                      color: Colors.grey[900],
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500),
-                ),
-              ),
-              SizedBox(height: 7),
-              Padding(
-                  padding: EdgeInsets.only(
-                      left: 20,
-                      right:
-                          20), // Sesuaikan dengan ukuran margin yang Anda inginkan
-                  child: SizedBox(
-                    height: 30,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: categories.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              indexCategory =
-                                  index; // Perbarui indexCategory ketika item dipilih
-                            });
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(right: 8),
-                            padding: const EdgeInsets.only(
-                                bottom: 5, top: 5, left: 15, right: 15),
-                            decoration: BoxDecoration(
-                              color: indexCategory == index
-                                  ? Color(0xFFDA4256)
-                                  : Colors.white,
-                              border: Border.all(
-                                color: indexCategory == index
-                                    ? Color(0xFFDA4256)
-                                    : Color(0xFFE0E0E0),
-                              ),
-                              borderRadius: BorderRadius.circular(13),
-                            ),
-                            child: Center(
-                                child: Text(
-                              categories[index],
-                              style: GoogleFonts.poppins(
-                                  color: indexCategory == index
-                                      ? Colors.white
-                                      : Colors.black),
-                            )),
-                          ),
-                        );
-                      },
-                    ),
-                  )),
-              SizedBox(height: 7),
-              //artikel yg dibawah
-              Padding(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemCount: article.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        // do something here
-                      },
-                      child: Container(
-                        height: 110,
-                        margin: EdgeInsets.only(top: 8),
-                        padding:
-                            const EdgeInsets.only(bottom: 0, top: 0, left: 0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: Color(0xFFE0E0E0),
-                          ),
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12)),
-                              child: Image.asset(
-                                  "assets/images/Gambar-Kartun-Muslimah-Hijab-Imut-1.jpg",
-                                  width: 148,
-                                  height: 110,
-                                  fit: BoxFit.fill),
-                            ),
-                            SizedBox(width: 10),
-                            Column(
-                              children: [
-                                SizedBox(height: 10),
-                                Container(
-                                  width: 180,
-                                  child: Text(
-                                    'Apa itu Haid?',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 16, color: Colors.black),
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Container(
-                                  width: 180,
-                                  child: Text(
-                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula....',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 12, color: Colors.grey),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+        body: _isLoading //loading pas memuat
+            ? Center(child: CircularProgressIndicator())
+            : RefreshIndicator(
+                onRefresh: _loadArticles,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(left: 20),
+                        child: Text(
+                          'Trending Artikel',
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.poppins(
+                              color: Colors.grey[900],
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 20)
-            ],
-          ),
-        ));
+                      SizedBox(height: 7),
+                      CarouselSlider(
+                        carouselController: controller,
+                        options: CarouselOptions(
+                          height: 150,
+                          autoPlay: true,
+                          enlargeCenterPage: true,
+                          viewportFraction: 0.9,
+                          aspectRatio: 2.0,
+                          initialPage: currentIndex,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              currentIndex = index;
+                            });
+                          },
+                        ),
+                        items: _articles
+                            .map((article) => GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ArticleDetailPage(
+                                          title: article['title'],
+                                          content: article['content'],
+                                          imageUrl:
+                                              'https://v2.zenfemina.com/storage/' +
+                                                  article['image'],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                        'https://v2.zenfemina.com/storage/' +
+                                            article['image'],
+                                        fit: BoxFit.cover,
+                                        width: 1000,
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+
+                      SizedBox(height: 10),
+                      AnimatedSmoothIndicator(
+                          activeIndex: currentIndex,
+                          count: 4,
+                          effect: ExpandingDotsEffect(
+                              activeDotColor: Color(0xFFDA4256),
+                              dotHeight: 10,
+                              dotWidth: 10)),
+                      SizedBox(height: 15),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(left: 20),
+                        child: Text(
+                          'Direkomendasikan',
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.poppins(
+                              color: Colors.grey[900],
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                      SizedBox(height: 7),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              left: 20,
+                              right:
+                                  20), // Sesuaikan dengan ukuran margin yang Anda inginkan
+                          child: SizedBox(
+                            height: 30,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: categories.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      indexCategory =
+                                          index; // Perbarui indexCategory ketika item dipilih
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(right: 8),
+                                    padding: const EdgeInsets.only(
+                                        bottom: 5, top: 5, left: 15, right: 15),
+                                    decoration: BoxDecoration(
+                                      color: indexCategory == index
+                                          ? Color(0xFFDA4256)
+                                          : Colors.white,
+                                      border: Border.all(
+                                        color: indexCategory == index
+                                            ? Color(0xFFDA4256)
+                                            : Color(0xFFE0E0E0),
+                                      ),
+                                      borderRadius: BorderRadius.circular(13),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      categories[index],
+                                      style: GoogleFonts.poppins(
+                                          color: indexCategory == index
+                                              ? Colors.white
+                                              : Colors.black),
+                                    )),
+                                  ),
+                                );
+                              },
+                            ),
+                          )),
+                      SizedBox(height: 7),
+                      //artikel yg dibawah
+                      Padding(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: ListView.builder(
+                          physics: ScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          itemCount: _articles.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final article = _articles[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ArticleDetailPage(
+                                      title: article['title'],
+                                      content: article['content'],
+                                      imageUrl:
+                                          'https://v2.zenfemina.com/storage/' +
+                                              article['image'],
+                                      // // Tambahkan URL gambar di sini
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                height: 110,
+                                margin: EdgeInsets.only(top: 8),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Color(0xFFE0E0E0)),
+                                  borderRadius: BorderRadius.circular(13),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                        'https://v2.zenfemina.com/storage/' +
+                                            article['image'],
+                                        width: 120,
+                                        height: 90,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            article['title'],
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            maxLines: 1,
+                                            // overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            article['content'],
+                                            textAlign: TextAlign.justify,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              color: Colors.grey,
+                                            ),
+                                            maxLines: 3,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )));
   }
 }
 
-class Article {
-  final String title;
-  final String imageUrl;
-  final String author;
-  final String postedOn;
 
-  Article(
-      {required this.title,
-      required this.imageUrl,
-      required this.author,
-      required this.postedOn});
-}
-
-final List<Article> _articles = [
-  Article(
-    title: "Instagram quietly limits ‘daily time limit’ option",
-    author: "MacRumors",
-    imageUrl:
-        "https://th.bing.com/th/id/OIP.Qqix8Rm5Q4r-GVqqi9myDAHaEf?rs=1&pid=ImgDetMain", // URL baru
-    postedOn: "Yesterday",
-  ),
-  Article(
-      title: "Google Search dark theme goes fully black for some on the web",
-      imageUrl:
-          "https://th.bing.com/th/id/OIP.D-Ohd4cZYoFO-wS4jfErWwHaHa?w=1200&h=1200&rs=1&pid=ImgDetMain", // URL baru
-      author: "9to5Google",
-      postedOn: "4 hours ago"),
-  // Artikel lainnya dengan URL baru
-  Article(
-    title: "Check your iPhone now: warning signs someone is spying on you",
-    author: "New York Times",
-    imageUrl: "https://picsum.photos/id/1001/960/540",
-    postedOn: "2 days ago",
-  ),
-  Article(
-    title:
-        "Amazon’s incredibly popular Lost Ark MMO is ‘at capacity’ in central Europe",
-    author: "MacRumors",
-    imageUrl: "https://picsum.photos/id/1002/960/540",
-    postedOn: "22 hours ago",
-  ),
-];
+//ini asli2

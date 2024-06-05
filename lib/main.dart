@@ -20,10 +20,21 @@ import 'package:zenfemina_v2/pages/profile_menu.dart';
 import 'package:zenfemina_v2/menu/editprofile.dart';
 import 'package:zenfemina_v2/pages/verifikasiEmail.dart';
 import 'package:zenfemina_v2/routes.dart';
+import 'dart:io';
 
 // import 'pages/intro_page.dart';
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 void main() {
+  HttpOverrides.global = MyHttpOverrides(); // Set HttpOverrides global
   runApp(const MyApp());
 }
 
