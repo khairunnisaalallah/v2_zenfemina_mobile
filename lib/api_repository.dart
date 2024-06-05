@@ -67,7 +67,7 @@ class ApiRepository {
   }
 
   Future<void> postQuestions(
-      String birthDate, String lastDate, String period, String cycle) async {
+      String birthDate, String lastDate, String period, String cycle, String is_holy) async {
     final url = Uri.parse('http://v2.zenfemina.com/api/home/question');
 
     final prefs = await SharedPreferences.getInstance();
@@ -85,6 +85,7 @@ class ApiRepository {
       'lastDate': lastDate,
       'period': period,
       'cycle': cycle,
+      'is_holy': is_holy
     };
 
     // Log the data being sent
@@ -101,6 +102,7 @@ class ApiRepository {
         'lastDate': lastDate,
         'period': period,
         'cycle': cycle,
+        'is_holy': is_holy
       }),
     );
 

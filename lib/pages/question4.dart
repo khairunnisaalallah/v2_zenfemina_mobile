@@ -15,26 +15,28 @@ class Question4Page extends StatefulWidget {
 }
 
 class _Question4PageState extends State<Question4Page> {
-  TextEditingController _cycleController = TextEditingController();
+  TextEditingController _periodController = TextEditingController();
 
   Future<void> _submitData() async {
     // Ambil data dari shared preferences
     final prefs = await SharedPreferences.getInstance();
     final birthDate = prefs.getString('birthDate') ?? '';
     final lastDate = prefs.getString('lastDate') ?? '';
-    final period = prefs.getString('period') ?? '';
+    final cycle = prefs.getString('cycle') ?? '';
+    final is_holy = prefs.getString('is_holy') ?? '';
 
     // Ambil data dari TextEditingController
-    final cycle = _cycleController.text;
-    if (cycle.isEmpty) {
-      print('Cycle is empty');
+    final period = _periodController.text;
+    if (period.isEmpty) {
+      print('Period is empty');
       return;
     }
+
 
     // Panggil API untuk mengirim data
     try {
       final api = ApiRepository();
-      await api.postQuestions(birthDate, lastDate, period, cycle);
+      await api.postQuestions(birthDate, lastDate, period, cycle, is_holy);
       print('Data berhasil dikirim ke API');
     } catch (e) {
       print('Gagal mengirim data: $e');
@@ -82,7 +84,7 @@ class _Question4PageState extends State<Question4Page> {
             ),
             SizedBox(height: 30),
             TextFormField(
-              controller: _cycleController,
+              controller: _periodController,
               decoration: InputDecoration(
                 labelText: "Lama Haid",
                 border: OutlineInputBorder(
@@ -116,13 +118,13 @@ class _Question4PageState extends State<Question4Page> {
               child: ElevatedButton(
                 onPressed: () async {
                   // Simpan data ke SharedPreferences sebelum mengirim ke API
-                  final cycle = _cycleController.text;
-                  if (cycle.isEmpty) {
-                    print('Cycle is empty');
+                  final period = _periodController.text;
+                  if (period.isEmpty) {
+                    print('Period is empty');
                     return;
                   }
                   final prefs = await SharedPreferences.getInstance();
-                  await prefs.setString('cycle', cycle);
+                  await prefs.setString('period', period);
 
                   // Kirim data ke API
                   await _submitData();

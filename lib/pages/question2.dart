@@ -17,6 +17,26 @@ class _Question2PageState extends State<Question2Page> {
   TextEditingController _dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   bool _isDateSelected = false;
+  String is_holy = '0';
+  String question = 'Sejak kapan anda haid / menstruasi?';
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  Future<void> _getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    is_holy = prefs.getString('is_holy') ?? '';
+
+    setState(() {
+    if (is_holy == '1') {
+      question = 'Kapan terakhir anda haid?';
+    }
+  });
+  }
+
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -53,7 +73,7 @@ class _Question2PageState extends State<Question2Page> {
             ),
             SizedBox(height: 40),
             Text(
-              'Kapan terakhir anda haid?',
+              question,
               textAlign: TextAlign.left,
               style: GoogleFonts.poppins(
                   fontSize: 23,

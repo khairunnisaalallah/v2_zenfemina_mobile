@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenfemina_v2/pages/question2.dart';
+import 'package:zenfemina_v2/pages/questionTambahan.dart';
 import 'package:zenfemina_v2/shared/shared.dart';
 import 'package:intl/intl.dart';
 
@@ -115,7 +116,7 @@ class _Question1PageState extends State<Question1Page> {
                             'birthDate', _dateController.text);
 
                         // Pindah ke halaman berikutnya
-                        Get.to(Question2Page());
+                        Get.to(QuestionTambahan());
                       }
                     : null,
                 child: Text(
