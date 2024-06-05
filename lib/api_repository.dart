@@ -369,7 +369,7 @@ class ApiRepository {
 
       if (token != null) {
         final response = await http.get(
-          Uri.parse('$baseUrldebt/debt/get?type=fasting&is_done=0'),
+          Uri.parse('$baseUrldebt?type=fasting&is_done=0'),
           headers: {
             'Authorization': token,
             'Content-Type': 'application/json',

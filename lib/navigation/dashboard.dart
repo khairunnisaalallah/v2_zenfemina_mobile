@@ -20,7 +20,9 @@ class _DashboardPageState extends State<DashboardPage> {
   String? _startDate = '';
   int? _cycleLength = 0;
   int? _periodLength = 0;
-  // Variable to track cycle status
+  int? _prayingDebtsCount = 0;
+  int? _fastingDebtsCount = 0;
+  // ? = bisa null atau nilai integer, klo ga pake berarti ga boleh null dan harus selalu punya nilai integer
   String _cycleStatus = 'beginCycle';
 
   @override
@@ -28,6 +30,23 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
     _loadUserInfo();
     _loadCycleData();
+    _loadDebtsData();
+  }
+
+  Future<void> _loadDebtsData() async {
+    try {
+      final prayingDebts = await _apiRepository.getPrayingDebts();
+      final fastingDebts = await _apiRepository.getFastingDebts();
+      // Tambahkan logging untuk data yang diterima dari API
+      print('Praying Debts: $prayingDebts');
+      print('Fasting Debts: $fastingDebts');
+      setState(() {
+        _prayingDebtsCount = prayingDebts.length;
+        _fastingDebtsCount = fastingDebts.length;
+      });
+    } catch (e) {
+      print('Failed to load debts data: $e');
+    }
   }
 
   Future<void> _loadUserInfo() async {
@@ -50,6 +69,9 @@ class _DashboardPageState extends State<DashboardPage> {
       final startDate = cycleInfo['data']['start_date'];
       final cycleLength = cycleInfo['data']['cycle_length'];
       final periodLength = cycleInfo['data']['period_length'];
+
+      // Debug log untuk memeriksa nilai startDate yang diterima
+      print('Received start date from API: $startDate');
 
       // Menggunakan DateFormat untuk memastikan tanggal dalam format yang benar
       final DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
@@ -86,7 +108,7 @@ class _DashboardPageState extends State<DashboardPage> {
           return '$daysUntilNextCycle Hari Lagi';
         }
       } catch (e) {
-        print('Error parsing date: $e');
+        print('Error calculating cycle day: $e');
         return ''; // Jika terjadi kesalahan, kembalikan string kosong
       }
     } else {
@@ -172,7 +194,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     Text(
                       'Hallo $_username',
                       textAlign: TextAlign.left,
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.poppins(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -181,7 +203,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     Text(
                       'Ayo mulai atur siklus haidmu !',
                       textAlign: TextAlign.left,
-                      style: GoogleFonts.outfit(
+                      style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
@@ -301,7 +323,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         SizedBox(width: 30),
                         Text(
                           'Menu Lainnya',
-                          style: GoogleFonts.outfit(
+                          style: GoogleFonts.poppins(
                             fontSize: 18,
                             color: Colors.black,
                             fontWeight: FontWeight.w400,
@@ -321,7 +343,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             width: 160,
                             height: 92,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Color(0XFFFFE7E7),
                               borderRadius: BorderRadius.circular(15),
                               boxShadow: [
                                 BoxShadow(
@@ -335,13 +357,13 @@ class _DashboardPageState extends State<DashboardPage> {
                             child: Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                  top: 45,
+                                  top: 40,
                                 ),
                                 child: Text(
                                   'Hutang Sholat',
                                   style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                     color: Colors.black,
                                   ),
                                 ),
@@ -358,7 +380,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             width: 160,
                             height: 92,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Color(0xFFFFE7E7),
                               borderRadius: BorderRadius.circular(15),
                               boxShadow: [
                                 BoxShadow(
@@ -372,13 +394,13 @@ class _DashboardPageState extends State<DashboardPage> {
                             child: Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                  top: 45,
+                                  top: 40,
                                 ),
                                 child: Text(
                                   'Hutang Puasa',
                                   style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                     color: Colors.black,
                                   ),
                                 ),
@@ -393,12 +415,12 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               Positioned(
                 top: 545,
-                right: 190,
+                right: 180,
                 left: 0,
                 child: Center(
                   child: Text(
                     'Informasi Terkait',
-                    style: GoogleFonts.outfit(
+                    style: GoogleFonts.poppins(
                       fontSize: 18,
                       color: Colors.black,
                       fontWeight: FontWeight.w400,
@@ -436,10 +458,10 @@ class _DashboardPageState extends State<DashboardPage> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.3),
             spreadRadius: 1,
             blurRadius: 2,
-            offset: Offset(0, 2),
+            offset: Offset(0, 3),
           ),
         ],
       ),
@@ -452,8 +474,10 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           Text(
-            'Anda memiliki hutang sholat',
-            style: GoogleFonts.outfit(
+            _prayingDebtsCount == 0
+                ? 'Anda tidak memiliki hutang sholat'
+                : 'Anda memiliki $_prayingDebtsCount hutang sholat',
+            style: GoogleFonts.poppins(
               fontSize: 13,
               color: Colors.black,
               fontWeight: FontWeight.w400,
@@ -473,10 +497,10 @@ class _DashboardPageState extends State<DashboardPage> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.3),
             spreadRadius: 1,
             blurRadius: 2,
-            offset: Offset(0, 2),
+            offset: Offset(0, 3),
           ),
         ],
       ),
@@ -489,8 +513,10 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           Text(
-            'Anda tidak memiliki hutang puasa',
-            style: GoogleFonts.outfit(
+            _fastingDebtsCount == 0
+                ? 'Anda tidak memiliki hutang puasa'
+                : 'Anda memiliki $_fastingDebtsCount hutang puasa',
+            style: GoogleFonts.poppins(
               fontSize: 13,
               color: Colors.black,
               fontWeight: FontWeight.w400,
@@ -501,3 +527,4 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 }
+//asli ini1
