@@ -12,6 +12,7 @@ import 'package:zenfemina_v2/pages/login.dart';
 import 'package:zenfemina_v2/pages/home.dart';
 import 'package:zenfemina_v2/pages/pages.dart';
 import 'package:zenfemina_v2/pages/question1.dart';
+import 'package:zenfemina_v2/pages/questionTambahan.dart';
 import 'package:zenfemina_v2/pages/register.dart';
 import 'package:zenfemina_v2/pages/splash_screen.dart';
 import 'package:zenfemina_v2/pages/range_date.dart';

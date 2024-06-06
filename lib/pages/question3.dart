@@ -14,8 +14,8 @@ class Question3Page extends StatefulWidget {
 }
 
 class _Question3PageState extends State<Question3Page> {
-  TextEditingController _periodController = TextEditingController();
-  bool _isPeriodEntered = false;
+  TextEditingController _cycleController = TextEditingController();
+  bool _isCycleEntered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _Question3PageState extends State<Question3Page> {
             ),
             SizedBox(height: 30),
             TextFormField(
-              controller: _periodController,
+              controller: _cycleController,
               decoration: InputDecoration(
                 labelText: "Lama siklus",
                 border: OutlineInputBorder(
@@ -83,7 +83,7 @@ class _Question3PageState extends State<Question3Page> {
               ],
               onChanged: (value) {
                 setState(() {
-                  _isPeriodEntered = value
+                  _isCycleEntered = value
                       .isNotEmpty; // Tandai bahwa lama siklus sudah dimasukkan jika nilai tidak kosong
                 });
               },
@@ -94,15 +94,15 @@ class _Question3PageState extends State<Question3Page> {
               width: MediaQuery.of(context).size.width -
                   2 * 20, // Sesuaikan dengan padding yang diinginkan
               child: ElevatedButton(
-                onPressed: _isPeriodEntered
+                onPressed: _isCycleEntered
                     ? () async {
-                        final period = _periodController.text;
-                        if (period.isEmpty) {
-                          print('Period is empty');
+                        final cycle = _cycleController.text;
+                        if (cycle.isEmpty) {
+                          print('Cycle is empty');
                           return;
                         }
                         final prefs = await SharedPreferences.getInstance();
-                        await prefs.setString('period', period);
+                        await prefs.setString('cycle', cycle);
                         Get.to(Question4Page());
                       }
                     : null,

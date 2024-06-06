@@ -26,8 +26,9 @@ class profilePage extends StatefulWidget {
 }
 
 class _profilePageState extends State<profilePage> {
+  final ApiRepository _apiRepository = ApiRepository();
   final ImagePicker picker = ImagePicker();
-  XFile? image;
+  String? dataImage;
   int? periodLength;
   int? cycleLength;
 
@@ -35,6 +36,7 @@ class _profilePageState extends State<profilePage> {
   void initState() {
     super.initState();
     fetchLengthData();
+    _loadUserInfo();
   }
 
   Future<void> fetchLengthData() async {
@@ -49,6 +51,16 @@ class _profilePageState extends State<profilePage> {
       });
     } catch (e) {
       print('Error fetching cycle data: $e');
+    }
+  }
+
+  Future<void> _loadUserInfo() async {
+    try {
+      final userInfo = await _apiRepository.getUserInfo();
+      dataImage = userInfo['data']['image'];
+      setState(() {});
+    } catch (e) {
+      print('Failed to load user info: $e');
     }
   }
 
@@ -116,21 +128,32 @@ class _profilePageState extends State<profilePage> {
                               borderRadius: BorderRadius.circular(60),
                             ),
                             alignment: Alignment.center,
-                            child: image != null
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(60),
-                                    child: Image.file(
-                                      File(image!.path),
-                                      width: 115,
-                                      height: 115,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                : Icon(
-                                    Icons.person,
-                                    size: 55,
-                                    color: TColor.secondaryText,
-                                  ),
+                            child: CircleAvatar(
+                              radius: 64,
+                              backgroundImage: dataImage != null ? NetworkImage('https://v2.zenfemina.com/storage/' + dataImage!) : null,
+                              child: dataImage == null
+                                  ? Icon(
+                                      Icons.person,
+                                      size: 65,
+                                      color: TColor.secondaryText,
+                                    )
+                                  : null,
+                            ),
+                            // child: image != null
+                            //     ? ClipRRect(
+                            //         borderRadius: BorderRadius.circular(60),
+                            //         child: Image.file(
+                            //           File(image!.path),
+                            //           width: 115,
+                            //           height: 115,
+                            //           fit: BoxFit.cover,
+                            //         ),
+                            //       )
+                            //     : Icon(
+                            //         Icons.person,
+                            //         size: 55,
+                            //         color: TColor.secondaryText,
+                            //       ),
                           ),
                         ],
                       ),
@@ -202,18 +225,30 @@ class _profilePageState extends State<profilePage> {
                 width: MediaQuery.of(context).size.width - 2 * 20,
                 child: ElevatedButton(
                   onPressed: () async {
-                    try {
-                      await ApiRepository().logoutUser();
-                      Get.offAll(WelcomePage());
-                    } catch (e) {
-                      print('Error saat logout: $e');
-                      Get.snackbar(
-                        'Error',
-                        'Gagal melakukan logout. Silakan coba lagi.',
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white,
-                      );
-                    }
+                    // Tampilkan dialog konfirmasi logout
+                    Get.defaultDialog(
+                      title: 'Konfirmasi',
+                      middleText: 'Anda yakin ingin Keluar?',
+                      textConfirm: 'Ya',
+                      textCancel: 'Batal',
+                      confirmTextColor: Colors.white,
+                      buttonColor: Colors.red,
+                      onConfirm: () async {
+                        // Jika pengguna menekan tombol Ya, lakukan logout
+                        try {
+                          await ApiRepository().logoutUser();
+                          Get.offAll(WelcomePage());
+                        } catch (e) {
+                          print('Error saat logout: $e');
+                          Get.snackbar(
+                            'Error',
+                            'Gagal melakukan logout. Silakan coba lagi.',
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
+                      },
+                    );
                   },
                   child: Text(
                     'Log Out',
