@@ -49,7 +49,6 @@ class MyApp extends StatelessWidget {
       // debugShowMaterialGrid: true, // Tambahkan ini
       getPages: Routes.pages, // Tambahkan daftar rute di sini
       home: WelcomePage(),
-      // home: QuestionTambahan(),
     );
   }
 }

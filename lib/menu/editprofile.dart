@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -31,6 +32,8 @@ class _ProfileViewState extends State<ProfileView> {
   TextEditingController txt_email = TextEditingController();
   TextEditingController txt_birthDate = TextEditingController();
   bool _isLoading = true;
+  Uint8List? _image;
+  String? dataImage;
 
   @override
   void initState() {
@@ -44,6 +47,7 @@ class _ProfileViewState extends State<ProfileView> {
       final username = userInfo['data']['username'];
       final email = userInfo['data']['email'];
       final birthDate = userInfo['data']['birthDate'];
+      dataImage = userInfo['data']['image'];
 
       setState(() {
         txt_name.text = username;
@@ -93,24 +97,44 @@ class _ProfileViewState extends State<ProfileView> {
     }
   }
 
+  pickImage(ImageSource imageSource) async{
+    final ImagePicker imagePicker = ImagePicker();
+    XFile? _file = await imagePicker.pickImage(source: imageSource);
+    if(_file != null){
+      return await _file.readAsBytes();
+    }
+    print('No Image Selected');
+  }
+
+  void selectImage() async{
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
   Future<void> _updateProfile() async {
     final String username = txt_name.text;
     final String email = txt_email.text;
     final String birthDate = txt_birthDate.text;
 
     try {
-      String? profileImgUrl;
-      if (image != null) {
-        // Jika gambar dipilih, unggah gambar ke server
-        profileImgUrl = await _uploadImage(image!);
+      if (_image != null) {
+        await _apiRepository.updateUser(
+          username: username,
+          email: email,
+          imageUpload: _image!,
+          birthDate: birthDate,
+        );
+      } else {
+        // Jika tidak ada gambar, kirim request tanpa imageUpload
+        await _apiRepository.updateUser(
+          username: username,
+          email: email,
+          imageUpload: null, // Kirim null jika tidak ada gambar
+          birthDate: birthDate,
+        );
       }
-
-      await _apiRepository.updateUser(
-        username: username,
-        email: email,
-        profileImg: profileImgUrl ?? '',
-        birthDate: birthDate,
-      );
       // Tampilkan pesan sukses menggunakan snackbar
       Get.snackbar(
         'Sukses',
@@ -176,55 +200,34 @@ class _ProfileViewState extends State<ProfileView> {
                         clipBehavior: Clip.none,
                         children: [
                           const SizedBox(height: 10),
-                          Container(
-                            width: 115,
-                            height: 115,
-                            decoration: BoxDecoration(
-                              color: TColor.placeholder,
-                              borderRadius: BorderRadius.circular(60),
-                            ),
-                            alignment: Alignment.center,
-                            child: image != null
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(60),
-                                    child: Image.file(
-                                      File(image!.path),
-                                      width: 115,
-                                      height: 115,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                : Icon(
+                          _image != null?
+                              CircleAvatar(
+                                radius: 64,
+                                backgroundImage: MemoryImage(_image!),
+                              ):
+                          CircleAvatar(
+                            radius: 64,
+                            backgroundImage: dataImage != null ? NetworkImage('https://v2.zenfemina.com/storage/' + dataImage!) : null,
+                            child: dataImage == null
+                                ? Icon(
                                     Icons.person,
                                     size: 65,
                                     color: TColor.secondaryText,
-                                  ),
+                                  )
+                                : null,
                           ),
                           Positioned(
-                            right: -16,
-                            bottom: 0,
-                            child: SizedBox(
-                              height: 46,
-                              width: 46,
-                              child: TextButton(
-                                onPressed: () async {
-                                  image = await picker.pickImage(
-                                      source: ImageSource.gallery);
-                                  setState(() {});
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: const Color(0xFFF5F6F9),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                    side: const BorderSide(color: Colors.black),
-                                  ),
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/images/cameraicon.svg",
-                                  color: Colors.black,
-                                ),
-                              ),
+                            child: IconButton(
+                              onPressed: () {
+                                selectImage();
+                              }, 
+                              icon: Icon(
+                                Icons.add_a_photo,
+                                size: 20,  
+                              )
                             ),
+                            bottom: -10,
+                            left: 80,
                           ),
                         ],
                       ),

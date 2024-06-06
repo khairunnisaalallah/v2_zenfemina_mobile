@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -273,38 +274,48 @@ class ApiRepository {
   }
 
   Future<Map<String, dynamic>> updateUser({
-    required String username,
-    required String email,
-    required String profileImg,
-    required String birthDate,
-  }) async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
+  required String username,
+  required String email,
+  Uint8List? imageUpload,
+  required String birthDate,
+}) async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token');
 
-    if (token != null && token.isNotEmpty) {
-      final response = await http.post(
-        Uri.parse('http://v2.zenfemina.com/api/user/update'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization': token,
-        },
-        body: jsonEncode({
-          'username': username,
-          'email': email,
-          'profile_img': profileImg,
-          'birthDate': birthDate,
-        }),
-      );
+  if (token != null && token.isNotEmpty) {
+    var uri = Uri.parse('http://v2.zenfemina.com/api/user/update');
+    var request = http.MultipartRequest('POST', uri);
 
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body);
-      } else {
-        throw Exception('Failed to update user: ${response.body}');
-      }
-    } else {
-      throw Exception('Token is null or empty');
+    // Set headers
+    request.headers['Authorization'] = token;
+
+    // Add fields
+    request.fields['username'] = username;
+    request.fields['email'] = email;
+    request.fields['birthDate'] = birthDate;
+    
+    if (imageUpload != null) {
+      request.files.add(http.MultipartFile.fromBytes(
+      'image',
+      imageUpload,
+      filename: username + '.jpg',
+    ));
     }
+  
+
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      // Handle successful update
+      var responseBody = await response.stream.bytesToString();
+      return jsonDecode(responseBody);
+    } else {
+      // Handle error
+      throw Exception('Failed to update user: ${response.statusCode}');
+    }
+  } else {
+    throw Exception('Token is null or empty');
   }
+}
 
   // Fungsi untuk mengambil semua artikel
   Future<List<dynamic>> getArticles() async {
