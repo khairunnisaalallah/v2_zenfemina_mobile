@@ -67,8 +67,8 @@ class ApiRepository {
     }
   }
 
-  Future<void> postQuestions(
-      String birthDate, String lastDate, String period, String cycle, String is_holy) async {
+  Future<void> postQuestions(String birthDate, String lastDate, String period,
+      String cycle, String isholy) async {
     final url = Uri.parse('http://v2.zenfemina.com/api/home/question');
 
     final prefs = await SharedPreferences.getInstance();
@@ -86,7 +86,7 @@ class ApiRepository {
       'lastDate': lastDate,
       'period': period,
       'cycle': cycle,
-      'is_holy': is_holy
+      'is_holy': isholy
     };
 
     // Log the data being sent
@@ -103,7 +103,7 @@ class ApiRepository {
         'lastDate': lastDate,
         'period': period,
         'cycle': cycle,
-        'is_holy': is_holy
+        'is_holy': isholy
       }),
     );
 
@@ -166,13 +166,13 @@ class ApiRepository {
     }
   }
 
-  Future<Map<String, dynamic>> getCycleData() async {
+  Future<Map<String, dynamic>> getCycleData(String type) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
 
     if (token != null && token.isNotEmpty) {
       final response = await http.get(
-        Uri.parse('http://v2.zenfemina.com/api/home/getCycle?type=hist'),
+        Uri.parse('http://v2.zenfemina.com/api/home/getCycle?type=$type'),
         headers: {
           'Authorization': token,
         },
@@ -274,48 +274,47 @@ class ApiRepository {
   }
 
   Future<Map<String, dynamic>> updateUser({
-  required String username,
-  required String email,
-  Uint8List? imageUpload,
-  required String birthDate,
-}) async {
-  final prefs = await SharedPreferences.getInstance();
-  final token = prefs.getString('token');
+    required String username,
+    required String email,
+    Uint8List? imageUpload,
+    required String birthDate,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
 
-  if (token != null && token.isNotEmpty) {
-    var uri = Uri.parse('http://v2.zenfemina.com/api/user/update');
-    var request = http.MultipartRequest('POST', uri);
+    if (token != null && token.isNotEmpty) {
+      var uri = Uri.parse('http://v2.zenfemina.com/api/user/update');
+      var request = http.MultipartRequest('POST', uri);
 
-    // Set headers
-    request.headers['Authorization'] = token;
+      // Set headers
+      request.headers['Authorization'] = token;
 
-    // Add fields
-    request.fields['username'] = username;
-    request.fields['email'] = email;
-    request.fields['birthDate'] = birthDate;
-    
-    if (imageUpload != null) {
-      request.files.add(http.MultipartFile.fromBytes(
-      'image',
-      imageUpload,
-      filename: username + '.jpg',
-    ));
-    }
-  
+      // Add fields
+      request.fields['username'] = username;
+      request.fields['email'] = email;
+      request.fields['birthDate'] = birthDate;
 
-    var response = await request.send();
-    if (response.statusCode == 200) {
-      // Handle successful update
-      var responseBody = await response.stream.bytesToString();
-      return jsonDecode(responseBody);
+      if (imageUpload != null) {
+        request.files.add(http.MultipartFile.fromBytes(
+          'image',
+          imageUpload,
+          filename: username + '.jpg',
+        ));
+      }
+
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        // Handle successful update
+        var responseBody = await response.stream.bytesToString();
+        return jsonDecode(responseBody);
+      } else {
+        // Handle error
+        throw Exception('Failed to update user: ${response.statusCode}');
+      }
     } else {
-      // Handle error
-      throw Exception('Failed to update user: ${response.statusCode}');
+      throw Exception('Token is null or empty');
     }
-  } else {
-    throw Exception('Token is null or empty');
   }
-}
 
   // Fungsi untuk mengambil semua artikel
   Future<List<dynamic>> getArticles() async {
@@ -431,34 +430,31 @@ class ApiRepository {
     }
   }
 
-  //   Future<List<Map<String, dynamic>>> getDebts(String type) async {
-  //   try {
-  //     final prefs = await SharedPreferences.getInstance();
-  //     final token = prefs.getString('token');
+  Future<Map<String, dynamic>> getCardView() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
 
-  //     if (token != null) {
-  //       final response = await http.get(
-  //         Uri.parse('$baseUrldebt?type=$type&is_done=0'),
-  //         headers: {
-  //           'Authorization': token,
-  //           'Content-Type': 'application/json',
-  //         },
-  //       );
+    if (token != null && token.isNotEmpty) {
+      final response = await http.get(
+        Uri.parse('http://v2.zenfemina.com/api/home/cardView'),
+        headers: {
+          'Authorization': token,
+        },
+      );
 
-  //       if (response.statusCode == 200) {
-  //         final parsedResponse = jsonDecode(response.body);
-  //         final List<dynamic> data = parsedResponse['data'];
-
-  //         return List<Map<String, dynamic>>.from(data);
-  //       } else {
-  //         throw Exception('Failed to load debts: ${response.body}');
-  //       }
-  //     } else {
-  //       throw Exception('Token is null');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Error: $e');
-  //   }
-  // }
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data.containsKey('data') && data['data'] is Map<String, dynamic>) {
+          return data;
+        } else {
+          throw Exception('Unexpected response structure: ${response.body}');
+        }
+      } else {
+        throw Exception('Failed to get cycle data: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null or empty');
+    }
+  }
 }
 //ini asli rill

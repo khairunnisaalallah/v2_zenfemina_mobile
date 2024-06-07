@@ -5,8 +5,8 @@ import 'package:zenfemina_v2/pages/range_date.dart';
 import 'package:zenfemina_v2/widgets/circle_button.dart';
 import 'package:zenfemina_v2/menu/calender.dart';
 
-class calenderPage extends StatelessWidget {
-  const calenderPage({Key? key});
+class CalenderPage extends StatelessWidget {
+  const CalenderPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
