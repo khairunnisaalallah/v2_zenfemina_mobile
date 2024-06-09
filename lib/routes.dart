@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zenfemina_v2/navigation/article.dart';
@@ -7,7 +6,6 @@ import 'package:zenfemina_v2/navigation/pray.dart';
 import 'package:zenfemina_v2/navigation/profile.dart';
 import 'package:zenfemina_v2/menu/calender.dart';
 import 'package:zenfemina_v2/pages/OTP_page.dart';
-import 'package:zenfemina_v2/pages/cobadisini.dart';
 import 'package:zenfemina_v2/pages/login.dart';
 import 'package:zenfemina_v2/pages/home.dart';
 import 'package:zenfemina_v2/pages/pages.dart';
@@ -23,17 +21,18 @@ import 'package:zenfemina_v2/menu/editprofile.dart';
 import 'package:zenfemina_v2/pages/verifikasiEmail.dart';
 import 'package:zenfemina_v2/menu/tab_sholatpuasa.dart';
 import 'package:zenfemina_v2/routes.dart';
+import 'shared/shared.dart';
 
 class Routes {
   static final List<GetPage> pages = [
-    GetPage(name: '/', page: () => home()),
+    GetPage(name: '/', page: () => Home()),
     GetPage(name: '/login', page: () => LoginPage()),
     GetPage(name: '/register', page: () => RegisterPage()),
-    GetPage(name: '/article', page: () => articlePage()),
+    GetPage(name: '/article', page: () => ArticlePage()),
     GetPage(name: '/dashboard', page: () => DashboardPage()),
-    GetPage(name: '/pray', page: () => prayPage()),
-    GetPage(name: '/profile', page: () => profilePage()),
-    GetPage(name: '/calender', page: () => calenderPage()),
+    GetPage(name: '/pray', page: () => PrayPage()),
+    GetPage(name: '/profile', page: () => ProfilePage()),
+    GetPage(name: '/calender', page: () => CalenderPage()),
     GetPage(name: '/otp', page: () => OTPPage()),
     GetPage(name: '/splash', page: () => SplashScreen()),
     GetPage(name: '/question1', page: () => Question1Page()),

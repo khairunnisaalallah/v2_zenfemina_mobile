@@ -342,6 +342,62 @@ class ApiRepository {
     }
   }
 
+  Future<List<dynamic>> getCategories() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null) {
+      final response = await http.get(
+        Uri.parse('http://v2.zenfemina.com/api/education/category'),
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic> categories = responseData['data'];
+        return categories;
+      } else {
+        throw Exception('Failed to load categories: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null');
+    }
+  }
+
+  Future<List<dynamic>> getArticlesByCategory(int categoryId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null) {
+      final Map<String, dynamic> requestData = {
+        'category_id': categoryId.toString(),
+      };
+
+      final response = await http.post(
+        Uri.parse('http://v2.zenfemina.com/api/education/byCategory'),
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestData),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic> articles = responseData['data'];
+        return articles;
+      } else {
+        throw Exception(
+            'Failed to load articles by category: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null');
+    }
+  }
+
   final String baseUrldebt = 'http://v2.zenfemina.com/api/debt/get';
 
   Future<List<Map<String, dynamic>>> getPrayingDebts() async {
@@ -421,6 +477,32 @@ class ApiRepository {
 
         if (response.statusCode != 200) {
           throw Exception('Failed to update praying debt: ${response.body}');
+        }
+      } else {
+        throw Exception('Token is null');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
+  Future<void> updateFastingDebt(int fastId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      if (token != null) {
+        final response = await http.post(
+          Uri.parse("http://v2.zenfemina.com/api/debt/update"),
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({'id': fastId}),
+        );
+
+        if (response.statusCode != 200) {
+          throw Exception('Failed to update praying fast: ${response.body}');
         }
       } else {
         throw Exception('Token is null');

@@ -22,31 +22,33 @@ class ArticleDetailPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(22),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AspectRatio(
-              aspectRatio: 3 / 3, //ukurannya jadi 3:3
-              child: Image.network(
-                imageUrl,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'assets/images/default_image.png',
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
-                  );
-                },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AspectRatio(
+                aspectRatio: 3 / 3, //ukurannya jadi 3:3
+                child: Image.network(
+                  imageUrl,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/images/default_image.png',
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              content,
-              textAlign: TextAlign.justify, //rata kanan kiri ini
-              style: GoogleFonts.poppins(fontSize: 16),
-            ),
-          ],
+              SizedBox(height: 20),
+              Text(
+                content,
+                textAlign: TextAlign.justify, //rata kanan kiri ini
+                style: GoogleFonts.poppins(fontSize: 16),
+              ),
+            ],
+          ),
         ),
       ),
     );
