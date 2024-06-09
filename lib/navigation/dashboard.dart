@@ -64,34 +64,35 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _loadCycleData() async {
+  try {
+    final cycleInfo = await _apiRepository.getCycleData("period");
+    final startDate = cycleInfo['data']['start_date'];
+    final cycleLength = cycleInfo['data']['cycle_length'];
+    final periodLength = cycleInfo['data']['period_length'];
+
+    // Debug log untuk memeriksa nilai startDate yang diterima
+    print('Received start date from API: $startDate');
+
+    // Menggunakan DateFormat untuk memastikan tanggal dalam format yang benar
+    final DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    DateTime parsedStartDate;
     try {
-      final cycleInfo = await _apiRepository.getCycleData();
-      final startDate = cycleInfo['data']['start_date'];
-      final cycleLength = cycleInfo['data']['cycle_length'];
-      final periodLength = cycleInfo['data']['period_length'];
-
-      // Debug log untuk memeriksa nilai startDate yang diterima
-      print('Received start date from API: $startDate');
-
-      // Menggunakan DateFormat untuk memastikan tanggal dalam format yang benar
-      final DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-      DateTime parsedStartDate;
-      try {
-        parsedStartDate = dateFormat.parse(startDate);
-      } catch (e) {
-        print('Error parsing start date: $e');
-        return;
-      }
-
-      setState(() {
-        _startDate = parsedStartDate.toIso8601String();
-        _cycleLength = cycleLength;
-        _periodLength = periodLength;
-      });
+      parsedStartDate = dateFormat.parse(startDate);
     } catch (e) {
-      print('Failed to load cycle data: $e');
+      print('Error parsing start date: $e');
+      return;
     }
+
+    setState(() {
+      _startDate = parsedStartDate.toIso8601String();
+      _cycleLength = cycleLength;
+      _periodLength = periodLength;
+    });
+  } catch (e) {
+    print('Failed to load cycle data: $e');
   }
+}
+
 
   String _calculateCycleDay() {
     if (_startDate != null && _cycleLength != null && _periodLength != null) {
@@ -221,7 +222,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     CircleButton(
                       icon: Icons.calendar_month,
                       onPressed: () {
-                        Get.to(calenderPage());
+                        Get.to(CalenderPage());
                       },
                     ),
                     SizedBox(width: 5),

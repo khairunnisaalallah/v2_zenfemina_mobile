@@ -25,13 +25,13 @@ import 'shared/shared.dart';
 
 class Routes {
   static final List<GetPage> pages = [
-    GetPage(name: '/', page: () => Home()),
+    GetPage(name: '/', page: () => home()),
     GetPage(name: '/login', page: () => LoginPage()),
     GetPage(name: '/register', page: () => RegisterPage()),
     GetPage(name: '/article', page: () => ArticlePage()),
     GetPage(name: '/dashboard', page: () => DashboardPage()),
-    GetPage(name: '/pray', page: () => PrayPage()),
-    GetPage(name: '/profile', page: () => ProfilePage()),
+    GetPage(name: '/pray', page: () => prayPage()),
+    GetPage(name: '/profile', page: () => profilePage()),
     GetPage(name: '/calender', page: () => CalenderPage()),
     GetPage(name: '/otp', page: () => OTPPage()),
     GetPage(name: '/splash', page: () => SplashScreen()),

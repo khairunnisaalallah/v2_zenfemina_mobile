@@ -16,7 +16,7 @@ class _homeState extends State<home> {
 
   final List<Widget> _pages = [
     DashboardPage(),
-    articlePage(),
+    ArticlePage(),
     prayPage(),
     profilePage(),
   ];
