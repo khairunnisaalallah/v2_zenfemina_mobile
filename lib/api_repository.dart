@@ -456,5 +456,9 @@ class ApiRepository {
       throw Exception('Token is null or empty');
     }
   }
+
+  GetCategories() {}
+
+  GetArticlesByCategory(int categoryId) {}
 }
 //ini asli rill
