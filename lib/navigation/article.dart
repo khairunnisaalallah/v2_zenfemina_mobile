@@ -93,7 +93,7 @@ class _ArticlePageState extends State<ArticlePage> {
 
   Future<void> _loadCategories() async {
     try {
-      final categories = await _apiRepository.getCategories();
+      final categories = await _apiRepository.GetCategories();
       categories.insert(0, {"id": -1, "name": "Semua"});
       setState(() {
         _categories = categories;
@@ -110,7 +110,7 @@ class _ArticlePageState extends State<ArticlePage> {
     });
 
     try {
-      final articles = await _apiRepository.getArticlesByCategory(categoryId);
+      final articles = await _apiRepository.GetArticlesByCategory(categoryId);
       setState(() {
         _articles = articles;
         _filteredArticles = articles; // Update filtered articles
