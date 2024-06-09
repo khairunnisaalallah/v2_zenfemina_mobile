@@ -41,7 +41,7 @@ class _profilePageState extends State<profilePage> {
 
   Future<void> fetchLengthData() async {
     try {
-      final data = await ApiRepository().getCycleData("period");
+      final data = await ApiRepository().getCycleData("peiod");
       setState(() {
         if (data['data'] != null && data['data'] is Map<String, dynamic>) {
           final cycleData = data['data'];

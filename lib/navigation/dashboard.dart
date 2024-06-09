@@ -64,11 +64,11 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _loadCycleData() async {
-  try {
-    final cycleInfo = await _apiRepository.getCycleData("period");
-    final startDate = cycleInfo['data']['start_date'];
-    final cycleLength = cycleInfo['data']['cycle_length'];
-    final periodLength = cycleInfo['data']['period_length'];
+    try {
+      final cycleInfo = await _apiRepository.getCycleData("period");
+      final startDate = cycleInfo['data']['start_date'];
+      final cycleLength = cycleInfo['data']['cycle_length'];
+      final periodLength = cycleInfo['data']['period_length'];
 
     // Debug log untuk memeriksa nilai startDate yang diterima
     print('Received start date from API: $startDate');
