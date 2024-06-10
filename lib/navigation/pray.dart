@@ -18,17 +18,18 @@ class _PrayPageState extends State<PrayPage> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-  bool invalidCity = false; 
+  bool isLoading = false; // Untuk menentukan apakah sedang memuat
+  bool invalidCity = false;
   TextEditingController _cityController = TextEditingController();
   late SharedPreferences _prefs;
 
   @override
   void initState() {
     super.initState();
-     _loadSavedData();
+    _loadSavedData();
   }
 
-    _loadSavedData() async {
+  _loadSavedData() async {
     _prefs = await SharedPreferences.getInstance();
     String? savedCity = _prefs.getString('city');
     if (savedCity != null) {
@@ -37,21 +38,25 @@ class _PrayPageState extends State<PrayPage> {
     }
   }
 
- Future<void> fetchPrayerTimes(String city) async {
+  Future<void> fetchPrayerTimes(String city) async {
+    setState(() {
+      isLoading = true; // Mulai memuat
+    });
+
     try {
-      final response = await http.get(Uri.parse('http://api.aladhan.com/v1/timingsByCity?city=$city&country=Indonesia'));
+      final response = await http.get(Uri.parse(
+          'http://api.aladhan.com/v1/timingsByCity?city=$city&country=Indonesia'));
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         setState(() {
+          isLoading = false; // Berhenti memuat setelah mendapatkan respons
           if (data['data'] != null) {
             if (_isInvalidPrayerTimes(data['data']['timings'])) {
-              // Jadwal sholat tidak valid, tampilkan pesan kesalahan
               invalidCity = true;
-              print('Kota yang Anda masukkan tidak dikenali. Silakan coba lagi dengan nama kota yang berbeda.');
-              // Reset data jadwal sholat
+              print(
+                  'Kota yang Anda masukkan tidak dikenali. Silakan coba lagi dengan nama kota yang berbeda.');
               prayerTimes.clear();
             } else {
-              // Jadwal sholat valid, tampilkan jadwal sholat
               invalidCity = false;
               prayerTimes = Map<String, String>.from(data['data']['timings']);
               print('Prayer times: $prayerTimes');
@@ -64,16 +69,18 @@ class _PrayPageState extends State<PrayPage> {
         throw Exception('Failed to load prayer times');
       }
     } catch (e) {
+      setState(() {
+        isLoading = false; // Berhenti memuat jika terjadi kesalahan
+      });
       print("Error fetching prayer times: $e");
     }
   }
 
-    _saveCity(String city) async {
+  _saveCity(String city) async {
     await _prefs.setString('city', city);
   }
 
   bool _isInvalidPrayerTimes(Map<String, dynamic> timings) {
-    // Lakukan pengecekan apakah jadwal sholat tidak valid berdasarkan contoh yang diberikan
     return timings['Fajr'] == "04:46" &&
         timings['Dhuhr'] == "12:12" &&
         timings['Asr'] == "15:37" &&
@@ -134,7 +141,7 @@ class _PrayPageState extends State<PrayPage> {
                         width: 250,
                         height: 50,
                         child: Text(
-                          'Dapatkan jadwal sholat sesuai dengan alamat anda!',
+                          'Dapatkan jadwal sholat sesuai dengan kota anda!',
                           style: GoogleFonts.outfit(
                             fontSize: 15,
                             color: Colors.white,
@@ -184,7 +191,7 @@ class _PrayPageState extends State<PrayPage> {
     );
   }
 
-   Widget buildLocationSearch() {
+  Widget buildLocationSearch() {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -195,7 +202,6 @@ class _PrayPageState extends State<PrayPage> {
       child: TextField(
         controller: _cityController,
         onSubmitted: (value) {
-          // Panggil fetchPrayerTimes dengan nilai input sebagai nama kota
           fetchPrayerTimes(value);
           _saveCity(value);
         },
@@ -208,7 +214,6 @@ class _PrayPageState extends State<PrayPage> {
       ),
     );
   }
-
 
   Widget prayerDate() {
     return Container(
@@ -237,7 +242,7 @@ class _PrayPageState extends State<PrayPage> {
         firstDay: DateTime.now().subtract(Duration(days: 7)),
         lastDay: DateTime.now().add(Duration(days: 7)),
         focusedDay: DateTime.now(),
-        selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
         rangeStartDay: _rangeStart,
         rangeEndDay: _rangeEnd,
         calendarStyle: CalendarStyle(
@@ -265,46 +270,50 @@ class _PrayPageState extends State<PrayPage> {
   }
 
   Widget buildPrayerTimes() {
-    return Container(
-      padding: EdgeInsets.all(16), // Menambahkan padding di dalam Container
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 3,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Jadwal Sholat',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 10),
-       if (prayerTimes.isNotEmpty) ...[
-  buildPrayerTimeItem('Shubuh', prayerTimes['Fajr'] ?? '', FontAwesomeIcons.cloudSun),
-  buildPrayerTimeItem('Dzuhur', prayerTimes['Dhuhr'] ?? '', FontAwesomeIcons.sun),
-  buildPrayerTimeItem('Ashar', prayerTimes['Asr'] ?? '', FontAwesomeIcons.cloudMeatball),
-  buildPrayerTimeItem('Maghrib', prayerTimes['Maghrib'] ?? '', FontAwesomeIcons.cloudMoon),
-  buildPrayerTimeItem('Isya', prayerTimes['Isha'] ?? '', FontAwesomeIcons.moon),
-] else ...[
-  Text('Tidak ada data jadwal sholat yang tersedia.'),
-],
-        ],
-      ),
-    );
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(), // Tampilkan indikator loading jika sedang memuat
+          )
+        : Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 3,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Jadwal Sholat',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                if (prayerTimes.isNotEmpty) ...[
+                  buildPrayerTimeItem('Shubuh', prayerTimes['Fajr'] ?? '', FontAwesomeIcons.cloudSun),
+                  buildPrayerTimeItem('Dzuhur', prayerTimes['Dhuhr'] ?? '', FontAwesomeIcons.sun),
+                  buildPrayerTimeItem('Ashar', prayerTimes['Asr'] ?? '', FontAwesomeIcons.cloudMeatball),
+                  buildPrayerTimeItem('Maghrib', prayerTimes['Maghrib'] ?? '', FontAwesomeIcons.cloudMoon),
+                  buildPrayerTimeItem('Isya', prayerTimes['Isha'] ?? '', FontAwesomeIcons.moon),
+                ] else ...[
+                  Text('Tidak ada data jadwal sholat yang tersedia.'),
+                ],
+              ],
+            ),
+          );
   }
 
   Widget buildPrayerTimeItem(String title, String time, IconData icon) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 4), // Menambahkan margin antar item
-      padding: EdgeInsets.all(12), // Menambahkan padding di dalam item
+      margin: EdgeInsets.symmetric(vertical: 4),
+      padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -323,8 +332,8 @@ class _PrayPageState extends State<PrayPage> {
         children: [
           Row(
             children: [
-              FaIcon(icon, color: Color(0xFFDA4256)), // Menggunakan ikon FontAwesome
-              SizedBox(width: 10), // Memberikan jarak antara ikon dan teks
+              FaIcon(icon, color: Color(0xFFDA4256)),
+              SizedBox(width: 10),
               Text(
                 '$title: ',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -340,3 +349,4 @@ class _PrayPageState extends State<PrayPage> {
     );
   }
 }
+
