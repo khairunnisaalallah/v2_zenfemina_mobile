@@ -18,14 +18,14 @@ import 'package:zenfemina_v2/widgets/color_extension.dart';
 import 'package:zenfemina_v2/widgets/round_button.dart';
 import 'package:zenfemina_v2/widgets/round_textfield.dart';
 
-class profilePage extends StatefulWidget {
-  const profilePage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<profilePage> createState() => _profilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _profilePageState extends State<profilePage> {
+class _ProfilePageState extends State<ProfilePage> {
   final ApiRepository _apiRepository = ApiRepository();
   final ImagePicker picker = ImagePicker();
   String? dataImage;
@@ -41,12 +41,12 @@ class _profilePageState extends State<profilePage> {
 
   Future<void> fetchLengthData() async {
     try {
-      final data = await ApiRepository().getCycleData();
+      final data = await ApiRepository().getCycleData('hist');
       setState(() {
         if (data['data'] != null && data['data'] is Map<String, dynamic>) {
           final cycleData = data['data'];
-          periodLength = cycleData['period_length'];
-          cycleLength = cycleData['cycle_length'];
+          periodLength = int.parse(cycleData['period_length']);
+          cycleLength = int.parse(cycleData['cycle_length']);
         }
       });
     } catch (e) {
@@ -130,7 +130,11 @@ class _profilePageState extends State<profilePage> {
                             alignment: Alignment.center,
                             child: CircleAvatar(
                               radius: 64,
-                              backgroundImage: dataImage != null ? NetworkImage('https://v2.zenfemina.com/storage/' + dataImage!) : null,
+                              backgroundImage: dataImage != null
+                                  ? NetworkImage(
+                                      'https://v2.zenfemina.com/storage/' +
+                                          dataImage!)
+                                  : null,
                               child: dataImage == null
                                   ? Icon(
                                       Icons.person,
@@ -237,7 +241,7 @@ class _profilePageState extends State<profilePage> {
                         // Jika pengguna menekan tombol Ya, lakukan logout
                         try {
                           await ApiRepository().logoutUser();
-                          Get.offAll(WelcomePage());
+                          Get.offAll(() => WelcomePage());
                         } catch (e) {
                           print('Error saat logout: $e');
                           Get.snackbar(

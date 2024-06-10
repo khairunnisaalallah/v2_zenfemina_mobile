@@ -4,21 +4,21 @@ import 'package:zenfemina_v2/navigation/pray.dart';
 import 'package:zenfemina_v2/navigation/dashboard.dart';
 import 'package:zenfemina_v2/navigation/article.dart';
 
-class home extends StatefulWidget {
-  const home({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
-  State<home> createState() => _homeState();
+  State<Home> createState() => _HomeState();
 }
 
-class _homeState extends State<home> {
+class _HomeState extends State<Home> {
   int _currentPageIndex = 0;
 
   final List<Widget> _pages = [
     DashboardPage(),
-    articlePage(),
+    ArticlePage(),
     prayPage(),
-    profilePage(),
+    ProfilePage(),
   ];
 
   @override
