@@ -167,7 +167,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 259,
+                  height: 250,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20),
@@ -186,7 +186,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               Positioned(
-                top: 45,
+                top: 55,
                 left: 30,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,7 +196,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       'Hallo $_username',
                       textAlign: TextAlign.left,
                       style: GoogleFonts.poppins(
-                        fontSize: 28,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -205,7 +205,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       'Ayo mulai atur siklus haidmu !',
                       textAlign: TextAlign.left,
                       style: GoogleFonts.poppins(
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
                       ),
@@ -235,12 +235,12 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               Positioned(
                 top: 170,
-                left: 0,
-                right: 0,
+                left: 22,
+                right: 22,
                 child: Center(
                   child: Container(
-                    width: 345,
-                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    height: 190,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
@@ -259,7 +259,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         Text(
                           DateFormat('dd MMMM yyyy').format(DateTime.now()),
                           style: GoogleFonts.poppins(
-                            fontSize: 14,
+                            fontSize: 12,
                             color: Color(0XFFDA4256),
                             fontWeight: FontWeight.w400,
                           ),
@@ -277,7 +277,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         Text(
                           'Menuju siklus haid selanjutnya',
                           style: GoogleFonts.poppins(
-                            fontSize: 15,
+                            fontSize: 14,
                             color: Color(0xFFDA4256),
                             fontWeight: FontWeight.w400,
                           ),
@@ -286,7 +286,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ElevatedButton(
                           onPressed: _updateCycleStatus,
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: Color(0xFFDAD3D3),
+                            foregroundColor: Colors.white,
                             backgroundColor: Colors.white,
                             elevation: 5,
                             shape: RoundedRectangleBorder(
@@ -318,126 +318,111 @@ class _DashboardPageState extends State<DashboardPage> {
                 right: 0,
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 30),
-                        Text(
-                          'Menu Lainnya',
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Get.toNamed('/sholatpuasa');
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 92,
-                            decoration: BoxDecoration(
-                              color: Color(0XFFFFE7E7),
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  spreadRadius: 2,
-                                  blurRadius: 3,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 40,
-                                ),
-                                child: Text(
-                                  'Hutang Sholat',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed('/sholatpuasa');
+                            },
+                            child: Container(
+                              width: 150,
+                              height: 92,
+                              decoration: BoxDecoration(
+                                color: Color(0XFFFFE7E7),
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    spreadRadius: 2,
+                                    blurRadius: 3,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 40,
+                                  ),
+                                  child: Text(
+                                    'Hutang Sholat',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(width: 20),
-                        InkWell(
-                          onTap: () {
-                            Get.toNamed('/sholatpuasa');
-                          },
-                          child: Container(
-                            width: 160,
-                            height: 92,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFFE7E7),
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  spreadRadius: 2,
-                                  blurRadius: 3,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 40,
-                                ),
-                                child: Text(
-                                  'Hutang Puasa',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
+                          SizedBox(width: 20),
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed('/sholatpuasa');
+                            },
+                            child: Container(
+                              width: 150,
+                              height: 92,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFFE7E7),
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    spreadRadius: 2,
+                                    blurRadius: 3,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 40,
+                                  ),
+                                  child: Text(
+                                    'Hutang Puasa',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
               Positioned(
-                top: 545,
-                right: 180,
-                left: 0,
-                child: Center(
-                  child: Text(
-                    'Informasi Terkait',
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400,
-                    ),
+                top: 505,
+                right: 0,
+                left: 20,
+                child: Text(
+                  'Informasi Terkait',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
+            
               Positioned(
-                top: 585,
-                left: 0,
-                right: 0,
+                top: 540,
+                left: 20,
+                right: 20,
                 child: Column(
                   children: [
-                    Center(
-                      child: informasiterkait(),
-                    ),
+                    informasiterkait(),
                     SizedBox(height: 15), // Berikan jarak antara kedua widget
                     informasiterkait2(), // Tampilkan informasi kedua
                   ],
@@ -472,6 +457,8 @@ class _DashboardPageState extends State<DashboardPage> {
             padding: const EdgeInsets.all(8.0),
             child: Icon(
               Icons.error_outline,
+              color: Colors.red,
+              size: 22,
             ),
           ),
           Text(
@@ -511,6 +498,8 @@ class _DashboardPageState extends State<DashboardPage> {
             padding: const EdgeInsets.all(8.0),
             child: Icon(
               Icons.error_outline,
+              color: Colors.red,
+              size: 22,
             ),
           ),
           Text(
