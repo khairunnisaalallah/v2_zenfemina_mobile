@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zenfemina_v2/pages/home.dart';
 import 'package:zenfemina_v2/pages/question1.dart';
 import 'package:zenfemina_v2/api_repository.dart';
+import 'package:zenfemina_v2/service/fcm_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -19,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   late final ApiRepository _apiRepository;
   bool _isLoading = false;
+
+  final FcmService _fcmService = FcmService();
 
   @override
   void initState() {
@@ -230,6 +233,8 @@ class _LoginPageState extends State<LoginPage> {
                                           final prefs = await SharedPreferences
                                               .getInstance();
                                           final token = userData['token'];
+
+                                          _fcmService.initializeFCM(token);
 
                                           if (token != null) {
                                             await prefs.setString(
