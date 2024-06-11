@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // debugShowMaterialGrid: true, // Tambahkan ini
       getPages: Routes.pages, // Tambahkan daftar rute di sini
-      home: WelcomePage(),
+      home: WelcomePage()
     );
   }
 }

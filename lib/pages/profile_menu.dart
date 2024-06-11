@@ -25,7 +25,7 @@ class ProfileMenu extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           foregroundColor: Color(0xFFDA4256),
-          padding: const EdgeInsets.only(right: 15, left: 15, top: 20, bottom: 20),
+          padding: const EdgeInsets.only(right: 15, left: 15, top: 12, bottom: 12),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           backgroundColor: const Color(0xFFF5F6F9),
@@ -35,7 +35,7 @@ class ProfileMenu extends StatelessWidget {
           children: [
             Icon(
                 IconData(icon, fontFamily: 'MaterialIcons'),
-                size: 24,
+                size: 22,
                 color: Color(0xFFDA4256),
               ),
             const SizedBox(width: 15),
@@ -46,7 +46,7 @@ class ProfileMenu extends StatelessWidget {
             )),
             Icon(
               Icons.arrow_forward_ios,
-              size: 20,
+              size: 16,
             ),
           ],
         ),

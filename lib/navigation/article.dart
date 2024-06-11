@@ -162,7 +162,7 @@ class _ArticlePageState extends State<ArticlePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(200),
+        preferredSize: Size.fromHeight(168),
         child: Stack(
           children: [
             Positioned(
@@ -170,7 +170,7 @@ class _ArticlePageState extends State<ArticlePage> {
               left: 0,
               right: 0,
               child: Container(
-                height: 210,
+                height: 190,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -189,7 +189,7 @@ class _ArticlePageState extends State<ArticlePage> {
               ),
             ),
             Positioned(
-              top: 63,
+              top: 60,
               left: 25,
               right: 25,
               child: Padding(
@@ -200,16 +200,16 @@ class _ArticlePageState extends State<ArticlePage> {
                     Text(
                       'Ayo $_username',
                       style: GoogleFonts.poppins(
-                        fontSize: 23,
+                        fontSize: 21,
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 0),
                     Text(
                       'Temukan artikel yang sesuai untukmu',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
                       ),
@@ -226,15 +226,19 @@ class _ArticlePageState extends State<ArticlePage> {
                       child: Row(
                         children: [
                           const SizedBox(width: 10),
-                          const Icon(Icons.search, color: Colors.grey),
+                          const Icon(
+                            Icons.search, 
+                            color: Colors.grey,
+                            size: 20,
+                          ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
                               controller: _searchController,
                               decoration: InputDecoration(
-                                hintText: 'Pencarian ...',
+                                hintText: 'cari ...',
                                 hintStyle: GoogleFonts.poppins(
-                                  fontSize: 15,
+                                  fontSize: 13,
                                   color: Colors.grey[700],
                                 ),
                                 border: InputBorder.none,
@@ -288,7 +292,7 @@ class _ArticlePageState extends State<ArticlePage> {
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
                                 color: Colors.grey[900],
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w500),
                           ),
                         ),
@@ -358,7 +362,7 @@ class _ArticlePageState extends State<ArticlePage> {
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
                                 color: Colors.grey[900],
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w500),
                           ),
                         ),
