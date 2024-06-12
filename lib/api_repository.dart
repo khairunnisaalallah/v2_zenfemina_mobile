@@ -342,6 +342,91 @@ class ApiRepository {
     }
   }
 
+  Future<Map<String, dynamic>> getPrayingDebtCount() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      if (token != null) {
+        final response = await http.get(
+          Uri.parse('http://v2.zenfemina.com/api/home/getDebt?type=praying'),
+          headers: {
+            
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+        );
+
+        // if (response.statusCode == 200) {
+        //   final parsedResponse = jsonDecode(response.body);
+        //   final List<dynamic> data = parsedResponse['data'];
+
+        //   return List<Map<String, dynamic>>.from(data);
+        // } else {
+        //   throw Exception('Failed to load praying debts: ${response.body}');
+        // }
+
+        if (response.statusCode == 200) {
+          final Map<String, dynamic> data = jsonDecode(response.body);
+          if (data.containsKey('data') && data['data'] is Map<String, dynamic>) {
+            return data;
+          } else {
+            throw Exception('Unexpected response structure: ${response.body}');
+          }
+        } else {
+          throw Exception('Failed to get cycle data: ${response.body}');
+        }
+
+      } else {
+        throw Exception('Token is null');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> getFastingDebtCount() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      if (token != null) {
+        final response = await http.get(
+          Uri.parse('http://v2.zenfemina.com/api/home/getDebt?type=fasting'),
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+        );
+
+        // if (response.statusCode == 200) {
+        //   final parsedResponse = jsonDecode(response.body);
+        //   final List<dynamic> data = parsedResponse['data'];
+
+        //   return List<Map<String, dynamic>>.from(data);
+        // } else {
+        //   throw Exception('Failed to load fasting debts: ${response.body}');
+        // }
+
+        if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data.containsKey('data') && data['data'] is Map<String, dynamic>) {
+          return data;
+        } else {
+          throw Exception('Unexpected response structure: ${response.body}');
+        }
+      } else {
+        throw Exception('Failed to get cycle data: ${response.body}');
+      }
+
+      } else {
+        throw Exception('Token is null');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
   final String baseUrldebt = 'http://v2.zenfemina.com/api/debt/get';
 
   Future<List<Map<String, dynamic>>> getPrayingDebts() async {
@@ -353,6 +438,7 @@ class ApiRepository {
         final response = await http.get(
           Uri.parse('$baseUrldebt?type=praying&is_done=0'),
           headers: {
+
             'Authorization': token,
             'Content-Type': 'application/json',
           },

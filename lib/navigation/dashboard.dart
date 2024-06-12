@@ -17,141 +17,163 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   final ApiRepository _apiRepository = ApiRepository();
   String? _username = '';
-  String? _startDate = '';
-  int? _cycleLength = 0;
-  int? _periodLength = 0;
-  int? _prayingDebtsCount = 0;
-  int? _fastingDebtsCount = 0;
+  // String? _startDate = '';
+  // int? _cycleLength = 0;
+  // int? _periodLength = 0;
+  // int? _prayingDebtsCount = 0;
+  // int? _fastingDebtsCount = 0;
   // ? = bisa null atau nilai integer, klo ga pake berarti ga boleh null dan harus selalu punya nilai integer
   String _cycleStatus = 'beginCycle';
 
+  String? condition = '';
+  String? message = '';
+  String? button = '';
+  String? prayingDebtMsg = '';
+  String? fastingDebtMsg = '';
   @override
   void initState() {
     super.initState();
-    _loadUserInfo();
-    _loadCycleData();
+    // _loadUserInfo();
+    // _loadCycleData();
     _loadDebtsData();
+    _loadCardView();
   }
 
   Future<void> _loadDebtsData() async {
     try {
-      final prayingDebts = await _apiRepository.getPrayingDebts();
-      final fastingDebts = await _apiRepository.getFastingDebts();
+      final prayingDebts = await _apiRepository.getPrayingDebtCount();
+      final fastingDebts = await _apiRepository.getFastingDebtCount();
       // Tambahkan logging untuk data yang diterima dari API
-      print('Praying Debts: $prayingDebts');
-      print('Fasting Debts: $fastingDebts');
+      print(prayingDebts['data']['message']);
+      print(fastingDebts['data']['message']);
       setState(() {
-        _prayingDebtsCount = prayingDebts.length;
-        _fastingDebtsCount = fastingDebts.length;
+        prayingDebtMsg = prayingDebts['data']['message'];
+        fastingDebtMsg = fastingDebts['data']['message'];
       });
     } catch (e) {
       print('Failed to load debts data: $e');
     }
   }
 
-  Future<void> _loadUserInfo() async {
+  Future<void> _loadCardView() async {
     try {
-      final userInfo = await _apiRepository.getUserInfo();
-      final username =
-          userInfo['data']['username']; // Mengambil nilai username dari respons
+      final cardViews = await _apiRepository.getCardView();
+      print(cardViews['data']['button']);
 
       setState(() {
-        _username = username; // Menyimpan nilai username ke dalam _userName
+        message = cardViews['data']['message'];
+        condition = cardViews['data']['condition'];
+        button = cardViews['data']['button'];
       });
+
     } catch (e) {
-      print('Failed to load user info: $e');
+      print(e);
     }
   }
 
-  Future<void> _loadCycleData() async {
-    try {
-      final cycleInfo = await _apiRepository.getCycleData("period");
-      final startDate = cycleInfo['data']['start_date'];
-      final cycleLength = cycleInfo['data']['cycle_length'];
-      final periodLength = cycleInfo['data']['period_length'];
+  // Future<void> _loadUserInfo() async {
+  //   try {
+  //     final userInfo = await _apiRepository.getUserInfo();
+  //     final username =
+  //         userInfo['data']['username']; // Mengambil nilai username dari respons
 
-    // Debug log untuk memeriksa nilai startDate yang diterima
-    print('Received start date from API: $startDate');
+  //     setState(() {
+  //       _username = username; // Menyimpan nilai username ke dalam _userName
+  //     });
+  //   } catch (e) {
+  //     print('Failed to load user info: $e');
+  //   }
+  // }
 
-    // Menggunakan DateFormat untuk memastikan tanggal dalam format yang benar
-    final DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-    DateTime parsedStartDate;
-    try {
-      parsedStartDate = dateFormat.parse(startDate);
-    } catch (e) {
-      print('Error parsing start date: $e');
-      return;
-    }
+//   Future<void> _loadCycleData() async {
+//     try {
+//       final cycleInfo = await _apiRepository.getCycleData("period");
+//       final startDate = cycleInfo['data']['start_date'];
+//       final cycleLength = cycleInfo['data']['cycle_length'];
+//       final periodLength = cycleInfo['data']['period_length'];
 
-    setState(() {
-      _startDate = parsedStartDate.toIso8601String();
-      _cycleLength = cycleLength;
-      _periodLength = periodLength;
-    });
-  } catch (e) {
-    print('Failed to load cycle data: $e');
-  }
-}
+//     // Debug log untuk memeriksa nilai startDate yang diterima
+//     print('Received start date from API: $startDate');
+
+//     // Menggunakan DateFormat untuk memastikan tanggal dalam format yang benar
+//     final DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+//     DateTime parsedStartDate;
+//     try {
+//       parsedStartDate = dateFormat.parse(startDate);
+//     } catch (e) {
+//       print('Error parsing start date: $e');
+//       return;
+//     }
+
+//     setState(() {
+//       _startDate = parsedStartDate.toIso8601String();
+//       _cycleLength = cycleLength;
+//       _periodLength = periodLength;
+//     });
+//   } catch (e) {
+//     print('Failed to load cycle data: $e');
+//   }
+// }
 
 
-  String _calculateCycleDay() {
-    if (_startDate != null && _cycleLength != null && _periodLength != null) {
-      try {
-        final DateTime startDate = DateTime.parse(_startDate!);
-        final DateTime currentDate = DateTime.now();
-        final int daysPassed = currentDate.difference(startDate).inDays;
+  // String _calculateCycleDay() {
+  //   if (_startDate != null && _cycleLength != null && _periodLength != null) {
+  //     try {
+  //       final DateTime startDate = DateTime.parse(_startDate!);
+  //       final DateTime currentDate = DateTime.now();
+  //       final int daysPassed = currentDate.difference(startDate).inDays;
 
-        if (daysPassed < _periodLength!) {
-          return 'Hari ke-${daysPassed + 1} Haid';
-        } else {
-          final int daysUntilNextCycle =
-              _cycleLength! - (daysPassed % _cycleLength!);
-          return '$daysUntilNextCycle Hari Lagi';
-        }
-      } catch (e) {
-        print('Error calculating cycle day: $e');
-        return ''; // Jika terjadi kesalahan, kembalikan string kosong
-      }
-    } else {
-      return 'Data siklus tidak lengkap';
-    }
-  }
+  //       if (daysPassed < _periodLength!) {
+  //         return 'Hari ke-${daysPassed + 1} Haid';
+  //       } else {
+  //         final int daysUntilNextCycle =
+  //             _cycleLength! - (daysPassed % _cycleLength!);
+  //         return '$daysUntilNextCycle Hari Lagi';
+  //       }
+  //     } catch (e) {
+  //       print('Error calculating cycle day: $e');
+  //       return ''; // Jika terjadi kesalahan, kembalikan string kosong
+  //     }
+  //   } else {
+  //     return 'Data siklus tidak lengkap';
+  //   }
+  // }
 
-  Future<void> _updateCycleStatus() async {
-    try {
-      if (_cycleStatus == 'beginCycle') {
-        await _apiRepository.beginCycle();
-        setState(() {
-          _cycleStatus = 'continueCycle';
-        });
-      } else if (_cycleStatus == 'continueCycle') {
-        await _apiRepository.continueCycle();
-        setState(() {
-          _cycleStatus = 'endCycle';
-        });
-      } else if (_cycleStatus == 'endCycle') {
-        await _apiRepository.endCycle();
-        setState(() {
-          _cycleStatus = 'beginCycle';
-        });
-      }
-    } catch (e) {
-      print('Failed to update cycle status: $e');
-    }
-  }
+  // Future<void> _updateCycleStatus() async {
+  //   try {
+  //     if (_cycleStatus == 'beginCycle') {
+  //       await _apiRepository.beginCycle();
+  //       setState(() {
+  //         _cycleStatus = 'continueCycle';
+  //       });
+  //     } else if (_cycleStatus == 'continueCycle') {
+  //       await _apiRepository.continueCycle();
+  //       setState(() {
+  //         _cycleStatus = 'endCycle';
+  //       });
+  //     } else if (_cycleStatus == 'endCycle') {
+  //       await _apiRepository.endCycle();
+  //       setState(() {
+  //         _cycleStatus = 'beginCycle';
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print('Failed to update cycle status: $e');
+  //   }
+  // }
 
-  String _getCycleButtonText() {
-    switch (_cycleStatus) {
-      case 'beginCycle':
-        return 'Mulai Siklus';
-      case 'continueCycle':
-        return 'Lanjutkan Siklus';
-      case 'endCycle':
-        return 'Siklus Berakhir';
-      default:
-        return 'Mulai Siklus';
-    }
-  }
+  // String _getCycleButtonText() {
+  //   switch (_cycleStatus) {
+  //     case 'beginCycle':
+  //       return 'Mulai Siklus';
+  //     case 'continueCycle':
+  //       return 'Lanjutkan Siklus';
+  //     case 'endCycle':
+  //       return 'Siklus Berakhir';
+  //     default:
+  //       return 'Mulai Siklus';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +262,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: Center(
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 190,
+                    height: 185,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
@@ -266,25 +288,28 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          _calculateCycleDay(),
+                          // _calculateCycleDay(),
+                          condition!,
                           style: GoogleFonts.poppins(
-                            fontSize: 32,
+                            fontSize: 30,
                             color: Color(0xFFDA4256),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 0),
                         Text(
-                          'Menuju siklus haid selanjutnya',
+                          message!,
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                             color: Color(0xFFDA4256),
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 12),
                         ElevatedButton(
-                          onPressed: _updateCycleStatus,
+                          onPressed:
+                          //  _updateCycleStatus,
+                          (){} ,
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.white,
@@ -299,7 +324,8 @@ class _DashboardPageState extends State<DashboardPage> {
                             minimumSize: Size(132, 35),
                           ),
                           child: Text(
-                            _getCycleButtonText(),
+                            // _getCycleButtonText(),
+                            button!,
                             style: GoogleFonts.poppins(
                               fontSize: 10,
                               color: Color(0xFFDA4256),
@@ -462,9 +488,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           Text(
-            _prayingDebtsCount == 0
-                ? 'Anda tidak memiliki hutang sholat'
-                : 'Anda memiliki $_prayingDebtsCount hutang sholat',
+            '$prayingDebtMsg sholat',
             style: GoogleFonts.poppins(
               fontSize: 13,
               color: Colors.black,
@@ -503,9 +527,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           Text(
-            _fastingDebtsCount == 0
-                ? 'Anda tidak memiliki hutang puasa'
-                : 'Anda memiliki $_fastingDebtsCount hutang puasa',
+            '$fastingDebtMsg puasa',
             style: GoogleFonts.poppins(
               fontSize: 13,
               color: Colors.black,
