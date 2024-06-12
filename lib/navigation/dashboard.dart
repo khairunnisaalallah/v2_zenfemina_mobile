@@ -139,28 +139,28 @@ class _DashboardPageState extends State<DashboardPage> {
   //   }
   // }
 
-  // Future<void> _updateCycleStatus() async {
-  //   try {
-  //     if (_cycleStatus == 'beginCycle') {
-  //       await _apiRepository.beginCycle();
-  //       setState(() {
-  //         _cycleStatus = 'continueCycle';
-  //       });
-  //     } else if (_cycleStatus == 'continueCycle') {
-  //       await _apiRepository.continueCycle();
-  //       setState(() {
-  //         _cycleStatus = 'endCycle';
-  //       });
-  //     } else if (_cycleStatus == 'endCycle') {
-  //       await _apiRepository.endCycle();
-  //       setState(() {
-  //         _cycleStatus = 'beginCycle';
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print('Failed to update cycle status: $e');
-  //   }
-  // }
+  Future<void> _updateCycleStatus() async {
+    try {
+      if (_cycleStatus == 'beginCycle') {
+        await _apiRepository.beginCycle();
+        setState(() {
+          _cycleStatus = 'continueCycle';
+        });
+      } else if (_cycleStatus == 'continueCycle') {
+        await _apiRepository.continueCycle();
+        setState(() {
+          _cycleStatus = 'endCycle';
+        });
+      } else if (_cycleStatus == 'endCycle') {
+        await _apiRepository.endCycle();
+        setState(() {
+          _cycleStatus = 'beginCycle';
+        });
+      }
+    } catch (e) {
+      print('Failed to update cycle status: $e');
+    }
+  }
 
   // String _getCycleButtonText() {
   //   switch (_cycleStatus) {
@@ -318,7 +318,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               borderRadius: BorderRadius.circular(15),
                               side: BorderSide(
                                 color: Color(0xFFDA4256),
-                                width: 2,
+                                width: 1,
                               ),
                             ),
                             minimumSize: Size(132, 35),
