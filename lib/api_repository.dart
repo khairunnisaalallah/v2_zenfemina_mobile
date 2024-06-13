@@ -195,17 +195,22 @@ class ApiRepository {
 
   final String baseUrl = 'http://v2.zenfemina.com/api/cycle';
 
-  Future<void> beginCycle() async {
+  Future<void> beginCycle({
+    required String inputDate,
+  }) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
 
     if (token != null && token.isNotEmpty) {
+      final data = {'inputDate': inputDate};
+      final jsonData = jsonEncode(data);
       final response = await http.post(
         Uri.parse('$baseUrl/beginCycle'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token,
         },
+        body: jsonData,
       );
       print('Request URL: ${response.request?.url}');
       print('Request Headers: ${response.request?.headers}');
