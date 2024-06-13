@@ -103,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         Text(
                           'Profile',
-                          style: GoogleFonts.outfit(
+                          style: GoogleFonts.poppins(
                             fontSize: 25,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -164,10 +164,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Informasi Terkait',
-                  style: GoogleFonts.outfit(
+                  style: GoogleFonts.poppins(
                     fontSize: 16,
                     color: Colors.grey[600],
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -187,10 +187,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Menu',
-                  style: GoogleFonts.outfit(
+                  style: GoogleFonts.poppins(
                     fontSize: 16,
                     color: Colors.grey[600],
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -241,7 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: Text(
                     'Log Out',
-                    style: GoogleFonts.outfit(
+                    style: GoogleFonts.poppins(
                       fontSize: 18,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,

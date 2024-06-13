@@ -146,7 +146,7 @@ class _Question4PageState extends State<Question4Page> {
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
-                );
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFDA4256),
                   shape: RoundedRectangleBorder(

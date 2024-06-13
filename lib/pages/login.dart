@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isPasswordVisible = false;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  late final ApiRepository _apiRepository;
+  late ApiRepository _apiRepository;
   bool _isLoading = false;
 
   final FcmService _fcmService = FcmService();
@@ -107,7 +107,8 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             labelText: "Email",
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             prefixIcon: Icon(
                               Icons.mail,
                               color: Colors.grey,
@@ -135,7 +136,8 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             labelText: "Kata Sandi",
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             prefixIcon: Icon(
                               Icons.lock,
                               color: Colors.grey,
@@ -169,9 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
+                        SizedBox(height: 15),
                         Align(
                           alignment: Alignment.centerRight,
                           child: Text(
@@ -183,12 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 80,
-                        ),
-                        //jadi eror nya gini
-                        //Raw API Response: {"meta":{"code":200,"status":1,"message":"Berhasil Login"},"data":{"id":19,"username":"abee23","email":"abee@gmail.com","token":"a7af76e1-fd62-4279-ab9d-be9fe5c0b445"}}
-                        //Kita bisa lihat bahwa token berada di dalam objek data. Jadi, ketika Anda mengakses result['token'], nilainya adalah null, karena token tidak berada di level atas respons, melainkan di dalam data.
+                        SizedBox(height: 80),
                         Container(
                           height: 42,
                           width: MediaQuery.of(context).size.width - 2 * 20,
@@ -231,73 +226,69 @@ class _LoginPageState extends State<LoginPage> {
                                           passwordController.text,
                                         );
 
-                                        // Tambahkan log untuk melihat isi dari result
                                         print('API Response: $result');
 
                                         setState(() {
                                           _isLoading = false;
                                         });
 
-                                        ///ubah kondisi dari sini
                                         if (result['meta']['code'] == 200) {
                                           final userData = result['data'];
 
-                                        // Cek apakah birthDate kosong
-                                        if (userData['birthDate'] == null ||
-                                            userData['birthDate'].isEmpty) {
-                                          // Pengguna baru, arahkan ke Question1Page
-                                          Get.snackbar(
-                                            'Informasi',
-                                            'Selamat datang, pengguna baru! Silakan isi pertanyaan pertama.',
-                                            backgroundColor: Colors.green,
-                                            colorText: Colors.white,
-                                          );
-                                          Get.to(Question1Page());
-                                        } else {
-                                          // Pengguna lama, arahkan ke HomePage
-                                          final prefs = await SharedPreferences
-                                              .getInstance();
-                                          final token = userData['token'];
+                                          if (userData['birthDate'] == null ||
+                                              userData['birthDate'].isEmpty) {
+                                            Get.snackbar(
+                                              'Informasi',
+                                              'Selamat datang, pengguna baru! Silakan isi pertanyaan pertama.',
+                                              backgroundColor: Colors.green,
+                                              colorText: Colors.white,
+                                            );
+                                            Get.to(Question1Page());
+                                          } else {
+                                            final prefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                            final token = userData['token'];
 
-                                          _fcmService.initializeFCM(token);
+                                            _fcmService.initializeFCM(token);
 
                                             if (token != null) {
                                               await prefs.setString(
                                                   'token', token);
 
-                                            Get.snackbar(
-                                              'Sukses',
-                                              'Berhasil masuk!',
-                                              backgroundColor: Colors.green,
-                                              colorText: Colors.white,
-                                            );
-                                            Get.offAll(
-                                                Home()); // Gunakan Get.offAll untuk menghapus stack navigasi sebelumnya
-                                          } else {
-                                            throw Exception('Token is null');
+                                              Get.snackbar(
+                                                'Sukses',
+                                                'Berhasil masuk!',
+                                                backgroundColor: Colors.green,
+                                                colorText: Colors.white,
+                                              );
+                                              Get.offAll(Home());
+                                            } else {
+                                              throw Exception('Token is null');
+                                            }
                                           }
+                                        } else {
+                                          final errorMessage =
+                                              result['errors'][0];
+                                          Get.snackbar(
+                                            'Error',
+                                            errorMessage,
+                                            backgroundColor: Colors.red,
+                                            colorText: Colors.white,
+                                          );
                                         }
-                                      } else {
-                                        final errorMessage =
-                                            result['errors'][0];
+                                      } catch (e) {
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                        print('Error: $e');
                                         Get.snackbar(
                                           'Error',
-                                          errorMessage,
+                                          'Email atau Kata Sandi salah.',
                                           backgroundColor: Colors.red,
                                           colorText: Colors.white,
                                         );
                                       }
-                                    } catch (e) {
-                                      setState(() {
-                                        _isLoading = false;
-                                      });
-                                      print('Error: $e');
-                                      Get.snackbar(
-                                        'Error',
-                                        'Email atau Kata Sandi salah.',
-                                        backgroundColor: Colors.red,
-                                        colorText: Colors.white,
-                                      );
                                     }
                                   },
                             child: _isLoading
@@ -333,4 +324,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-//ini asli1

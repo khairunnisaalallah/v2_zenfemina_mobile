@@ -193,7 +193,7 @@ class _ArticlePageState extends State<ArticlePage> {
               ),
             ),
             Positioned(
-              top: 60,
+              top: 65,
               left: 25,
               right: 25,
               child: Padding(
@@ -204,21 +204,20 @@ class _ArticlePageState extends State<ArticlePage> {
                     Text(
                       'Ayo $_username',
                       style: GoogleFonts.poppins(
-                        fontSize: 21,
+                        fontSize: 22,
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(height: 0),
                     Text(
                       'Temukan artikel yang sesuai untukmu',
                       style: GoogleFonts.poppins(
-                        fontSize: 14,
+                        fontSize: 16,
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Container(
                       width: 400,
                       height: 46,
@@ -231,7 +230,7 @@ class _ArticlePageState extends State<ArticlePage> {
                         children: [
                           const SizedBox(width: 10),
                           const Icon(
-                            Icons.search, 
+                            Icons.search,
                             color: Colors.grey,
                             size: 20,
                           ),

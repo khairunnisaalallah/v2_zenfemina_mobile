@@ -8,7 +8,7 @@ class FcmService {
   Future<void> initializeFCM(String token) async {
     await _getTokenAndUpdateServer(token);
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
-      _sendTokenToServer(fcmToken ,token);
+      _sendTokenToServer(fcmToken, token);
     });
   }
 

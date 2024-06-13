@@ -41,13 +41,13 @@ class MyHttpOverrides extends HttpOverrides {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides(); // Set HttpOverrides global
-  try{
+  try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     final fcmToken = await FirebaseMessaging.instance.getToken();
     print("token --> $fcmToken");
-  } catch(e){
+  } catch (e) {
     print(e);
   }
   runApp(const MyApp());
@@ -59,10 +59,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      // debugShowMaterialGrid: true, // Tambahkan ini
-      getPages: Routes.pages, // Tambahkan daftar rute di sini
-      home: WelcomePage()
-    );
+        debugShowCheckedModeBanner: false,
+        // debugShowMaterialGrid: true, // Tambahkan ini
+        getPages: Routes.pages, // Tambahkan daftar rute di sini
+        home: WelcomePage());
   }
 }
