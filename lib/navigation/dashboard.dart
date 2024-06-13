@@ -28,6 +28,11 @@ class _DashboardPageState extends State<DashboardPage> {
   String? _condition = '';
   String? _message = '';
 
+  String? condition = '';
+  String? message = '';
+  String? button = '';
+  String? prayingDebtMsg = '';
+  String? fastingDebtMsg = '';
   @override
   void initState() {
     super.initState();
@@ -78,14 +83,14 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Future<void> _loadDebtsData() async {
     try {
-      final prayingDebts = await _apiRepository.getPrayingDebts();
-      final fastingDebts = await _apiRepository.getFastingDebts();
+      final prayingDebts = await _apiRepository.getPrayingDebtCount();
+      final fastingDebts = await _apiRepository.getFastingDebtCount();
       // Tambahkan logging untuk data yang diterima dari API
-      print('Praying Debts: $prayingDebts');
-      print('Fasting Debts: $fastingDebts');
+      print(prayingDebts['data']['message']);
+      print(fastingDebts['data']['message']);
       setState(() {
-        _prayingDebtsCount = prayingDebts.length;
-        _fastingDebtsCount = fastingDebts.length;
+        prayingDebtMsg = prayingDebts['data']['message'];
+        fastingDebtMsg = fastingDebts['data']['message'];
       });
     } catch (e) {
       print('Failed to load debts data: $e');
@@ -115,18 +120,18 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
-  String _getCycleButtonText() {
-    switch (_cycleStatus) {
-      case 'beginCycle':
-        return 'Mulai Siklus';
-      case 'continueCycle':
-        return 'Lanjutkan Siklus';
-      case 'endCycle':
-        return 'Siklus Berakhir';
-      default:
-        return 'Mulai Siklus';
-    }
-  }
+  // String _getCycleButtonText() {
+  //   switch (_cycleStatus) {
+  //     case 'beginCycle':
+  //       return 'Mulai Siklus';
+  //     case 'continueCycle':
+  //       return 'Lanjutkan Siklus';
+  //     case 'endCycle':
+  //       return 'Siklus Berakhir';
+  //     default:
+  //       return 'Mulai Siklus';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -459,12 +464,12 @@ class _DashboardPageState extends State<DashboardPage> {
             padding: const EdgeInsets.all(8.0),
             child: Icon(
               Icons.error_outline,
+              color: Colors.red,
+              size: 22,
             ),
           ),
           Text(
-            _prayingDebtsCount == 0
-                ? 'Anda tidak memiliki hutang sholat'
-                : 'Anda memiliki $_prayingDebtsCount hutang sholat',
+            '$prayingDebtMsg sholat',
             style: GoogleFonts.poppins(
               fontSize: 13,
               color: Colors.black,
@@ -498,12 +503,12 @@ class _DashboardPageState extends State<DashboardPage> {
             padding: const EdgeInsets.all(8.0),
             child: Icon(
               Icons.error_outline,
+              color: Colors.red,
+              size: 22,
             ),
           ),
           Text(
-            _fastingDebtsCount == 0
-                ? 'Anda tidak memiliki hutang puasa'
-                : 'Anda memiliki $_fastingDebtsCount hutang puasa',
+            '$fastingDebtMsg puasa',
             style: GoogleFonts.poppins(
               fontSize: 13,
               color: Colors.black,

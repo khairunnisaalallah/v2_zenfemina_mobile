@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zenfemina_v2/menu/editpw.dart';
@@ -20,6 +21,8 @@ import 'package:zenfemina_v2/pages/profile_menu.dart';
 import 'package:zenfemina_v2/menu/editprofile.dart';
 import 'package:zenfemina_v2/pages/verifikasiEmail.dart';
 import 'package:zenfemina_v2/routes.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'dart:io';
 
 // import 'pages/intro_page.dart';
@@ -33,8 +36,18 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides(); // Set HttpOverrides global
+  try{
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    print("token --> $fcmToken");
+  } catch(e){
+    print(e);
+  }
   runApp(const MyApp());
 }
 
@@ -47,7 +60,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // debugShowMaterialGrid: true, // Tambahkan ini
       getPages: Routes.pages, // Tambahkan daftar rute di sini
-      home: WelcomePage(),
+      home: WelcomePage()
     );
   }
 }

@@ -25,8 +25,8 @@ class PrayerType extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 400,
-      height: 55,
-      margin: const EdgeInsets.only(bottom: 20),
+      height: 48,
+      margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),

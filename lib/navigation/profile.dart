@@ -143,21 +143,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                     )
                                   : null,
                             ),
-                            // child: image != null
-                            //     ? ClipRRect(
-                            //         borderRadius: BorderRadius.circular(60),
-                            //         child: Image.file(
-                            //           File(image!.path),
-                            //           width: 115,
-                            //           height: 115,
-                            //           fit: BoxFit.cover,
-                            //         ),
-                            //       )
-                            //     : Icon(
-                            //         Icons.person,
-                            //         size: 55,
-                            //         color: TColor.secondaryText,
-                            //       ),
                           ),
                         ],
                       ),
@@ -171,7 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(right: 20, left: 20, top: 15),
+          padding: const EdgeInsets.only(right: 20, left: 20, top: 0),
           child: Column(
             children: [
               Container(
@@ -180,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Text(
                   'Informasi Terkait',
                   style: GoogleFonts.outfit(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: Colors.grey[600],
                     fontWeight: FontWeight.w400,
                   ),
@@ -203,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Text(
                   'Menu',
                   style: GoogleFonts.outfit(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: Colors.grey[600],
                     fontWeight: FontWeight.w400,
                   ),
