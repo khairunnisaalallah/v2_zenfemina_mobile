@@ -57,7 +57,7 @@ class _TabsholatpuasaState extends State<Tabsholatpuasa> {
         });
         _saveCompletedDebts(_completedPrayingDebts, 'completedPrayingDebts');
       } else {
-        await _apiRepository.updateFastingDebt(id);
+        await _apiRepository.updatePrayingDebt(id);
         setState(() {
           final debt = _fastingDebts.firstWhere((debt) => debt['id'] == id);
           _completedFastingDebts.add(debt);

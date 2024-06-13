@@ -1,13 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:zenfemina_v2/pages/prayer_type.dart';
-import 'package:zenfemina_v2/pages/profile_menu.dart';
-import 'package:zenfemina_v2/pages/range_date.dart';
-import 'package:zenfemina_v2/widgets/circle_button.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class prayPage extends StatelessWidget {
-  const prayPage({Key? key}) : super(key: key);
+class PrayPage extends StatefulWidget {
+  const PrayPage({Key? key}) : super(key: key);
+
+  @override
+  _PrayPageState createState() => _PrayPageState();
+}
+
+class _PrayPageState extends State<PrayPage> {
+  Map<String, String> prayerTimes = {};
+  DateTime? _selectedDay;
+  DateTime? _rangeStart;
+  DateTime? _rangeEnd;
+  bool invalidCity = false; 
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+ Future<void> fetchPrayerTimes(String city) async {
+    try {
+      final response = await http.get(Uri.parse('http://api.aladhan.com/v1/timingsByCity?city=$city&country=Indonesia'));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        print('Data received: $data');
+        setState(() {
+          if (data['data'] != null) {
+            if (_isInvalidPrayerTimes(data['data']['timings'])) {
+              // Jadwal sholat tidak valid, tampilkan pesan kesalahan
+              invalidCity = true;
+              print('Kota yang Anda masukkan tidak dikenali. Silakan coba lagi dengan nama kota yang berbeda.');
+            } else {
+              // Jadwal sholat valid, tampilkan jadwal sholat
+              invalidCity = false;
+              prayerTimes = Map<String, String>.from(data['data']['timings']);
+              print('Prayer times: $prayerTimes');
+            }
+          } else {
+            print('No prayer times data available.');
+          }
+        });
+      } else {
+        throw Exception('Failed to load prayer times');
+      }
+    } catch (e) {
+      print("Error fetching prayer times: $e");
+    }
+  }
+
+bool _isInvalidPrayerTimes(Map<String, dynamic> timings) {
+  // Lakukan pengecekan apakah jadwal sholat tidak valid berdasarkan contoh yang diberikan
+  return timings['Fajr'] == "04:46" &&
+      timings['Dhuhr'] == "12:12" &&
+      timings['Asr'] == "15:37" &&
+      timings['Maghrib'] == "18:14" &&
+      timings['Isha'] == "19:28";
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +70,7 @@ class prayPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context)
-              .size
-              .height, // Sesuaikan tinggi dengan tinggi layar
+          height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
               Positioned(
@@ -43,7 +96,6 @@ class prayPage extends StatelessWidget {
                   ),
                 ),
               ),
-              // yg merah2 itu
               Positioned(
                 top: 40,
                 left: 25,
@@ -65,7 +117,7 @@ class prayPage extends StatelessWidget {
                         width: 250,
                         height: 50,
                         child: Text(
-                          'Dapatkan jadwal sholat sesuai dengan alamat anda !',
+                          'Dapatkan jadwal sholat sesuai dengan alamat anda!',
                           style: GoogleFonts.outfit(
                             fontSize: 15,
                             color: Colors.white,
@@ -83,8 +135,8 @@ class prayPage extends StatelessWidget {
                 child: Row(
                   children: [
                     SizedBox(width: 230),
-                    CircleButton(
-                      icon: Icons.notifications,
+                    IconButton(
+                      icon: Icon(Icons.notifications, color: Colors.white),
                       onPressed: () {},
                     ),
                   ],
@@ -92,71 +144,22 @@ class prayPage extends StatelessWidget {
               ),
               Positioned(
                 top: 140,
-                left: 20,
-                right: 20,
-                child: Container(
-                  width: 300,
-                  height: 130,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 3,
-                        offset: Offset(0, 3), // perubahan posisi bayangan jika diperlukan
-                      ),
-                    ],
-                  ),
-                ),
+                left: 25,
+                right: 25,
+                child: buildLocationSearch(),
               ),
               Positioned(
-                top: 140,
+                top: 200,
                 left: 25,
                 right: 25,
                 child: prayerDate(),
               ),
               Positioned(
-                top: 300,
+                top: 360,
                 left: 22,
                 right: 22,
-                child: Column(
-                  children: [
-                    PrayerType(
-                      text: "Shubuh",
-                      icon: 0xf5e4,
-                      hour: "04:54",
-                      press: () {},
-                    ),
-                    PrayerType(
-                      text: "Dzuhur",
-                      icon: 0xeef8,
-                      hour: "11:54",
-                      press: () {},
-                    ),
-                    PrayerType(
-                      text: "Ashar",
-                      icon: 0xeef9,
-                      hour: "15:00",
-                      press: () {},
-                    ),
-                    PrayerType(
-                      text: "Magrib",
-                      icon: 0xeef5,
-                      hour: "17:10",
-                      press: () {},
-                    ),
-                    PrayerType(
-                      text: "Isya",
-                      icon: 0xf5e2,
-                      hour: "19:45",
-                      press: () {},
-                    ),
-                  ],
-                )
-              )
+                child: buildPrayerTimes(),
+              ),
             ],
           ),
         ),
@@ -164,12 +167,41 @@ class prayPage extends StatelessWidget {
     );
   }
 
-  Container prayerDate() {
-    DateTime? _selectedDay;
-    DateTime? _rangeStart;
-    DateTime? _rangeEnd;
+ Widget buildLocationSearch() {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: Colors.grey),
+    ),
+    padding: EdgeInsets.symmetric(horizontal: 12),
+    child: TextField(
+      onSubmitted: (value) {
+        // Panggil fetchPrayerTimes dengan nilai input sebagai nama kota
+        fetchPrayerTimes(value);
+      },
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: 'Cari Lokasi',
+        ),
+      ),
+    );
+  }
+
+  Widget prayerDate() {
     return Container(
-      child:  TableCalendar(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 3,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: TableCalendar(
         headerStyle: HeaderStyle(
           headerPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
           titleCentered: true,
@@ -187,25 +219,59 @@ class prayPage extends StatelessWidget {
         rangeStartDay: _rangeStart,
         rangeEndDay: _rangeEnd,
         calendarStyle: CalendarStyle(
-          rangeHighlightColor:
-              Color(0xFFDA4256).withOpacity(0.25), //ini warna range date
+          rangeHighlightColor: Color(0xFFDA4256).withOpacity(0.25),
           todayDecoration: BoxDecoration(
-            color: Color(0xFFDA4256), // ini warna tgl hari ini
+            color: Color(0xFFDA4256),
             shape: BoxShape.circle,
           ),
           selectedDecoration: BoxDecoration(
-            color: Color(0xFFDA4256), // ini ga bisa diubah warnnaya
+            color: Color(0xFFDA4256),
           ),
         ),
         daysOfWeekStyle: DaysOfWeekStyle(
-          weekendStyle:
-              TextStyle(color: Colors.red), //ini tulisan sun sama sat
+          weekendStyle: TextStyle(color: Colors.red),
         ),
         calendarFormat: CalendarFormat.week,
         rangeSelectionMode: RangeSelectionMode.toggledOn,
-        onDaySelected: (selectedDay, focusedDay) {{}},
+        onDaySelected: (selectedDay, focusedDay) {
+          setState(() {
+            _selectedDay = selectedDay;
+          });
+        },
       ),
     );
   }
 
+  Widget buildPrayerTimes() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Jadwal Sholat',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 10),
+        if (prayerTimes.isNotEmpty) ...[
+          buildPrayerTimeItem('Shubuh', prayerTimes['Fajr'] ?? ''),
+          buildPrayerTimeItem('Dzuhur', prayerTimes['Dhuhr'] ?? ''),
+          buildPrayerTimeItem('Ashar', prayerTimes['Asr'] ?? ''),
+          buildPrayerTimeItem('Maghrib', prayerTimes['Maghrib'] ?? ''),
+          buildPrayerTimeItem('Isya', prayerTimes['Isha'] ?? ''),
+        ] else ...[
+          Text('Tidak ada data jadwal sholat yang tersedia.'),
+        ],
+      ],
+    );
+  }
+
+  Widget buildPrayerTimeItem(String title, String time) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('$title: ', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(time),
+      ],
+    );
+  }
 }
+
