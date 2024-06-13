@@ -32,7 +32,6 @@ class _Question4PageState extends State<Question4Page> {
       return;
     }
 
-
     // Panggil API untuk mengirim data
     try {
       final api = ApiRepository();
@@ -138,7 +137,7 @@ class _Question4PageState extends State<Question4Page> {
                   );
 
                   // Pindah ke halaman berikutnya
-                  Get.to(() => home());
+                  Get.to(() => Home());
                 },
                 child: Text(
                   'Submit',

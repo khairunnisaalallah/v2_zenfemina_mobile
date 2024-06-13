@@ -247,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
                                               colorText: Colors.white,
                                             );
                                             Get.offAll(
-                                                home()); // Gunakan Get.offAll untuk menghapus stack navigasi sebelumnya
+                                                Home()); // Gunakan Get.offAll untuk menghapus stack navigasi sebelumnya
                                           } else {
                                             throw Exception('Token is null');
                                           }
