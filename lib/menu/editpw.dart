@@ -48,55 +48,56 @@ class _EditPwState extends State<EditPw> {
                     SizedBox(height: 30),
                     TextFormField(
                       obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: "Kata sandi baru",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(width: 2.0, color: Colors.grey)
-                                ),
-                                   prefixIcon: Icon(
-                                   Icons.key_outlined, // Mengubah ikon email menjadi ikon kunci
-                                   color: Colors.grey,
-                            ),
-                              labelStyle: GoogleFonts.outfit(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.grey,
-                               ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide:
-                                  BorderSide(width: 2.0, color: Colors.grey),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              vertical: 15,
-                              horizontal: 20,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        TextFormField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                          labelText: "Ulangi Kata Sandi",
-                          border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(width: 2.0, color: Colors.grey)
-                        ),
-                        prefixIcon: 
-                        Icon(
-                          Icons.key_outlined, // Mengubah ikon email menjadi ikon kunci
+                      decoration: InputDecoration(
+                        labelText: "Kata sandi baru",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide:
+                                BorderSide(width: 2.0, color: Colors.grey)),
+                        prefixIcon: Icon(
+                          Icons
+                              .key_outlined, // Mengubah ikon email menjadi ikon kunci
                           color: Colors.grey,
                         ),
                         labelStyle: GoogleFonts.outfit(
                           fontSize: 14,
-                          fontWeight: FontWeight.w300,
+                          fontWeight: FontWeight.w500,
                           color: Colors.grey,
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide:
-                          BorderSide(width: 2.0, color: Colors.grey),
+                              BorderSide(width: 2.0, color: Colors.grey),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 20,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: "Ulangi Kata Sandi",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide:
+                                BorderSide(width: 2.0, color: Colors.grey)),
+                        prefixIcon: Icon(
+                          Icons
+                              .key_outlined, // Mengubah ikon email menjadi ikon kunci
+                          color: Colors.grey,
+                        ),
+                        labelStyle: GoogleFonts.outfit(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide:
+                              BorderSide(width: 2.0, color: Colors.grey),
                         ),
                         contentPadding: EdgeInsets.symmetric(
                           vertical: 15,
@@ -137,5 +138,4 @@ class _EditPwState extends State<EditPw> {
       ),
     );
   }
-  
 }

@@ -25,7 +25,7 @@ class PrayerType extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 400,
-      height: 48,
+      height: 50,
       margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -44,31 +44,31 @@ class PrayerType extends StatelessWidget {
       ),
       child: Row(
         children: [
-            Padding(
-              padding: EdgeInsets.only(left: 15),
-              child: Icon(
-                IconData(icon, fontFamily: 'MaterialIcons'),
-                size: 23,
-                color: Color(0xFFDA4256),
-              ),
+          Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Icon(
+              IconData(icon, fontFamily: 'MaterialIcons'),
+              size: 23,
+              color: Color(0xFFDA4256),
             ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: Text(
-                text,
-                style: GoogleFonts.poppins(),
-              ),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Text(
+              text,
+              style: GoogleFonts.poppins(),
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 15), // Atur margin kanan sesuai kebutuhan
-              child: Text(
-                hour,
-                style: GoogleFonts.poppins(),
-              ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+                right: 15), // Atur margin kanan sesuai kebutuhan
+            child: Text(
+              hour,
+              style: GoogleFonts.poppins(),
             ),
-          ],
+          ),
+        ],
       ),
     );
   }
-  
 }

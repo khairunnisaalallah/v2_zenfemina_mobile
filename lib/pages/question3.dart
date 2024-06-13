@@ -103,7 +103,8 @@ class _Question3PageState extends State<Question3Page> {
                         }
                         final prefs = await SharedPreferences.getInstance();
                         await prefs.setString('cycle', cycle);
-                        Get.to(Question4Page());
+                        Get.to(() => Question4Page(),
+                            transition: Transition.fade);
                       }
                     : null,
                 child: Text(

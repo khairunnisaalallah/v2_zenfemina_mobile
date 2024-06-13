@@ -22,8 +22,8 @@ class _Question4PageState extends State<Question4Page> {
     final prefs = await SharedPreferences.getInstance();
     final birthDate = prefs.getString('birthDate') ?? '';
     final lastDate = prefs.getString('lastDate') ?? '';
+    final isholy = prefs.getString('is_holy') ?? '';
     final cycle = prefs.getString('cycle') ?? '';
-    final is_holy = prefs.getString('is_holy') ?? '';
 
     // Ambil data dari TextEditingController
     final period = _periodController.text;
@@ -35,7 +35,7 @@ class _Question4PageState extends State<Question4Page> {
     // Panggil API untuk mengirim data
     try {
       final api = ApiRepository();
-      await api.postQuestions(birthDate, lastDate, period, cycle, is_holy);
+      await api.postQuestions(birthDate, lastDate, period, cycle, isholy);
       print('Data berhasil dikirim ke API');
     } catch (e) {
       print('Gagal mengirim data: $e');
@@ -146,7 +146,7 @@ class _Question4PageState extends State<Question4Page> {
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
-                ),
+                );
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFDA4256),
                   shape: RoundedRectangleBorder(

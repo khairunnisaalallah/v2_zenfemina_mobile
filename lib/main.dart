@@ -5,6 +5,7 @@ import 'package:zenfemina_v2/menu/editpw.dart';
 import 'package:zenfemina_v2/menu/tab_sholatpuasa.dart';
 import 'package:zenfemina_v2/navigation/article.dart';
 import 'package:zenfemina_v2/navigation/dashboard.dart';
+import 'package:zenfemina_v2/navigation/pray.dart';
 import 'package:zenfemina_v2/navigation/profile.dart';
 import 'package:zenfemina_v2/menu/calender.dart';
 import 'package:zenfemina_v2/pages/OTP_page.dart';
@@ -24,6 +25,7 @@ import 'package:zenfemina_v2/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'dart:io';
+import 'package:zenfemina_v2/navigation/pray copy.dart';
 
 // import 'pages/intro_page.dart';
 

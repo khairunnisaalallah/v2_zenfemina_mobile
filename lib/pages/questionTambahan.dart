@@ -13,8 +13,8 @@ class QuestionTambahan extends StatefulWidget {
   _QuestionTambahanState createState() => _QuestionTambahanState();
 }
 
-class _QuestionTambahanState extends State<QuestionTambahan> {  
-  String? is_holy;
+class _QuestionTambahanState extends State<QuestionTambahan> {
+  String? isholy;
   final String _preferenceKey = 'is_holy';
 
   @override
@@ -26,7 +26,7 @@ class _QuestionTambahanState extends State<QuestionTambahan> {
   Future<void> _loadIsHoly() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      is_holy = prefs.getString(_preferenceKey);
+      isholy = prefs.getString(_preferenceKey);
     });
   }
 
@@ -34,7 +34,7 @@ class _QuestionTambahanState extends State<QuestionTambahan> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(_preferenceKey, value);
     setState(() {
-      is_holy = value;
+      isholy = value;
     });
   }
 
@@ -77,46 +77,42 @@ class _QuestionTambahanState extends State<QuestionTambahan> {
             ),
             SizedBox(height: 30),
             RadioMenuButton(
-              value: '1', 
-              groupValue: is_holy, 
+              value: '1',
+              groupValue: isholy,
               onChanged: (value) {
                 _setIsHoly(value!);
               },
               style: ButtonStyle(
-                shape: MaterialStatePropertyAll(
-                  RoundedRectangleBorder(
+                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                     side: BorderSide(
-                      color: Colors.grey, 
+                      color: Colors.grey,
                       width: 1.0,
                     ),
-                  )
-                ),
-                elevation: const MaterialStatePropertyAll(2),
-                backgroundColor: const MaterialStatePropertyAll(Colors.white)
-              ),
+                  )),
+                  elevation: const MaterialStatePropertyAll(2),
+                  backgroundColor:
+                      const MaterialStatePropertyAll(Colors.white)),
               child: const Text('Iya'),
             ),
             SizedBox(height: 10),
             RadioMenuButton(
-              value: '0', 
-              groupValue: is_holy, 
+              value: '0',
+              groupValue: isholy,
               onChanged: (value) {
                 _setIsHoly(value!);
               },
               style: ButtonStyle(
-                shape: MaterialStatePropertyAll(
-                  RoundedRectangleBorder(
+                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                     side: BorderSide(
-                      color: Colors.grey, 
+                      color: Colors.grey,
                       width: 1.0,
                     ),
-                  )
-                ),
-                elevation: const MaterialStatePropertyAll(2),
-                backgroundColor: const MaterialStatePropertyAll(Colors.white)
-              ),
+                  )),
+                  elevation: const MaterialStatePropertyAll(2),
+                  backgroundColor:
+                      const MaterialStatePropertyAll(Colors.white)),
               child: const Text('Tidak'),
             ),
             SizedBox(height: 30),
@@ -125,8 +121,8 @@ class _QuestionTambahanState extends State<QuestionTambahan> {
               width: MediaQuery.of(context).size.width -
                   2 * 20, // Sesuaikan dengan padding yang diinginkan
               child: ElevatedButton(
-                onPressed: (){
-                  Get.to(Question2Page());
+                onPressed: () {
+                  Get.to(() => Question2Page(), transition: Transition.fade);
                 },
                 child: Text(
                   'Selanjutnya',
@@ -149,5 +145,4 @@ class _QuestionTambahanState extends State<QuestionTambahan> {
       ),
     );
   }
-
 }

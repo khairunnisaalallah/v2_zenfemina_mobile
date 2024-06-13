@@ -198,14 +198,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 text: "Ubah Profile",
                 icon: 0xf05f0,
                 press: () {
-                  Get.to(ProfileView());
+                  Get.to(() => ProfileView());
                 },
               ),
               ProfileMenu(
                 text: "Ubah Password",
                 icon: 0xf293,
                 press: () {
-                  Get.to(EditPw());
+                  Get.to(() => EditPw());
                 },
               ),
               SizedBox(height: 15),

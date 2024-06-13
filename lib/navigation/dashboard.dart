@@ -61,12 +61,11 @@ class _DashboardPageState extends State<DashboardPage> {
         condition = cardViews['data']['condition'];
         button = cardViews['data']['button'];
       });
-
     } catch (e) {
       print(e);
     }
   }
-  
+
   Future<void> _updateCycle() async {
     // print(button);
     // if (button == 'Awali Siklus') {
@@ -84,7 +83,6 @@ class _DashboardPageState extends State<DashboardPage> {
         //   _cycleStatus = 'continueCycle';
         // });
       } else {
-
         // _endCycle();
 
         // await _apiRepository.continueCycle();
@@ -110,10 +108,9 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Text("Belum"),
         ),
         ElevatedButton(
-          onPressed: () async{
+          onPressed: () async {
             await _apiRepository.beginCycle(
-              inputDate: DateFormat('d-m-Y').format(now)
-            );
+                inputDate: DateFormat('d-m-Y').format(now));
             Get.back();
             Get.offAll(Home());
           },
@@ -137,7 +134,7 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Text("Tidak"),
         ),
         ElevatedButton(
-          onPressed: () async{
+          onPressed: () async {
             await _apiRepository.continueCycle();
             Get.back();
             Get.offAll(Home());
@@ -280,8 +277,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                         SizedBox(height: 12),
                         ElevatedButton(
-                          onPressed:
-                           _updateCycle,
+                          onPressed: _updateCycle,
                           // (){} ,
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
@@ -414,7 +410,6 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
               ),
-            
               Positioned(
                 top: 540,
                 left: 20,

@@ -205,7 +205,7 @@ class ApiRepository {
       final data = {'inputDate': inputDate};
       final jsonData = jsonEncode(data);
       final response = await http.post(
-        Uri.parse('$baseUrl/beginCycle'),
+        Uri.parse('http://v2.zenfemina.com/api/cycle/beginCycle'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token,
@@ -232,7 +232,7 @@ class ApiRepository {
 
     if (token != null && token.isNotEmpty) {
       final response = await http.post(
-        Uri.parse('$baseUrl/continueCycle'),
+        Uri.parse('http://v2.zenfemina.com/api/cycle/continueCycle'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token,
@@ -258,7 +258,7 @@ class ApiRepository {
 
     if (token != null && token.isNotEmpty) {
       final response = await http.post(
-        Uri.parse('$baseUrl/endCycle'),
+        Uri.parse('http://v2.zenfemina.com/api/cycle/endCycle'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token,
@@ -356,7 +356,6 @@ class ApiRepository {
         final response = await http.get(
           Uri.parse('http://v2.zenfemina.com/api/home/getDebt?type=praying'),
           headers: {
-            
             'Authorization': token,
             'Content-Type': 'application/json',
           },
@@ -373,7 +372,8 @@ class ApiRepository {
 
         if (response.statusCode == 200) {
           final Map<String, dynamic> data = jsonDecode(response.body);
-          if (data.containsKey('data') && data['data'] is Map<String, dynamic>) {
+          if (data.containsKey('data') &&
+              data['data'] is Map<String, dynamic>) {
             return data;
           } else {
             throw Exception('Unexpected response structure: ${response.body}');
@@ -381,7 +381,6 @@ class ApiRepository {
         } else {
           throw Exception('Failed to get cycle data: ${response.body}');
         }
-
       } else {
         throw Exception('Token is null');
       }
@@ -414,16 +413,16 @@ class ApiRepository {
         // }
 
         if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        if (data.containsKey('data') && data['data'] is Map<String, dynamic>) {
-          return data;
+          final Map<String, dynamic> data = jsonDecode(response.body);
+          if (data.containsKey('data') &&
+              data['data'] is Map<String, dynamic>) {
+            return data;
+          } else {
+            throw Exception('Unexpected response structure: ${response.body}');
+          }
         } else {
-          throw Exception('Unexpected response structure: ${response.body}');
+          throw Exception('Failed to get cycle data: ${response.body}');
         }
-      } else {
-        throw Exception('Failed to get cycle data: ${response.body}');
-      }
-
       } else {
         throw Exception('Token is null');
       }
@@ -443,7 +442,6 @@ class ApiRepository {
         final response = await http.get(
           Uri.parse('$baseUrldebt?type=praying&is_done=0'),
           headers: {
-
             'Authorization': token,
             'Content-Type': 'application/json',
           },
@@ -548,8 +546,60 @@ class ApiRepository {
     }
   }
 
-  GetCategories() {}
+  Future<List<dynamic>> getCategories() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
 
-  GetArticlesByCategory(int categoryId) {}
+    if (token != null) {
+      final response = await http.get(
+        Uri.parse('http://v2.zenfemina.com/api/education/category'),
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic> categories = responseData['data'];
+        return categories;
+      } else {
+        throw Exception('Failed to load categories: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null');
+    }
+  }
+
+  Future<List<dynamic>> getArticlesByCategory(int categoryId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null) {
+      final Map<String, dynamic> requestData = {
+        'category_id': categoryId.toString(),
+      };
+
+      final response = await http.post(
+        Uri.parse('http://v2.zenfemina.com/api/education/byCategory'),
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestData),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic> articles = responseData['data'];
+        return articles;
+      } else {
+        throw Exception(
+            'Failed to load articles by category: ${response.body}');
+      }
+    } else {
+      throw Exception('Token is null');
+    }
+  }
 }
 //ini asli rill

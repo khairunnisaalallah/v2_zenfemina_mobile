@@ -31,12 +31,11 @@ class _Question2PageState extends State<Question2Page> {
     is_holy = prefs.getString('is_holy') ?? '';
 
     setState(() {
-    if (is_holy == '1') {
-      question = 'Kapan terakhir anda haid?';
-    }
-  });
+      if (is_holy == '1') {
+        question = 'Kapan terakhir anda haid?';
+      }
+    });
   }
-
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -134,7 +133,8 @@ class _Question2PageState extends State<Question2Page> {
                         await prefs.setString('lastDate', _dateController.text);
 
                         // Pindah ke halaman berikutnya
-                        Get.to(Question3Page());
+                        Get.to(() => Question3Page(),
+                            transition: Transition.fade);
                       }
                     : null,
                 child: Text(

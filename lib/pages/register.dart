@@ -269,7 +269,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                             backgroundColor: Colors.green,
                                             colorText: Colors.white,
                                           );
-                                          Get.to(LoginPage());
+                                          Get.to(() => LoginPage());
                                         } else {
                                           Get.snackbar(
                                             'Error',

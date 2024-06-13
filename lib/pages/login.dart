@@ -196,26 +196,51 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: _isLoading
                                 ? null
                                 : () async {
-                                    setState(() {
-                                      _isLoading = true;
-                                    });
-                                    try {
-                                      final result =
-                                          await _apiRepository.loginUser(
-                                        emailController.text,
-                                        passwordController.text,
+                                    final email = emailController.text;
+                                    final password = passwordController.text;
+
+                                    if (email.isEmpty && password.isEmpty) {
+                                      Get.snackbar(
+                                        'Error',
+                                        'Mohon isi data berikut',
+                                        backgroundColor: Colors.red,
+                                        colorText: Colors.white,
                                       );
-
-                                      // Tambahkan log untuk melihat isi dari result
-                                      print('API Response: $result');
-
+                                    } else if (email.isEmpty) {
+                                      Get.snackbar(
+                                        'Error',
+                                        'Mohon isi kolom email terlebih dahulu',
+                                        backgroundColor: Colors.red,
+                                        colorText: Colors.white,
+                                      );
+                                    } else if (password.isEmpty) {
+                                      Get.snackbar(
+                                        'Error',
+                                        'Mohon isi kolom password terlebih dahulu',
+                                        backgroundColor: Colors.red,
+                                        colorText: Colors.white,
+                                      );
+                                    } else {
                                       setState(() {
-                                        _isLoading = false;
+                                        _isLoading = true;
                                       });
+                                      try {
+                                        final result =
+                                            await _apiRepository.loginUser(
+                                          emailController.text,
+                                          passwordController.text,
+                                        );
 
-                                      ///ubah kondisi dari sini
-                                      if (result['meta']['code'] == 200) {
-                                        final userData = result['data'];
+                                        // Tambahkan log untuk melihat isi dari result
+                                        print('API Response: $result');
+
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+
+                                        ///ubah kondisi dari sini
+                                        if (result['meta']['code'] == 200) {
+                                          final userData = result['data'];
 
                                         // Cek apakah birthDate kosong
                                         if (userData['birthDate'] == null ||
@@ -236,9 +261,9 @@ class _LoginPageState extends State<LoginPage> {
 
                                           _fcmService.initializeFCM(token);
 
-                                          if (token != null) {
-                                            await prefs.setString(
-                                                'token', token);
+                                            if (token != null) {
+                                              await prefs.setString(
+                                                  'token', token);
 
                                             Get.snackbar(
                                               'Sukses',

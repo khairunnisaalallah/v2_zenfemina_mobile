@@ -93,11 +93,15 @@ class _ArticlePageState extends State<ArticlePage> {
 
   Future<void> _loadCategories() async {
     try {
-      final categories = await _apiRepository.GetCategories();
-      categories.insert(0, {"id": -1, "name": "Semua"});
-      setState(() {
-        _categories = categories;
-      });
+      final categories = await _apiRepository.getCategories();
+      if (categories != null) {
+        categories.insert(0, {"id": -1, "name": "Semua"});
+        setState(() {
+          _categories = categories;
+        });
+      } else {
+        throw Exception('Categories data is null');
+      }
     } catch (e) {
       print('Failed to load categories: $e');
       throw Exception('Failed to load categories: $e');
@@ -110,7 +114,7 @@ class _ArticlePageState extends State<ArticlePage> {
     });
 
     try {
-      final articles = await _apiRepository.GetArticlesByCategory(categoryId);
+      final articles = await _apiRepository.getArticlesByCategory(categoryId);
       setState(() {
         _articles = articles;
         _filteredArticles = articles; // Update filtered articles

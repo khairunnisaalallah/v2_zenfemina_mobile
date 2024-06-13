@@ -6,6 +6,7 @@ import 'package:zenfemina_v2/pages/question2.dart';
 import 'package:zenfemina_v2/pages/questionTambahan.dart';
 import 'package:zenfemina_v2/shared/shared.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Question1Page extends StatefulWidget {
   const Question1Page({Key? key}); //constructor
@@ -116,7 +117,10 @@ class _Question1PageState extends State<Question1Page> {
                             'birthDate', _dateController.text);
 
                         // Pindah ke halaman berikutnya
-                        Get.to(QuestionTambahan());
+                        Get.to(
+                          () => QuestionTambahan(),
+                          transition: Transition.fade,
+                        );
                       }
                     : null,
                 child: Text(
