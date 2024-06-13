@@ -38,6 +38,12 @@ class _PrayPageState extends State<PrayPage> {
     }
   }
 
+  Future<void> _refreshPrayerTimes() async {
+    if (selectedCity.isNotEmpty) {
+      await fetchPrayerTimes(selectedCity);
+    }
+  }
+
   Future<void> fetchPrayerTimes(String city) async {
     try {
       final response = await http.get(Uri.parse(
@@ -79,108 +85,112 @@ class _PrayPageState extends State<PrayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+      body: RefreshIndicator(
+        onRefresh: _refreshPrayerTimes,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                      color: Color(0xFFDA4256),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.35),
+                          spreadRadius: 0,
+                          blurRadius: 10,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    color: Color(0xFFDA4256),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.35),
-                        spreadRadius: 0,
-                        blurRadius: 10,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
                   ),
                 ),
-              ),
-              Positioned(
-                top: 70,
-                left: 30,
-                right: 30,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 0, left: 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Jadwal Sholat Kota ${selectedCity}',
-                        style: GoogleFonts.poppins(
-                          fontSize: 22,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
+                Positioned(
+                  top: 70,
+                  left: 30,
+                  right: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 0, left: 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Jadwal Sholat Kota ${selectedCity}',
+                          style: GoogleFonts.poppins(
+                            fontSize: 22,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Dapatkan jadwal sholat sesuai dengan kota anda!',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
+                        Text(
+                          'Dapatkan jadwal sholat sesuai dengan kota anda!',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: 160,
-                left: 25,
-                right: 25,
-                child: prayerDate(),
-              ),
-              Positioned(
-                  top: 320,
-                  left: 22,
-                  right: 22,
-                  child: Column(
-                    children: [
-                      PrayerType(
-                        text: "Shubuh",
-                        icon: 0xf5e4,
-                        hour: prayerTimes['Fajr'] ?? "-",
-                        press: () {},
-                      ),
-                      PrayerType(
-                        text: "Dzuhur",
-                        icon: 0xeef8,
-                        hour: prayerTimes['Dhuhr'] ?? "-",
-                        press: () {},
-                      ),
-                      PrayerType(
-                        text: "Ashar",
-                        icon: 0xeef9,
-                        hour: prayerTimes['Asr'] ?? "-",
-                        press: () {},
-                      ),
-                      PrayerType(
-                        text: "Maghrib",
-                        icon: 0xeef5,
-                        hour: prayerTimes['Maghrib'] ?? "-",
-                        press: () {},
-                      ),
-                      PrayerType(
-                        text: "Isya",
-                        icon: 0xf5e2,
-                        hour: prayerTimes['Isha'] ?? "-",
-                        press: () {},
-                      ),
-                    ],
-                  ))
-            ],
+                Positioned(
+                  top: 160,
+                  left: 25,
+                  right: 25,
+                  child: prayerDate(),
+                ),
+                Positioned(
+                    top: 320,
+                    left: 22,
+                    right: 22,
+                    child: Column(
+                      children: [
+                        PrayerType(
+                          text: "Shubuh",
+                          icon: 0xf5e4,
+                          hour: prayerTimes['Fajr'] ?? "-",
+                          press: () {},
+                        ),
+                        PrayerType(
+                          text: "Dzuhur",
+                          icon: 0xeef8,
+                          hour: prayerTimes['Dhuhr'] ?? "-",
+                          press: () {},
+                        ),
+                        PrayerType(
+                          text: "Ashar",
+                          icon: 0xeef9,
+                          hour: prayerTimes['Asr'] ?? "-",
+                          press: () {},
+                        ),
+                        PrayerType(
+                          text: "Maghrib",
+                          icon: 0xeef5,
+                          hour: prayerTimes['Maghrib'] ?? "-",
+                          press: () {},
+                        ),
+                        PrayerType(
+                          text: "Isya",
+                          icon: 0xf5e2,
+                          hour: prayerTimes['Isha'] ?? "-",
+                          press: () {},
+                        ),
+                      ],
+                    ))
+              ],
+            ),
           ),
         ),
       ),

@@ -59,7 +59,7 @@ class _EditPwState extends State<EditPw> {
                               .key_outlined, // Mengubah ikon email menjadi ikon kunci
                           color: Colors.grey,
                         ),
-                        labelStyle: GoogleFonts.outfit(
+                        labelStyle: GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Colors.grey,
@@ -89,7 +89,7 @@ class _EditPwState extends State<EditPw> {
                               .key_outlined, // Mengubah ikon email menjadi ikon kunci
                           color: Colors.grey,
                         ),
-                        labelStyle: GoogleFonts.outfit(
+                        labelStyle: GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Colors.grey,
@@ -115,7 +115,7 @@ class _EditPwState extends State<EditPw> {
                         },
                         child: Text(
                           'Ubah',
-                          style: GoogleFonts.outfit(
+                          style: GoogleFonts.poppins(
                             fontSize: 18,
                             color: Colors.white,
                             fontWeight: FontWeight.w700,

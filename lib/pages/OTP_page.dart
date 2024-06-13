@@ -41,7 +41,7 @@ class _OTPPageState extends State<OTPPage> {
             children: [
               Text(
                 'Masukkan Kode Verifikasi',
-                style: GoogleFonts.outfit(
+                style: GoogleFonts.poppins(
                   fontSize: 25,
                   color: Colors.black,
                   fontWeight: FontWeight.w700,
@@ -51,18 +51,16 @@ class _OTPPageState extends State<OTPPage> {
                 padding: const EdgeInsets.only(top: 0, left: 0),
                 child: Text(
                   'Kode verifikasi telah dikirim melalui e-mail ke email yang terdaftar',
-                  style: GoogleFonts.outfit(
+                  style: GoogleFonts.poppins(
                     fontSize: 15,
                     color: Colors.grey,
                     fontWeight: FontWeight.w300,
                   ),
                 ),
               ),
-
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              
                 children: [
                   myInputBox(context, txt1),
                   myInputBox(context, txt2),
@@ -75,25 +73,25 @@ class _OTPPageState extends State<OTPPage> {
               SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15, left: 0, right:20),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Lanjutkan',
-                    style: GoogleFonts.outfit(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
+                  padding: const EdgeInsets.only(top: 15, left: 0, right: 20),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Lanjutkan',
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFDA4256),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFDA4256),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                 ),
-              ),
               ),
             ],
           ),
@@ -106,7 +104,9 @@ class _OTPPageState extends State<OTPPage> {
     return Container(
       width: 50,
       padding: EdgeInsets.symmetric(vertical: 5), // Menambah padding vertikal
-     margin: EdgeInsets.only(right: 20), // Menambah margin kanan agar rata dengan tulisan "Kode Verifikasi"
+      margin: EdgeInsets.only(
+          right:
+              20), // Menambah margin kanan agar rata dengan tulisan "Kode Verifikasi"
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.number,

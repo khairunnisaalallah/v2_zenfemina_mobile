@@ -106,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           style: GoogleFonts.poppins(
                             fontSize: 25,
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -166,8 +166,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   'Informasi Terkait',
                   style: GoogleFonts.poppins(
                     fontSize: 16,
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
@@ -189,8 +189,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   'Menu',
                   style: GoogleFonts.poppins(
                     fontSize: 16,
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),

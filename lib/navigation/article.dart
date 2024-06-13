@@ -25,6 +25,7 @@ class _ArticlePageState extends State<ArticlePage> {
   late CarouselController controller = CarouselController();
   int currentIndex = 0;
   int indexCategory = 0;
+  Timer? _timer;
   final TextEditingController _searchController = TextEditingController();
 
   List<dynamic> _articles = [];
@@ -37,6 +38,25 @@ class _ArticlePageState extends State<ArticlePage> {
     _loadArticles();
     _loadUserInfo();
     _loadCategories();
+    _startLoadingData();
+  }
+
+  void _startLoadingData() {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      if (mounted) {
+        setState(() {
+          // Load your data
+        });
+      } else {
+        _timer?.cancel();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadUserInfo() async {

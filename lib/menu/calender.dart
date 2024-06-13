@@ -61,7 +61,7 @@ class CalenderPage extends StatelessWidget {
                           Center(
                             child: Text(
                               'Kalender',
-                              style: GoogleFonts.outfit(
+                              style: GoogleFonts.poppins(
                                 fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,

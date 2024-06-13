@@ -97,16 +97,16 @@ class _ProfileViewState extends State<ProfileView> {
     }
   }
 
-  pickImage(ImageSource imageSource) async{
+  pickImage(ImageSource imageSource) async {
     final ImagePicker imagePicker = ImagePicker();
     XFile? _file = await imagePicker.pickImage(source: imageSource);
-    if(_file != null){
+    if (_file != null) {
       return await _file.readAsBytes();
     }
     print('No Image Selected');
   }
 
-  void selectImage() async{
+  void selectImage() async {
     Uint8List img = await pickImage(ImageSource.gallery);
     setState(() {
       _image = img;
@@ -200,32 +200,35 @@ class _ProfileViewState extends State<ProfileView> {
                         clipBehavior: Clip.none,
                         children: [
                           const SizedBox(height: 10),
-                          _image != null?
-                              CircleAvatar(
-                                radius: 64,
-                                backgroundImage: MemoryImage(_image!),
-                              ):
-                          CircleAvatar(
-                            radius: 64,
-                            backgroundImage: dataImage != null ? NetworkImage('https://v2.zenfemina.com/storage/' + dataImage!) : null,
-                            child: dataImage == null
-                                ? Icon(
-                                    Icons.person,
-                                    size: 65,
-                                    color: TColor.secondaryText,
-                                  )
-                                : null,
-                          ),
+                          _image != null
+                              ? CircleAvatar(
+                                  radius: 64,
+                                  backgroundImage: MemoryImage(_image!),
+                                )
+                              : CircleAvatar(
+                                  radius: 64,
+                                  backgroundImage: dataImage != null
+                                      ? NetworkImage(
+                                          'https://v2.zenfemina.com/storage/' +
+                                              dataImage!)
+                                      : null,
+                                  child: dataImage == null
+                                      ? Icon(
+                                          Icons.person,
+                                          size: 65,
+                                          color: TColor.secondaryText,
+                                        )
+                                      : null,
+                                ),
                           Positioned(
                             child: IconButton(
-                              onPressed: () {
-                                selectImage();
-                              }, 
-                              icon: Icon(
-                                Icons.add_a_photo,
-                                size: 20,  
-                              )
-                            ),
+                                onPressed: () {
+                                  selectImage();
+                                },
+                                icon: Icon(
+                                  Icons.add_a_photo,
+                                  size: 20,
+                                )),
                             bottom: -10,
                             left: 80,
                           ),
@@ -255,7 +258,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       Icons.person_rounded,
                                       color: Colors.grey,
                                     ),
-                                    labelStyle: GoogleFonts.outfit(
+                                    labelStyle: GoogleFonts.poppins(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w300,
                                       color: Colors.grey,
@@ -285,7 +288,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       Icons.markunread_rounded,
                                       color: Colors.grey,
                                     ),
-                                    labelStyle: GoogleFonts.outfit(
+                                    labelStyle: GoogleFonts.poppins(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w300,
                                       color: Colors.grey,
@@ -317,7 +320,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         _selectDate(context);
                                       },
                                     ),
-                                    labelStyle: GoogleFonts.outfit(
+                                    labelStyle: GoogleFonts.poppins(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w300,
                                       color: Colors.grey,
@@ -342,7 +345,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     onPressed: _updateProfile,
                                     child: Text(
                                       'Ubah',
-                                      style: GoogleFonts.outfit(
+                                      style: GoogleFonts.poppins(
                                         fontSize: 18,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,
