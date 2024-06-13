@@ -11,6 +11,7 @@ import 'package:zenfemina_v2/api_repository.dart';
 import 'package:zenfemina_v2/navigation/pray.dart';
 import 'package:zenfemina_v2/widgets/city_data.dart';
 import 'package:zenfemina_v2/widgets/search_location.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -34,6 +35,7 @@ class _DashboardPageState extends State<DashboardPage> {
   bool _isLoading = true;
   String? _condition = '';
   String? _message = '';
+  String? _button = '';
   String? condition = '';
   String? message = '';
   String? button = '';
@@ -81,7 +83,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
     await Future.wait([
       _loadUserInfo(),
-      _loadCardview(),
+      _loadCardView(),
       _loadDebtsData(),
       // _updatePrayerTimes()
     ]);
@@ -103,22 +105,39 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
-  Future<void> _loadCardview() async {
+  Future<void> _loadCardView() async {
     try {
       final cardInfo = await _apiRepository.getCardView();
       final condition =
           cardInfo['data']['condition']; // Mengambil nilai condition
+      final message = cardInfo['data']['message'];
+      final button = cardInfo['data']['button'];
+
       setState(() {
         _condition = condition; // Menyimpan nilai condition ke dlm _condition
-        final message = cardInfo['data']['message'];
-        setState(() {
-          _message = message;
-        });
+        _message = message; // Menyimpan nilai message ke dlm _message
+        _button = button; // Menyimpan nilai button ke dlm _button
       });
     } catch (e) {
       print('Failed to load user info: $e');
     }
   }
+
+  // Future<void> _loadCardView() async {
+  //   try {
+  //     final cardViews = await _apiRepository.getCardView();
+  //     print(cardViews['data']['button']);
+
+  //     setState(() {
+  //       message = cardViews['data']['message'];
+  //       condition = cardViews['data']['condition'];
+  //       button = cardViews['data']['button'];
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+  //punya azza, tpi pas pake ini Hari ke - ini nya ga muncul, tpi button nya muncul. tpi pas pake punyaku hari nya muncul tpi buttonn nya ga muncul
 
   Future<void> _loadDebtsData() async {
     try {
@@ -182,7 +201,7 @@ class _DashboardPageState extends State<DashboardPage> {
             await _apiRepository.beginCycle(
                 inputDate: DateFormat('d-m-Y').format(now));
             Get.back();
-            Get.offAll(Home());
+            Get.offAll(() => Home());
           },
           child: Text("Sudah"),
         ),
@@ -199,7 +218,7 @@ class _DashboardPageState extends State<DashboardPage> {
           onPressed: () async {
             await _apiRepository.endCycle();
             Get.back();
-            Get.offAll(Home());
+            Get.offAll(() => Home());
           },
           child: Text("Tidak"),
         ),
@@ -207,7 +226,7 @@ class _DashboardPageState extends State<DashboardPage> {
           onPressed: () async {
             await _apiRepository.continueCycle();
             Get.back();
-            Get.offAll(Home());
+            Get.offAll(() => Home());
           },
           child: Text("Iya"),
         ),
@@ -289,7 +308,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               'Hallo $_username',
                               textAlign: TextAlign.left,
                               style: GoogleFonts.poppins(
-                                fontSize: 28,
+                                fontSize: 27,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
@@ -298,7 +317,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               'Ayo mulai atur siklus haidmu !',
                               textAlign: TextAlign.left,
                               style: GoogleFonts.poppins(
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w400,
                                 color: Colors.white,
                               ),
@@ -394,9 +413,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                   child: Text(
                                     //_getCycleButtonText(),
-                                    button!,
+                                    _button ?? '',
                                     style: GoogleFonts.poppins(
-                                      fontSize: 10,
+                                      fontSize: 12,
                                       color: Color(0xFFDA4256),
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -408,7 +427,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ),
                       Positioned(
-                        top: 400,
+                        top: 405,
                         left: 0,
                         right: 0,
                         child: Column(
@@ -420,7 +439,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 Text(
                                   'Menu Lainnya',
                                   style: GoogleFonts.poppins(
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     color: Colors.black,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -439,7 +458,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     width: 160,
                                     height: 92,
                                     decoration: BoxDecoration(
-                                      color: Color(0XFFFFE7E7),
+                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(15),
                                       boxShadow: [
                                         BoxShadow(
@@ -450,33 +469,38 @@ class _DashboardPageState extends State<DashboardPage> {
                                         ),
                                       ],
                                     ),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 40,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/images/icon_praying.svg',
+                                          width: 50,
+                                          height: 50,
                                         ),
-                                        child: Text(
+                                        SizedBox(height: 10),
+                                        Text(
                                           'Hutang Sholat',
                                           style: GoogleFonts.poppins(
                                             fontSize: 14,
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.w400,
                                             color: Colors.black,
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ),
                                 ),
                                 SizedBox(width: 20),
                                 InkWell(
                                   onTap: () {
-                                    Get.toNamed('/sholatpuasa');
+                                    Get.toNamed('/sholatpuasa?initialTab=1');
                                   },
                                   child: Container(
                                     width: 160,
                                     height: 92,
                                     decoration: BoxDecoration(
-                                      color: Color(0xFFFFE7E7),
+                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(15),
                                       boxShadow: [
                                         BoxShadow(
@@ -487,23 +511,28 @@ class _DashboardPageState extends State<DashboardPage> {
                                         ),
                                       ],
                                     ),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 40,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/images/icon_fasting.svg',
+                                          width: 50,
+                                          height: 50,
                                         ),
-                                        child: Text(
+                                        SizedBox(height: 10),
+                                        Text(
                                           'Hutang Puasa',
                                           style: GoogleFonts.poppins(
                                             fontSize: 14,
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.w400,
                                             color: Colors.black,
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ),
-                                ),
+                                )
                               ],
                             ),
                           ],
@@ -511,13 +540,13 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       Positioned(
                         top: 545,
-                        right: 180,
+                        right: 190,
                         left: 0,
                         child: Center(
                           child: Text(
                             'Informasi Terkait',
                             style: GoogleFonts.poppins(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Colors.black,
                               fontWeight: FontWeight.w400,
                             ),
@@ -525,7 +554,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ),
                       Positioned(
-                        top: 585,
+                        top: 578,
                         left: 0,
                         right: 0,
                         child: Column(
@@ -551,7 +580,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Container informasiterkait() {
     return Container(
       width: 340,
-      height: 42,
+      height: 40,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -590,7 +619,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Container informasiterkait2() {
     return Container(
       width: 340,
-      height: 42,
+      height: 40,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),

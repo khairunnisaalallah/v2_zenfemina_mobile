@@ -137,7 +137,10 @@ class _TabsholatpuasaState extends State<Tabsholatpuasa> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the initial tab from the route arguments
+    final initialTab = Get.parameters['initialTab'] ?? '0';
     return DefaultTabController(
+      initialIndex: int.parse(initialTab),
       length: 2,
       child: Scaffold(
         appBar: AppBar(
