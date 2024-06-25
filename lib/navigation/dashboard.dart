@@ -140,7 +140,7 @@ class _DashboardPageState extends State<DashboardPage> {
         //   _cycleStatus = 'continueCycle';
         // });
       } else {
-        // _endCycle();
+        _endCycle();
 
         // await _apiRepository.continueCycle();
         // setState(() {
@@ -167,9 +167,15 @@ class _DashboardPageState extends State<DashboardPage> {
         ElevatedButton(
           onPressed: () async {
             await _apiRepository.beginCycle(
-                inputDate: DateFormat('d-m-Y').format(now));
+                inputDate: DateFormat('yyyy-MM-dd HH:mm:ss').format(now));
             Get.back();
             Get.offAll(() => Home());
+            Get.snackbar(
+              'Berhasil',
+              'Saat ini anda sedang Haid',
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+            );
           },
           child: Text("Sudah"),
         ),
@@ -178,23 +184,36 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _endCycle() async {
+    DateTime now = DateTime.now();
     Get.defaultDialog(
       title: "Konfirmasi",
       middleText: "Apakah Anda masih Haid?",
       actions: [
         ElevatedButton(
           onPressed: () async {
-            await _apiRepository.endCycle();
+            await _apiRepository.endCycle(inputDate: DateFormat('yyyy-MM-dd HH:mm:ss').format(now));
             Get.back();
             Get.offAll(() => Home());
+            Get.snackbar(
+              'Berhasil',
+              'Saat ini anda sudah suci',
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+            );
           },
           child: Text("Tidak"),
         ),
         ElevatedButton(
           onPressed: () async {
-            await _apiRepository.continueCycle();
+            await _apiRepository.continueCycle(inputDate: DateFormat('yyyy-MM-dd HH:mm:ss').format(now));
             Get.back();
             Get.offAll(() => Home());
+            Get.snackbar(
+              'Berhasil',
+              'Saat ini anda sedang Istihadhah',
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+            );
           },
           child: Text("Iya"),
         ),
