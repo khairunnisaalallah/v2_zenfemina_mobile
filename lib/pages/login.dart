@@ -243,7 +243,7 @@ class _LoginPageState extends State<LoginPage> {
                                               backgroundColor: Colors.green,
                                               colorText: Colors.white,
                                             );
-                                            Get.to(Question1Page());
+                                            Get.to(() => Question1Page());
                                           } else {
                                             final prefs =
                                                 await SharedPreferences
@@ -262,7 +262,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 backgroundColor: Colors.green,
                                                 colorText: Colors.white,
                                               );
-                                              Get.offAll(Home());
+                                              Get.offAll(() => Home());
                                             } else {
                                               throw Exception('Token is null');
                                             }

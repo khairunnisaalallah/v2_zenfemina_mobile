@@ -34,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool isPasswordValid(String password) {
     return password.length >= 8 &&
-        password.contains(RegExp(r'[A-Za-z]')) &&
+        password.contains(RegExp(r'[A-Z]')) &&
         password.contains(RegExp(r'\d'));
   }
 
@@ -234,12 +234,33 @@ class _RegisterPageState extends State<RegisterPage> {
                                         );
                                         return;
                                       }
+                                      if (!isPasswordValid(
+                                          passwordController.text)) {
+                                        if (!passwordController.text
+                                            .contains(RegExp(r'[A-Z]'))) {
+                                          Get.snackbar(
+                                            'Error',
+                                            'Sandi minimal 1 huruf besar',
+                                            backgroundColor: Colors.red,
+                                            colorText: Colors.white,
+                                          );
+                                        } else if (!passwordController.text
+                                            .contains(RegExp(r'\d'))) {
+                                          Get.snackbar(
+                                            'Error',
+                                            'Sandi minimal 1 angka',
+                                            backgroundColor: Colors.red,
+                                            colorText: Colors.white,
+                                          );
+                                        }
+                                        return;
+                                      }
 
                                       if (!isPasswordValid(
                                           passwordController.text)) {
                                         Get.snackbar(
                                           'Error',
-                                          'Kata sandi harus minimal 8 huruf dan kombinasi angka serta huruf',
+                                          'Kata sandi harus minimal 8 huruf',
                                           backgroundColor: Colors.red,
                                           colorText: Colors.white,
                                         );
