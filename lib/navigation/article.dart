@@ -194,7 +194,7 @@ class _ArticlePageState extends State<ArticlePage> {
               left: 0,
               right: 0,
               child: Container(
-                height: 190,
+                height: 185,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -224,7 +224,7 @@ class _ArticlePageState extends State<ArticlePage> {
                     Text(
                       'Ayo $_username',
                       style: GoogleFonts.poppins(
-                        fontSize: 22,
+                        fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
                       ),
@@ -232,12 +232,12 @@ class _ArticlePageState extends State<ArticlePage> {
                     Text(
                       'Temukan artikel yang sesuai untukmu',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
                     Container(
                       width: 400,
                       height: 46,
@@ -280,19 +280,6 @@ class _ArticlePageState extends State<ArticlePage> {
                 ),
               ),
             ),
-            // Positioned(
-            //   top: 35,
-            //   right: 25,
-            //   child: Row(
-            //     children: [
-            //       SizedBox(width: 240),
-            //       CircleButton(
-            //         icon: Icons.person_2_outlined,
-            //         onPressed: () {},
-            //       ),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -315,7 +302,7 @@ class _ArticlePageState extends State<ArticlePage> {
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
                                 color: Colors.grey[900],
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w500),
                           ),
                         ),
@@ -385,7 +372,7 @@ class _ArticlePageState extends State<ArticlePage> {
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
                                 color: Colors.grey[900],
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w500),
                           ),
                         ),
@@ -447,7 +434,7 @@ class _ArticlePageState extends State<ArticlePage> {
                         ),
                         SizedBox(height: 7),
                         Padding(
-                          padding: EdgeInsets.only(left: 20, right: 20),
+                          padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                           child: ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.zero,

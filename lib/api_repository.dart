@@ -226,17 +226,22 @@ class ApiRepository {
     }
   }
 
-  Future<void> continueCycle() async {
+  Future<void> continueCycle({
+    required String inputDate,
+  }) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
 
     if (token != null && token.isNotEmpty) {
+      final data = {'inputDate': inputDate};
+      final jsonData = jsonEncode(data);
       final response = await http.post(
         Uri.parse('http://v2.zenfemina.com/api/cycle/continueCycle'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token,
         },
+        body: jsonData,
       );
       print('Request URL: ${response.request?.url}');
       print('Request Headers: ${response.request?.headers}');
@@ -252,17 +257,22 @@ class ApiRepository {
     }
   }
 
-  Future<void> endCycle() async {
+  Future<void> endCycle({
+    required String inputDate,
+  }) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
 
     if (token != null && token.isNotEmpty) {
+      final data = {'inputDate': inputDate};
+      final jsonData = jsonEncode(data);
       final response = await http.post(
         Uri.parse('http://v2.zenfemina.com/api/cycle/endCycle'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': token,
         },
+        body: jsonData,
       );
       print('Request URL: ${response.request?.url}');
       print('Request Headers: ${response.request?.headers}');
@@ -274,6 +284,7 @@ class ApiRepository {
         throw Exception('Failed to end cycle: ${response.body}');
       }
     } else {
+      
       throw Exception('Token is null or empty');
     }
   }

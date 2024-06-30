@@ -24,18 +24,9 @@ class _DashboardPageState extends State<DashboardPage> {
   final ApiRepository _apiRepository = ApiRepository();
   PrayPage _prayPage = PrayPage();
   String selectedCity = 'Jember';
-  String? _username = '';
-  String? _startDate = '';
-  int _cycleLength = 0;
-  int _periodLength = 0;
-  int? _prayingDebtsCount = 0;
-  int? _fastingDebtsCount = 0;
-  // ? = bisa null atau nilai integer, klo ga pake berarti ga boleh null dan harus selalu punya nilai integer
-  String _cycleStatus = 'beginCycle';
   bool _isLoading = true;
-  String? _condition = '';
-  String? _message = '';
-  String? _button = '';
+  String? _username = '';
+  
   String? condition = '';
   String? message = '';
   String? button = '';
@@ -47,6 +38,8 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
     _loadData();
     _loadSelectedCity();
+    _loadDebtsData();
+    _loadCardView();
   }
 
   Future<void> _loadSelectedCity() async {
@@ -67,14 +60,6 @@ class _DashboardPageState extends State<DashboardPage> {
     });
     _saveSelectedCity(newCity);
   }
-
-  // Future<void> _updatePrayerTimes() async {
-  //   try {
-  //     await _prayPage.fetchPrayerTimes(selectedCity);
-  //   } catch (e) {
-  //     print('Failed to update prayer times: $e');
-  //   }
-  // }
 
   Future<void> _loadData() async {
     setState(() {
@@ -107,45 +92,28 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Future<void> _loadCardView() async {
     try {
-      final cardInfo = await _apiRepository.getCardView();
-      final condition =
-          cardInfo['data']['condition']; // Mengambil nilai condition
-      final message = cardInfo['data']['message'];
-      final button = cardInfo['data']['button'];
+      final cardViews = await _apiRepository.getCardView();
+      print(cardViews['data']['button']);
 
       setState(() {
-        _condition = condition; // Menyimpan nilai condition ke dlm _condition
-        _message = message; // Menyimpan nilai message ke dlm _message
-        _button = button; // Menyimpan nilai button ke dlm _button
+        message = cardViews['data']['message'];
+        condition = cardViews['data']['condition'];
+        button = cardViews['data']['button'];
       });
+
     } catch (e) {
-      print('Failed to load user info: $e');
+      print(e);
     }
   }
 
-  // Future<void> _loadCardView() async {
-  //   try {
-  //     final cardViews = await _apiRepository.getCardView();
-  //     print(cardViews['data']['button']);
-
-  //     setState(() {
-  //       message = cardViews['data']['message'];
-  //       condition = cardViews['data']['condition'];
-  //       button = cardViews['data']['button'];
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-  //punya azza, tpi pas pake ini Hari ke - ini nya ga muncul, tpi button nya muncul. tpi pas pake punyaku hari nya muncul tpi buttonn nya ga muncul
 
   Future<void> _loadDebtsData() async {
     try {
       final prayingDebts = await _apiRepository.getPrayingDebtCount();
       final fastingDebts = await _apiRepository.getFastingDebtCount();
       // Tambahkan logging untuk data yang diterima dari API
-      print(prayingDebts['data']['message']);
-      print(fastingDebts['data']['message']);
+      // print(prayingDebts['data']['message']);
+      // print(fastingDebts['data']['message']);
       setState(() {
         prayingDebtMsg = prayingDebts['data']['message'];
         fastingDebtMsg = fastingDebts['data']['message'];
@@ -172,7 +140,7 @@ class _DashboardPageState extends State<DashboardPage> {
         //   _cycleStatus = 'continueCycle';
         // });
       } else {
-        // _endCycle();
+        _endCycle();
 
         // await _apiRepository.continueCycle();
         // setState(() {
@@ -199,9 +167,15 @@ class _DashboardPageState extends State<DashboardPage> {
         ElevatedButton(
           onPressed: () async {
             await _apiRepository.beginCycle(
-                inputDate: DateFormat('d-m-Y').format(now));
+                inputDate: DateFormat('yyyy-MM-dd HH:mm:ss').format(now));
             Get.back();
             Get.offAll(() => Home());
+            Get.snackbar(
+              'Berhasil',
+              'Saat ini anda sedang Haid',
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+            );
           },
           child: Text("Sudah"),
         ),
@@ -210,42 +184,42 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _endCycle() async {
+    DateTime now = DateTime.now();
     Get.defaultDialog(
       title: "Konfirmasi",
       middleText: "Apakah Anda masih Haid?",
       actions: [
         ElevatedButton(
           onPressed: () async {
-            await _apiRepository.endCycle();
+            await _apiRepository.endCycle(inputDate: DateFormat('yyyy-MM-dd HH:mm:ss').format(now));
             Get.back();
             Get.offAll(() => Home());
+            Get.snackbar(
+              'Berhasil',
+              'Saat ini anda sudah suci',
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+            );
           },
           child: Text("Tidak"),
         ),
         ElevatedButton(
           onPressed: () async {
-            await _apiRepository.continueCycle();
+            await _apiRepository.continueCycle(inputDate: DateFormat('yyyy-MM-dd HH:mm:ss').format(now));
             Get.back();
             Get.offAll(() => Home());
+            Get.snackbar(
+              'Berhasil',
+              'Saat ini anda sedang Istihadhah',
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+            );
           },
           child: Text("Iya"),
         ),
       ],
     );
   }
-
-  // String _getCycleButtonText() {
-  //   switch (_cycleStatus) {
-  //     case 'beginCycle':
-  //       return 'Mulai Siklus';
-  //     case 'continueCycle':
-  //       return 'Lanjutkan Siklus';
-  //     case 'endCycle':
-  //       return 'Siklus Berakhir';
-  //     default:
-  //       return 'Mulai Siklus';
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -269,7 +243,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         left: 0,
                         right: 0,
                         child: Container(
-                          height: 259,
+                          height: 250,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(20),
@@ -289,7 +263,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       Positioned(
                         top: 55,
-                        right: 40,
+                        right: 30,
                         left: 30,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -308,7 +282,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               'Hallo $_username',
                               textAlign: TextAlign.left,
                               style: GoogleFonts.poppins(
-                                fontSize: 27,
+                                fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
@@ -317,7 +291,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               'Ayo mulai atur siklus haidmu !',
                               textAlign: TextAlign.left,
                               style: GoogleFonts.poppins(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 color: Colors.white,
                               ),
@@ -346,13 +320,13 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ),
                       Positioned(
-                        top: 190,
-                        left: 0,
-                        right: 0,
+                        top: 170,
+                        left: 22,
+                        right: 22,
                         child: Center(
                           child: Container(
-                            width: 345,
-                            height: 200,
+                            width: MediaQuery.of(context).size.width,
+                            height: 185,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
@@ -372,30 +346,30 @@ class _DashboardPageState extends State<DashboardPage> {
                                   DateFormat('dd MMMM yyyy')
                                       .format(currentDate),
                                   style: GoogleFonts.poppins(
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     color: Color(0XFFDA4256),
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                                SizedBox(height: 5),
+                                SizedBox(height: 2),
                                 Text(
-                                  _condition ?? '',
+                                  condition!,
                                   style: GoogleFonts.poppins(
-                                    fontSize: 32,
+                                    fontSize: 30,
                                     color: Color(0xFFDA4256),
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
-                                SizedBox(height: 5),
+                                SizedBox(height: 0),
                                 Text(
-                                  _message ?? '',
+                                  message!,
                                   style: GoogleFonts.poppins(
-                                    fontSize: 15,
+                                    fontSize: 14,
                                     color: Color(0xFFDA4256),
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                SizedBox(height: 12),
                                 ElevatedButton(
                                   onPressed: _updateCycle,
                                   style: ElevatedButton.styleFrom(
@@ -406,16 +380,16 @@ class _DashboardPageState extends State<DashboardPage> {
                                       borderRadius: BorderRadius.circular(15),
                                       side: BorderSide(
                                         color: Color(0xFFDA4256),
-                                        width: 2,
+                                        width: 1,
                                       ),
                                     ),
                                     minimumSize: Size(132, 35),
                                   ),
                                   child: Text(
                                     //_getCycleButtonText(),
-                                    _button ?? '',
+                                    button!,
                                     style: GoogleFonts.poppins(
-                                      fontSize: 12,
+                                      fontSize: 10,
                                       color: Color(0xFFDA4256),
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -427,144 +401,129 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       ),
                       Positioned(
-                        top: 405,
+                        top: 380,
                         left: 0,
                         right: 0,
                         child: Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(width: 30),
-                                Text(
-                                  'Menu Lainnya',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    Get.toNamed('/sholatpuasa');
-                                  },
-                                  child: Container(
-                                    width: 160,
-                                    height: 92,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(15),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          spreadRadius: 2,
-                                          blurRadius: 3,
-                                          offset: Offset(0, 3),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/images/icon_praying.svg',
-                                          width: 50,
-                                          height: 50,
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          'Hutang Sholat',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black,
+                            Padding(
+                              padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Get.toNamed('/sholatpuasa');
+                                    },
+                                    child: Container(
+                                      width: 150,
+                                      height: 92,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(15),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.2),
+                                            spreadRadius: 2,
+                                            blurRadius: 3,
+                                            offset: Offset(0, 3),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 20),
-                                InkWell(
-                                  onTap: () {
-                                    Get.toNamed('/sholatpuasa?initialTab=1');
-                                  },
-                                  child: Container(
-                                    width: 160,
-                                    height: 92,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(15),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          spreadRadius: 2,
-                                          blurRadius: 3,
-                                          offset: Offset(0, 3),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/images/icon_fasting.svg',
-                                          width: 50,
-                                          height: 50,
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          'Hutang Puasa',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black,
+                                        ],
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/icon_praying.svg',
+                                            width: 50,
+                                            height: 50,
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(height: 10),
+                                          Text(
+                                            'Hutang Sholat',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
+                                  SizedBox(width: 20),
+                                  InkWell(
+                                    onTap: () {
+                                      Get.toNamed('/sholatpuasa?initialTab=1');
+                                    },
+                                    child: Container(
+                                      width: 150,
+                                      height: 92,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(15),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.2),
+                                            spreadRadius: 2,
+                                            blurRadius: 3,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/images/icon_fasting.svg',
+                                            width: 50,
+                                            height: 50,
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            'Hutang Puasa',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),
                       Positioned(
-                        top: 545,
-                        right: 190,
-                        left: 0,
-                        child: Center(
-                          child: Text(
+                        top: 505,
+                        right: 0,
+                        left: 20,
+                        child: Text(
                             'Informasi Terkait',
                             style: GoogleFonts.poppins(
-                              fontSize: 16,
+                              fontSize: 14,
                               color: Colors.black,
                               fontWeight: FontWeight.w400,
                             ),
-                          ),
                         ),
                       ),
                       Positioned(
-                        top: 578,
-                        left: 0,
-                        right: 0,
+                        top: 535,
+                        left: 20,
+                        right: 20,
                         child: Column(
                           children: [
                             Center(
                               child: informasiterkait(),
                             ),
                             SizedBox(
-                                height:
-                                    15), // Berikan jarak antara kedua widget
+                                height:15), // Berikan jarak antara kedua widget
                             informasiterkait2(), // Tampilkan informasi kedua
                           ],
                         ),
